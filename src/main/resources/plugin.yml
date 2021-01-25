@@ -1,0 +1,7 @@
+name: SimplexCore
+version: ${project.version}
+main: pw.coomer.simplexcore.SimplexCore
+api-version: 1.16
+prefix: Simplex
+authors: [ Paldiu ]
+description: Core for a group of plugins designed to enhance gameplay to the max
