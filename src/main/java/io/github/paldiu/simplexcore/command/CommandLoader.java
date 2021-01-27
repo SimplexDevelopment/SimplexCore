@@ -1,5 +1,6 @@
 package io.github.paldiu.simplexcore.command;
 
+import io.github.paldiu.simplexcore.command.defaults.DefaultCommand;
 import io.github.paldiu.simplexcore.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -19,7 +20,7 @@ import java.util.MissingResourceException;
 public class CommandLoader {
     private Reflections reflections;
 
-    public CommandLoader classpath(Class<?> clazz) {
+    public synchronized CommandLoader classpath(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
             throw new MissingResourceException("Cannot register this class as the main resource location!", clazz.getSimpleName(), "@CommandInfo");
         }
@@ -32,7 +33,7 @@ public class CommandLoader {
         return this;
     }
 
-    public void load() {
+    public synchronized void load() {
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
@@ -52,7 +53,7 @@ public class CommandLoader {
         });
     }
 
-    public CommandExecutor getFromSetName(String name) {
+    public synchronized CommandExecutor getFromSetName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
                 throw new RuntimeException("Missing annotation CommandInfo!");
@@ -65,7 +66,7 @@ public class CommandLoader {
                     Constructor<? extends CommandExecutor> constr = obj.getDeclaredConstructor();
                     return constr.newInstance();
                 } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
+                    return new DefaultCommand();
                 }
             }
         }
@@ -73,7 +74,7 @@ public class CommandLoader {
     }
 
     @Nullable
-    public TabCompleter getTabFromName(String name) {
+    public synchronized TabCompleter getTabFromName(String name) {
         for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
                 throw new RuntimeException("Missing annotation CommandInfo!");
@@ -85,7 +86,7 @@ public class CommandLoader {
                     Constructor<? extends TabCompleter> constr = obj.getDeclaredConstructor();
                     return constr.newInstance();
                 } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    return new DefaultCommand();
                 }
             }
         }

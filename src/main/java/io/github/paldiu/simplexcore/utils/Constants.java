@@ -37,11 +37,43 @@ public final class Constants {
         return scheduler;
     }
 
-    public static AddonRegistry getRegistry() {
+    public static synchronized AddonRegistry getRegistry() {
         return AddonRegistry.getInstance();
     }
 
-    public static CommandLoader getCommandLoader() {
+    public static synchronized CommandLoader getCommandLoader() {
         return CommandLoader.getInstance();
     }
+
+    public static TimeValues getTimeValues() {
+        return new TimeValues();
+    }
+
+    public static class TimeValues {
+        public long SECOND() {
+            return 20L;
+        }
+
+        public long MINUTE() {
+            return 1200L;
+        }
+
+        public long HOUR() {
+            return 72000L;
+        }
+
+        public long DAY() {
+            return 1728000L;
+        }
+
+        public long MONTH() {
+            return 51840000L;
+        }
+
+        public long YEAR() {
+            return 622080000L;
+        }
+    }
+
 }
+

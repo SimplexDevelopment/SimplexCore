@@ -14,7 +14,7 @@ public class AddonRegistry {
         return instance;
     }
 
-    public <T extends Addon<T>> void register(T addon) {
+    public <T extends Addon<T>>void register(T addon) {
         getComponents().add(addon);
     }
 

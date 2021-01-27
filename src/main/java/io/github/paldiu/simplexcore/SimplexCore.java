@@ -5,8 +5,9 @@ import io.github.paldiu.simplexcore.plugin.Addon;
 import io.github.paldiu.simplexcore.utils.Constants;
 
 public final class SimplexCore extends Addon<SimplexCore> {
-    protected SimplexCore(SimplexCore plugin) {
-        super(plugin);
+    @Override
+    public SimplexCore getPlugin() {
+        return this;
     }
 
     @Override
