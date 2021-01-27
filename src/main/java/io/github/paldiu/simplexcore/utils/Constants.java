@@ -1,6 +1,8 @@
-package io.github.paldiu.simplexcore;
+package io.github.paldiu.simplexcore.utils;
 
-import io.github.paldiu.simplexcore.registry.AddonRegistry;
+import io.github.paldiu.simplexcore.SimplexCore;
+import io.github.paldiu.simplexcore.command.CommandLoader;
+import io.github.paldiu.simplexcore.plugin.AddonRegistry;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,7 +16,6 @@ public final class Constants {
     private static final Logger logger = plugin.getLogger();
     private static final PluginManager manager = server.getPluginManager();
     private static final BukkitScheduler scheduler = server.getScheduler();
-    private static final AddonRegistry registry = new AddonRegistry();
 
     public static SimplexCore getPlugin() {
         return plugin;
@@ -37,6 +38,10 @@ public final class Constants {
     }
 
     public static AddonRegistry getRegistry() {
-        return registry;
+        return AddonRegistry.getInstance();
+    }
+
+    public static CommandLoader getCommandLoader() {
+        return CommandLoader.getInstance();
     }
 }

@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.registry;
+package io.github.paldiu.simplexcore.plugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -10,9 +10,9 @@ public abstract class Addon<T extends Addon<T>> extends JavaPlugin {
     }
 
     /**
-     *  Gets your plugin as an addon.
+     * Gets your plugin as an addon.
      *
-     * @return  The addon.
+     * @return The addon.
      */
     public T getPlugin() {
         return plugin;
@@ -34,12 +34,12 @@ public abstract class Addon<T extends Addon<T>> extends JavaPlugin {
     }
 
     /**
-     *  Plugin startup logic.
+     * Plugin startup logic.
      */
     public abstract void start();
 
     /**
-     *  Plugin shutdown logic.
+     * Plugin shutdown logic.
      */
     public abstract void stop();
 

@@ -1,22 +1,25 @@
 package io.github.paldiu.simplexcore.command;
 
-import io.github.paldiu.simplexcore.Constants;
+import io.github.paldiu.simplexcore.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.MissingResourceException;
 
 public class CommandLoader {
-    private final Reflections reflections;
+    private Reflections reflections;
 
-    public CommandLoader(Class<?> clazz) {
+    public CommandLoader classpath(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
             throw new MissingResourceException("Cannot register this class as the main resource location!", clazz.getSimpleName(), "@CommandInfo");
         }
@@ -26,6 +29,7 @@ public class CommandLoader {
         }
 
         reflections = new Reflections(clazz);
+        return this;
     }
 
     public void load() {
@@ -33,21 +37,30 @@ public class CommandLoader {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
             if (info == null) return;
-            if (!CommandExecutor.class.isAssignableFrom(annotated)) return;
+            if (!CommandBase.class.isAssignableFrom(annotated)) return;
 
-            PluginCommand objectToRegister = Registry.create(Constants.getPlugin(), info.name());
-            objectToRegister.setDescription(info.description());
-            objectToRegister.setUsage(info.usage());
+            PluginCommand objectToRegister = Registry.create(Constants.getPlugin(), info.name().toLowerCase());
             objectToRegister.setAliases(Arrays.asList(info.aliases().split(",")));
-            objectToRegister.setPermission(info.permission());
+            objectToRegister.setDescription(info.description());
             objectToRegister.setExecutor(getFromSetName(info.name()));
+            objectToRegister.setLabel(info.name().toLowerCase());
+            objectToRegister.setPermission(info.permission());
+            objectToRegister.setPermissionMessage(info.permissionMessage());
+            objectToRegister.setTabCompleter(getTabFromName(info.name()));
+            objectToRegister.setUsage(info.usage());
             Registry.registerCommand(objectToRegister);
         });
     }
 
     public CommandExecutor getFromSetName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
-            if (name.equalsIgnoreCase(obj.getSimpleName())) {
+            if (!obj.isAnnotationPresent(CommandInfo.class)) {
+                throw new RuntimeException("Missing annotation CommandInfo!");
+            }
+
+            CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
+
+            if (name.equalsIgnoreCase(info.name())) {
                 try {
                     Constructor<? extends CommandExecutor> constr = obj.getDeclaredConstructor();
                     return constr.newInstance();
@@ -59,7 +72,26 @@ public class CommandLoader {
         throw new RuntimeException("Unable to get a command executor! Terminating!");
     }
 
-    @SuppressWarnings("unchecked")
+    @Nullable
+    public TabCompleter getTabFromName(String name) {
+        for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {
+            if (!obj.isAnnotationPresent(CommandInfo.class)) {
+                throw new RuntimeException("Missing annotation CommandInfo!");
+            }
+
+            CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
+            if (name.equalsIgnoreCase(info.name())) {
+                try {
+                    Constructor<? extends TabCompleter> constr = obj.getDeclaredConstructor();
+                    return constr.newInstance();
+                } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     private static class Registry {
         private static final Constructor<PluginCommand> constructor;
         private static final Field cmdMapField;
@@ -107,14 +139,23 @@ public class CommandLoader {
                 CommandMap map = (CommandMap) cmdMapField.get(Bukkit.getPluginManager());
                 Map<String, Command> knownCommands = map.getKnownCommands();
 
-                if (knownCommands.containsKey(command.getName())) {
-                    knownCommands.replace(command.getName(), command);
+                if (knownCommands.containsKey(command.getName().toLowerCase())) {
+                    knownCommands.replace(command.getName().toLowerCase(), command);
                 }
 
-                map.register(command.getName(), command);
+                map.register(command.getName().toLowerCase(), command);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static final CommandLoader instance = new CommandLoader();
+
+    protected CommandLoader() {
+    }
+
+    public static CommandLoader getInstance() {
+        return instance;
     }
 }
