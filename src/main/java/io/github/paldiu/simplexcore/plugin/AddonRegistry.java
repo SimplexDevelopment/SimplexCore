@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AddonRegistry {
-    private final Set<Addon<?>> components = new HashSet<>();
+    private final Set<SimplexAddon<?>> components = new HashSet<>();
     private static final AddonRegistry instance = new AddonRegistry();
 
     protected AddonRegistry() {
@@ -14,11 +14,11 @@ public class AddonRegistry {
         return instance;
     }
 
-    public <T extends Addon<T>>void register(T addon) {
+    public <T extends SimplexAddon<T>>void register(T addon) {
         getComponents().add(addon);
     }
 
-    public Set<Addon<?>> getComponents() {
+    public Set<SimplexAddon<?>> getComponents() {
         return components;
     }
 }

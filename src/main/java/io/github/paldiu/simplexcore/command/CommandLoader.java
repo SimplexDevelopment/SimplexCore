@@ -38,7 +38,7 @@ public class CommandLoader {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
             if (info == null) return;
-            if (!CommandBase.class.isAssignableFrom(annotated)) return;
+            if (!SimplexCommand.class.isAssignableFrom(annotated)) return;
 
             PluginCommand objectToRegister = Registry.create(Constants.getPlugin(), info.name().toLowerCase());
             objectToRegister.setAliases(Arrays.asList(info.aliases().split(",")));

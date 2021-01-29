@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class CommandBase implements CommandExecutor, TabCompleter {
+public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
     public boolean checkSender(CommandSender sender) {
         return sender instanceof Player;
     }

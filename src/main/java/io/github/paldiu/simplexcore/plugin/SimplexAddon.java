@@ -2,7 +2,7 @@ package io.github.paldiu.simplexcore.plugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract class Addon<T extends Addon<T>> extends JavaPlugin {
+public abstract class SimplexAddon<T extends SimplexAddon<T>> extends JavaPlugin {
     /**
      * Gets your plugin as an addon.
      *

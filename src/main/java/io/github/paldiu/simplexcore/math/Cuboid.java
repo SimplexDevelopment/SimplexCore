@@ -24,15 +24,15 @@ public class Cuboid {
         this(size.getX(), size.getY(), size.getZ());
     }
 
-    public synchronized void generate(Location location, Material material) {
+    public void generate(Location location, Material material) {
         Consumer<BukkitTask> task = bukkitTask -> {
             int t1 = location.getBlockX();
             int t2 = location.getBlockY();
             int t3 = location.getBlockZ();
 
-            int a = t1+x;
-            int b = t2+y;
-            int c = t3+z;
+            int a = t1 + x;
+            int b = t2 + y;
+            int c = t3 + z;
 
             while (t1 < a) {
                 while (t2 < b) {
