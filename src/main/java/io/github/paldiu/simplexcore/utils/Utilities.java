@@ -1,5 +1,8 @@
 package io.github.paldiu.simplexcore.utils;
 
+import io.github.paldiu.simplexcore.listener.SimplexListener;
+import io.github.paldiu.simplexcore.plugin.SimplexAddon;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
