@@ -3,7 +3,7 @@ package io.github.paldiu.simplexcore.utils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class Trio<A, B, C> {
+public final class Trio<A, B, C> {
     private final A primary;
     private final B secondary;
     private final C tertiary;

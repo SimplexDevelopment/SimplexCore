@@ -2,7 +2,7 @@ package io.github.paldiu.simplexcore.plugin;
 
 import io.github.paldiu.simplexcore.utils.Constants;
 
-public class AddonManager {
+public final class AddonManager {
     public AddonManager() { }
 
     public void disable(SimplexAddon<?> simplexAddon) {

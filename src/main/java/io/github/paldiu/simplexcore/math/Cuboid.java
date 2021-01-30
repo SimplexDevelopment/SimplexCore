@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.function.Consumer;
 
-public class Cuboid {
+public final class Cuboid {
     private final int x, y, z;
 
     public Cuboid() {

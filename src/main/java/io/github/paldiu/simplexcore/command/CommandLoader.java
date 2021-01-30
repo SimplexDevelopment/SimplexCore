@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.MissingResourceException;
 
-public class CommandLoader {
+public final class CommandLoader {
     private Reflections reflections;
 
     public synchronized CommandLoader classpath(Class<?> clazz) {

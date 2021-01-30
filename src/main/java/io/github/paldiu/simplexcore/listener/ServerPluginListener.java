@@ -5,7 +5,7 @@ import io.github.paldiu.simplexcore.utils.Constants;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginEnableEvent;
 
-public class ServerPluginListener extends SimplexListener {
+public final class ServerPluginListener extends SimplexListener {
     @EventHandler
     public void pluginRegister(PluginEnableEvent event) {
         if (SimplexAddon.class.isAssignableFrom(event.getPlugin().getClass())) {

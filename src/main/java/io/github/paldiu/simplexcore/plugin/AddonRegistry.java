@@ -3,7 +3,7 @@ package io.github.paldiu.simplexcore.plugin;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AddonRegistry {
+public final class AddonRegistry {
     private final Set<SimplexAddon<?>> components = new HashSet<>();
     private static final AddonRegistry instance = new AddonRegistry();
 

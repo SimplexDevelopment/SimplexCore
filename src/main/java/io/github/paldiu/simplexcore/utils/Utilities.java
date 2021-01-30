@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Utilities {
+public final class Utilities {
     private static <T> Stream<T> feStr(T[] array) {
         return Arrays.stream(array);
     }
