@@ -7,6 +7,9 @@ import io.github.paldiu.simplexcore.plugin.SimplexAddon;
 import io.github.paldiu.simplexcore.utils.Constants;
 
 public final class SimplexCore extends SimplexAddon<SimplexCore> {
+    protected static boolean debug = false;
+    protected static boolean suspended = false;
+
     @Override
     public SimplexCore getPlugin() {
         return this;
@@ -14,13 +17,33 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
 
     @Override
     public void start() {
-        Constants.getRegistry().register(this);
-        Constants.getCommandLoader().classpath(Command_info.class).load();
-        SimplexListener.register(new ServerPluginListener(), this);
+        try {
+            Constants.getRegistry().register(this);
+            Constants.getCommandLoader().classpath(Command_info.class).load();
+            SimplexListener.register(new ServerPluginListener(), this);
+        } catch (Exception ex) {
+            suspended = true;
+            // TODO: Write an output to a file with why it suspended.
+        }
+
+        CoreState state = new CoreState();
+        Constants.getLogger().info(state.getMessage());
     }
 
     @Override
     public void stop() {
 
+    }
+
+    public static void setDebug(boolean enable) {
+        debug = enable;
+    }
+
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static boolean isSuspended() {
+        return suspended;
     }
 }

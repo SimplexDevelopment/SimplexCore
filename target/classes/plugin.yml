@@ -1,6 +1,6 @@
 name: SimplexCore
-version: 1.0.0-BLEEDING
-main: pw.coomer.simplexcore.SimplexCore
+version: 1.1.0-EDGE
+main: io.github.paldiu.simplexcore.SimplexCore
 api-version: 1.16
 prefix: Simplex
 authors: [ Paldiu ]

@@ -6,7 +6,7 @@
 
     <groupId>io.github.paldiu.simplexcore</groupId>
     <artifactId>SimplexCore</artifactId>
-    <version>1.0.0-BLEEDING</version>
+    <version>1.1.0-EDGE</version>
     <packaging>jar</packaging>
 
     <name>SimplexCore</name>
