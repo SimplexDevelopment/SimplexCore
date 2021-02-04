@@ -17,6 +17,11 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
         INTERVAL = interval;
     }
 
+    protected SimplexTask(long interval) {
+        DELAY = 0L;
+        INTERVAL = interval;
+    }
+
     protected SimplexTask() {
         DELAY = Constants.getTimeValues().SECOND() * 30; // 30 seconds until the task triggers for the first time.
         INTERVAL = Constants.getTimeValues().MINUTE() * 5; // Task will run at 5 minute intervals once the first trigger has been called.
