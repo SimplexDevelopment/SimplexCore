@@ -19,10 +19,12 @@ public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
         return sender instanceof Player;
     }
 
+    @Nullable
     public Player getPlayer(String name) {
         return Constants.getServer().getPlayer(name);
     }
 
+    @Nullable
     public Player getPlayer(UUID uuid) {
         return Constants.getServer().getPlayer(uuid);
     }

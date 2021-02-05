@@ -24,10 +24,10 @@ public final class JsonFactory {
     }
 
     public JsonFactory setDefaultPathways() {
-        return setPathways("config.yml", plugin.getDataFolder(), "config.yml");
+        return setPathways("data.json", plugin.getDataFolder(), "data.json");
     }
 
-    public Trio<String, File, String> getPathways() {
+    public Trio<String, File, String> pathways() {
         return new Trio<>(resourcePath, directory, fileName);
     }
 }

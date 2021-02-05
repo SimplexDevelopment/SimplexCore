@@ -26,7 +26,7 @@ public final class YamlFactory {
         return setPathways("config.yml", plugin.getDataFolder(), "config.yml");
     }
 
-    public Trio<String, File, String> getPathways() {
+    public Trio<String, File, String> pathways() {
         return new Trio<>(resourcePath, directory, fileName);
     }
 }
