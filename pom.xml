@@ -55,12 +55,20 @@
 
     <repositories>
         <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>papermc-repo</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
 
@@ -82,6 +90,18 @@
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dmulloy2</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

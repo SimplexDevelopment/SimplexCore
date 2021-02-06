@@ -32,4 +32,8 @@ public final class Utilities {
     public static <K, V> void mapFE(Map<K, V> map, BiConsumer<K, V> actions) {
         map.forEach(actions);
     }
+
+    public static boolean isValid(Validate validate) {
+        return validate.isValid();
+    }
 }
