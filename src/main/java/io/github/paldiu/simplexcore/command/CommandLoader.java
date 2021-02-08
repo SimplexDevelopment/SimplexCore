@@ -18,7 +18,15 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 public final class CommandLoader {
+    private static final CommandLoader instance = new CommandLoader();
     private Reflections reflections;
+
+    protected CommandLoader() {
+    }
+
+    public static CommandLoader getInstance() {
+        return instance;
+    }
 
     public synchronized CommandLoader classpath(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
@@ -149,14 +157,5 @@ public final class CommandLoader {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    private static final CommandLoader instance = new CommandLoader();
-
-    protected CommandLoader() {
-    }
-
-    public static CommandLoader getInstance() {
-        return instance;
     }
 }

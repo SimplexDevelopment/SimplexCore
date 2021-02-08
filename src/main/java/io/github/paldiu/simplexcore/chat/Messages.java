@@ -7,11 +7,11 @@ public enum Messages {
     KICK("You have been kicked by a moderator."),
     AFK_KICK("You were kicked to ensure space for active players.");
 
+    String message;
+
     Messages(String message) {
         this.message = message;
     }
-
-    String message;
 
     public String getMessage() {
         return message;

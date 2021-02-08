@@ -4,7 +4,6 @@ import io.github.paldiu.simplexcore.plugin.SimplexAddon;
 import io.github.paldiu.simplexcore.utils.Trio;
 
 import java.io.File;
-import java.util.Map;
 
 public final class JsonFactory {
     private final SimplexAddon<?> plugin;

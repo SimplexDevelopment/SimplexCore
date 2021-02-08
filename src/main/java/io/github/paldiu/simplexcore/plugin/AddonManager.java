@@ -3,7 +3,8 @@ package io.github.paldiu.simplexcore.plugin;
 import io.github.paldiu.simplexcore.utils.Constants;
 
 public final class AddonManager {
-    public AddonManager() { }
+    public AddonManager() {
+    }
 
     public void disable(SimplexAddon<?> simplexAddon) {
         Constants.getManager().disablePlugin(simplexAddon);

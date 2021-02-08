@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.function.Consumer;
 
 public abstract class SimplexTask implements Consumer<BukkitTask> {
-    protected Date lastRan = new Date();
     protected final long DELAY;
     protected final long INTERVAL;
+    protected Date lastRan = new Date();
 
     protected SimplexTask(long initialDelay, long interval) {
         DELAY = initialDelay;

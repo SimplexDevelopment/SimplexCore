@@ -1,32 +1,8 @@
 package io.github.paldiu.simplexcore;
 
 import io.github.paldiu.simplexcore.utils.Constants;
-import org.bukkit.Bukkit;
 
 public class CoreState {
-    enum State {
-        ON,
-        DEBUG,
-        SUSPENDED,
-        VOLATILE
-    }
-
-    public State getState() {
-        if (SimplexCore.isDebug()) {
-            return State.DEBUG;
-        }
-
-        if (Constants.getPlugin().isEnabled()) {
-            return State.ON;
-        }
-
-        if (SimplexCore.isSuspended()) {
-            return State.SUSPENDED;
-        }
-
-        return State.VOLATILE;
-    }
-
     String message;
 
     public CoreState() {
@@ -46,7 +22,30 @@ public class CoreState {
         }
     }
 
+    public State getState() {
+        if (SimplexCore.isDebug()) {
+            return State.DEBUG;
+        }
+
+        if (Constants.getPlugin().isEnabled()) {
+            return State.ON;
+        }
+
+        if (SimplexCore.isSuspended()) {
+            return State.SUSPENDED;
+        }
+
+        return State.VOLATILE;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    enum State {
+        ON,
+        DEBUG,
+        SUSPENDED,
+        VOLATILE
     }
 }

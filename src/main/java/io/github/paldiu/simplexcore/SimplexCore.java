@@ -11,6 +11,18 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
     protected static boolean debug = false;
     protected static boolean suspended = false;
 
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static void setDebug(boolean enable) {
+        debug = enable;
+    }
+
+    public static boolean isSuspended() {
+        return suspended;
+    }
+
     @Override
     public SimplexCore getPlugin() {
         return this;
@@ -35,17 +47,5 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
     @Override
     public void stop() {
 
-    }
-
-    public static void setDebug(boolean enable) {
-        debug = enable;
-    }
-
-    public static boolean isDebug() {
-        return debug;
-    }
-
-    public static boolean isSuspended() {
-        return suspended;
     }
 }

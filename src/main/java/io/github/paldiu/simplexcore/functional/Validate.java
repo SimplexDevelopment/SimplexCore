@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.utils;
+package io.github.paldiu.simplexcore.functional;
 
 @FunctionalInterface
 public interface Validate {

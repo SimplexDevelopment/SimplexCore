@@ -11,16 +11,16 @@ import java.util.List;
 
 public class Announcer extends SimplexTask {
 
-    public Announcer() {
-        super(20L);
-        register(this, Constants.getPlugin(), true, false);
-    }
-
-    private List<String> stringList = new ArrayList<>(){{
+    private final List<String> stringList = new ArrayList<>() {{
         add("Join our discord!" + Messages.DISCORD.getMessage());
         add("Thank you for using SimplexCore!");
         add("https://github.com/Paldiu/SimplexCore");
     }};
+
+    public Announcer() {
+        super(20L);
+        register(this, Constants.getPlugin(), true, false);
+    }
 
     @Override
     public void accept(BukkitTask bukkitTask) {

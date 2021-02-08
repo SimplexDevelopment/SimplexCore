@@ -3,6 +3,7 @@ package io.github.paldiu.simplexcore.utils;
 import io.github.paldiu.simplexcore.SimplexCore;
 import io.github.paldiu.simplexcore.command.CommandLoader;
 import io.github.paldiu.simplexcore.plugin.AddonRegistry;
+import io.github.paldiu.simplexcore.plugin.DependencyManagement;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public final class Constants {
     private static final Logger logger = plugin.getLogger();
     private static final PluginManager manager = server.getPluginManager();
     private static final BukkitScheduler scheduler = server.getScheduler();
+    private static final DependencyManagement dpm = new DependencyManagement();
 
     public static SimplexCore getPlugin() {
         return plugin;
@@ -43,6 +45,10 @@ public final class Constants {
 
     public static synchronized CommandLoader getCommandLoader() {
         return CommandLoader.getInstance();
+    }
+
+    public static DependencyManagement getDependencyManager() {
+        return dpm;
     }
 
     public static TimeValues getTimeValues() {
