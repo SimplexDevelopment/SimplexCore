@@ -33,6 +33,8 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
         try {
             Constants.getRegistry().register(this);
             Constants.getCommandLoader().classpath(Command_info.class).load();
+            Constants.getConfig().reload();
+            //
             SimplexListener.register(new ServerPluginListener(), this);
             new Announcer();
         } catch (Exception ex) {

@@ -15,14 +15,14 @@ public final class YamlFactory {
         this.plugin = plugin;
     }
 
-    public YamlFactory setPathways(String resourcePath, File directory, String fileName) {
+    public Yaml setPathways(String resourcePath, File directory, String fileName) {
         this.resourcePath = resourcePath;
         this.directory = directory;
         this.fileName = fileName;
-        return this;
+        return new Yaml(plugin, resourcePath, directory, fileName);
     }
 
-    public YamlFactory setDefaultPathways() {
+    public Yaml setDefaultPathways() {
         return setPathways("config.yml", plugin.getDataFolder(), "config.yml");
     }
 

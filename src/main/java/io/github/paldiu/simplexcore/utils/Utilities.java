@@ -1,5 +1,6 @@
 package io.github.paldiu.simplexcore.utils;
 
+import io.github.paldiu.simplexcore.functional.Guard;
 import io.github.paldiu.simplexcore.functional.Validate;
 
 import java.util.Arrays;
@@ -30,9 +31,5 @@ public final class Utilities {
 
     public static <K, V> void mapFE(Map<K, V> map, BiConsumer<K, V> actions) {
         map.forEach(actions);
-    }
-
-    public static boolean isValid(Validate validate) {
-        return validate.isValid();
     }
 }

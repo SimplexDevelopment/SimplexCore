@@ -2,6 +2,8 @@ package io.github.paldiu.simplexcore.utils;
 
 import io.github.paldiu.simplexcore.SimplexCore;
 import io.github.paldiu.simplexcore.command.CommandLoader;
+import io.github.paldiu.simplexcore.config.Yaml;
+import io.github.paldiu.simplexcore.config.YamlFactory;
 import io.github.paldiu.simplexcore.plugin.AddonRegistry;
 import io.github.paldiu.simplexcore.plugin.DependencyManagement;
 import org.bukkit.Server;
@@ -18,6 +20,8 @@ public final class Constants {
     private static final PluginManager manager = server.getPluginManager();
     private static final BukkitScheduler scheduler = server.getScheduler();
     private static final DependencyManagement dpm = new DependencyManagement();
+    private static final Yaml config = new YamlFactory(plugin).setDefaultPathways();
+    private static final TimeValues time = new TimeValues();
 
     public static SimplexCore getPlugin() {
         return plugin;
@@ -52,7 +56,11 @@ public final class Constants {
     }
 
     public static TimeValues getTimeValues() {
-        return new TimeValues();
+        return time;
+    }
+
+    public static Yaml getConfig() {
+        return config;
     }
 
     public static class TimeValues {
