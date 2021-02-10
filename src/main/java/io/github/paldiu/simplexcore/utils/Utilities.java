@@ -1,12 +1,10 @@
 package io.github.paldiu.simplexcore.utils;
 
+import io.github.paldiu.simplexcore.banning.BanType;
 import io.github.paldiu.simplexcore.functional.Guard;
 import io.github.paldiu.simplexcore.functional.Validate;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -31,5 +29,18 @@ public final class Utilities {
 
     public static <K, V> void mapFE(Map<K, V> map, BiConsumer<K, V> actions) {
         map.forEach(actions);
+    }
+
+    public static String generateBanId(BanType type) {
+        String charList = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+        int length = charList.length();
+
+        StringBuilder sb = new StringBuilder();
+        SplittableRandom random = new SplittableRandom();
+
+        for (int x = 0; x <= 8; x++) {
+            sb.append(charList.indexOf(random.nextInt(length - 1)));
+        }
+        return sb.toString();
     }
 }
