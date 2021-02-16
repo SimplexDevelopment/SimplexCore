@@ -2,6 +2,7 @@ package io.github.paldiu.simplexcore.command;
 
 import io.github.paldiu.simplexcore.utils.Constants;
 import io.github.paldiu.simplexcore.utils.Utilities;
+import jdk.jfr.BooleanFlag;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
-    public boolean checkSender(CommandSender sender) {
+    @BooleanFlag
+    public boolean isPlayer(CommandSender sender) {
         return sender instanceof Player;
     }
 
@@ -29,10 +31,21 @@ public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
         return Constants.getServer().getPlayer(uuid);
     }
 
-    public void playerMsg(Player player, String... message) {
+    @Nullable
+    public Player getPlayer(CommandSender sender) {
+        return isPlayer(sender) ? (Player)sender : null;
+    }
+
+    public void playerMsg(Player player, String... messages) {
         StringBuilder builder = new StringBuilder();
-        Utilities.primitiveFE(message, builder::append);
+        Utilities.forEach(messages, builder::append);
         player.sendMessage(builder.toString());
+    }
+
+    public void msg(CommandSender sender, String... messages) {
+        StringBuilder builder = new StringBuilder();
+        Utilities.forEach(messages, builder::append);
+        sender.sendMessage(builder.toString());
     }
 
     @Nullable
