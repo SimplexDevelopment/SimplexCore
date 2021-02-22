@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.banning;
+package io.github.paldiu.simplexcore.ban;
 
 import io.github.paldiu.simplexcore.chat.Messages;
 import io.github.paldiu.simplexcore.functional.Guard;
@@ -48,6 +48,10 @@ public final class BanFactory {
         return this;
     }
 
+    /**
+     * Creates a new instance of the abstract class Ban.
+     * @return A new ban instance.
+     */
     public Ban create() {
         return new Ban(player, sender, type, banDuration) {
             @Override

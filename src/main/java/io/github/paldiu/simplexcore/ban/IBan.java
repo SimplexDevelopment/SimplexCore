@@ -1,7 +1,6 @@
-package io.github.paldiu.simplexcore.banning;
+package io.github.paldiu.simplexcore.ban;
 
 import java.util.Date;
-import java.util.SplittableRandom;
 import java.util.UUID;
 
 public interface IBan {

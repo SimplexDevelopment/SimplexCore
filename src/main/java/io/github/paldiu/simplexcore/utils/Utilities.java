@@ -1,13 +1,9 @@
 package io.github.paldiu.simplexcore.utils;
 
-import io.github.paldiu.simplexcore.banning.BanType;
-import io.github.paldiu.simplexcore.functional.Guard;
-import io.github.paldiu.simplexcore.functional.Validate;
+import io.github.paldiu.simplexcore.ban.BanType;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Utilities {
@@ -20,6 +16,10 @@ public final class Utilities {
         for (T obj : array) {
             action.accept(obj);
         }
+    }
+
+    public static <T> Stream<T> stream(T[] array) {
+        return Arrays.stream(array);
     }
 
     public static String generateBanId(BanType type) {

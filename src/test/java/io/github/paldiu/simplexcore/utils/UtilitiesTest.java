@@ -1,7 +1,7 @@
 package io.github.paldiu.simplexcore.utils;
 
 import junit.framework.TestCase;
-import io.github.paldiu.simplexcore.banning.BanType;
+import io.github.paldiu.simplexcore.ban.BanType;
 
 public class UtilitiesTest extends TestCase {
     public void testGenerateBanId() {

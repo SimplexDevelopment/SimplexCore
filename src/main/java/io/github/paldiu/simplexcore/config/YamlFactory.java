@@ -15,7 +15,7 @@ public final class YamlFactory {
         this.plugin = plugin;
     }
 
-    public Yaml setPathways(String resourcePath, File directory, String fileName) {
+    public Yaml from(String resourcePath, File directory, String fileName) {
         this.resourcePath = resourcePath;
         this.directory = directory;
         this.fileName = fileName;
@@ -23,7 +23,7 @@ public final class YamlFactory {
     }
 
     public Yaml setDefaultPathways() {
-        return setPathways("config.yml", plugin.getDataFolder(), "config.yml");
+        return from("config.yml", plugin.getDataFolder(), "config.yml");
     }
 
     public Trio<String, File, String> pathways() {

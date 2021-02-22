@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.banning;
+package io.github.paldiu.simplexcore.ban;
 
 public enum BanType {
     PERMANENT("P-"),

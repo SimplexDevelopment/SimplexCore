@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.banning;
+package io.github.paldiu.simplexcore.ban;
 
 import io.github.paldiu.simplexcore.chat.Messages;
 import io.github.paldiu.simplexcore.config.Yaml;
@@ -16,11 +16,9 @@ import java.util.Date;
 /**
  * This class provides a way for you to handle your own banning.
  * Simply extend this class and create a new instance of the subclass.
- * Alternatively, you may use the
- *
- * @link BanFactory
- * Use this in synchrony with SimplexListener to process bans on player login/join.
- * Use this in synchrony with YamlFactory to create a new yaml file to store your bans, or to create an individual yaml file per user ban.
+ * Alternatively, you may use {@link BanFactory#create} to create a new Ban instance.
+ * Use this in synchrony with {@link io.github.paldiu.simplexcore.listener.SimplexListener} to process bans on player login/join.
+ * Use this in synchrony with {@link io.github.paldiu.simplexcore.config.YamlFactory} to create a new yaml file to store your bans, or to create an individual yaml file per user ban.
  */
 public abstract class Ban implements IBan {
     private final Player player;
@@ -58,7 +56,7 @@ public abstract class Ban implements IBan {
         File fileLocation = new File(Constants.getPlugin().getDataFolder(), "bans");
 
         if (separateFiles) {
-            Yaml yaml = new YamlFactory(Constants.getPlugin()).setPathways(null, fileLocation, player.getName() + ".yml");
+            Yaml yaml = new YamlFactory(Constants.getPlugin()).from(null, fileLocation, player.getName() + ".yml");
             yaml.getConfig().createSection(getOffender().toString());
             ConfigurationSection section = yaml.getConfigurationSection(getOffender().toString());
             section.set("name", player.getName());

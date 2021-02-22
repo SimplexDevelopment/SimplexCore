@@ -93,6 +93,5 @@ public final class Constants {
             return 622080000L;
         }
     }
-
 }
 
