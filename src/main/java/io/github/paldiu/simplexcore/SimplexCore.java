@@ -2,7 +2,7 @@ package io.github.paldiu.simplexcore;
 
 import io.github.paldiu.simplexcore.command.defaults.Command_info;
 import io.github.paldiu.simplexcore.concurrent.Announcer;
-import io.github.paldiu.simplexcore.listener.ServerPluginListener;
+import io.github.paldiu.simplexcore.listener.DependencyListener;
 import io.github.paldiu.simplexcore.listener.SimplexListener;
 import io.github.paldiu.simplexcore.plugin.SimplexAddon;
 import io.github.paldiu.simplexcore.utils.Constants;
@@ -35,7 +35,7 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
             Constants.getCommandLoader().classpath(Command_info.class).load();
             Constants.getConfig().reload();
             //
-            SimplexListener.register(new ServerPluginListener(), this);
+            SimplexListener.register(new DependencyListener(), this);
             new Announcer();
         } catch (Exception ex) {
             suspended = true;

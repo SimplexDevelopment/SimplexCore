@@ -9,7 +9,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ServerPluginListener extends SimplexListener {
+public final class DependencyListener extends SimplexListener {
     public List<String> PAPI_NAMES = new ArrayList<>() {{
         add("PlaceholderAPI");
         add("PlaceHolderAPI");
