@@ -1,7 +1,7 @@
 package io.github.paldiu.simplexcore;
 
 import io.github.paldiu.simplexcore.command.defaults.Command_info;
-import io.github.paldiu.simplexcore.future.Announcer;
+import io.github.paldiu.simplexcore.concurrent.Announcer;
 import io.github.paldiu.simplexcore.listener.ServerPluginListener;
 import io.github.paldiu.simplexcore.listener.SimplexListener;
 import io.github.paldiu.simplexcore.plugin.SimplexAddon;

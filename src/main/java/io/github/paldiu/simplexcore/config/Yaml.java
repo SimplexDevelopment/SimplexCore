@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.NotDirectoryException;
 import java.util.List;
 
-public final class Yaml {
+public final class Yaml implements IConfig {
     private final SimplexAddon<?> plugin;
     private final String fileName;
     private final File directory;
@@ -37,72 +37,73 @@ public final class Yaml {
         this.resourcePath = resourcePath;
     }
 
-    public final void set(String path, Object value) {
-        this.getConfig().set(path, value);
+    @Override
+    public final void set(Path path, Object value) {
+        this.getConfig().set(path.getPath(), value);
     }
 
-    public boolean contains(String path) {
-        return this.getConfig().contains(path);
+    public boolean contains(Path path) {
+        return this.getConfig().contains(path.getPath());
     }
 
-    public ConfigurationSection getConfigurationSection(String path) {
-        return this.getConfig().getConfigurationSection(path);
+    public ConfigurationSection getConfigurationSection(Path path) {
+        return this.getConfig().getConfigurationSection(path.getPath());
     }
 
-    public List<String> getStringList(String path) {
-        return this.getConfig().getStringList(path);
+    public List<String> getStringList(Path path) {
+        return this.getConfig().getStringList(path.getPath());
     }
 
-    public long getLong(String path) {
-        return this.getConfig().getLong(path);
+    public long getLong(Path path) {
+        return this.getConfig().getLong(path.getPath());
     }
 
-    public List<?> getList(String path) {
-        return this.getConfig().getList(path);
+    public List<?> getList(Path path) {
+        return this.getConfig().getList(path.getPath());
     }
 
-    public boolean getBoolean(String path) {
-        return this.getConfig().getBoolean(path);
+    public boolean getBoolean(Path path) {
+        return this.getConfig().getBoolean(path.getPath());
     }
 
-    public int getInt(String path) {
-        return this.getConfig().getInt(path);
+    public int getInt(Path path) {
+        return this.getConfig().getInt(path.getPath());
     }
 
-    public double getDouble(String path) {
-        return this.getConfig().getDouble(path);
+    public double getDouble(Path path) {
+        return this.getConfig().getDouble(path.getPath());
     }
 
-    public String getString(String path) {
-        return this.getConfig().getString(path);
+    public String getString(Path path) {
+        return this.getConfig().getString(path.getPath());
     }
 
-    public long getLong(String path, long def) {
-        return this.getConfig().getLong(path, def);
+    public long getLong(Path path, long def) {
+        return this.getConfig().getLong(path.getPath(), def);
     }
 
-    public List<?> getList(String path, List<?> def) {
-        return this.getConfig().getList(path, def);
+    public List<?> getList(Path path, List<?> def) {
+        return this.getConfig().getList(path.getPath(), def);
     }
 
-    public boolean getBoolean(String path, boolean def) {
-        return this.getConfig().getBoolean(path, def);
+    public boolean getBoolean(Path path, boolean def) {
+        return this.getConfig().getBoolean(path.getPath(), def);
     }
 
-    public int getInt(String path, int def) {
-        return this.getConfig().getInt(path, def);
+    public int getInt(Path path, int def) {
+        return this.getConfig().getInt(path.getPath(), def);
     }
 
-    public double getDouble(String path, double def) {
-        return this.getConfig().getDouble(path, def);
+    public double getDouble(Path path, double def) {
+        return this.getConfig().getDouble(path.getPath(), def);
     }
 
-    public String getString(String path, String def) {
-        return this.getConfig().getString(path, def);
+    public String getString(Path path, String def) {
+        return this.getConfig().getString(path.getPath(), def);
     }
 
-    public Object get(String path, Object def) {
-        return this.getConfig().get(path, def);
+    public Object get(Path path, Object def) {
+        return this.getConfig().get(path.getPath(), def);
     }
 
     public final void reload() {
@@ -115,6 +116,7 @@ public final class Yaml {
                 }
             }
         } else { // Directory doesn't exist.
+            //noinspection ResultOfMethodCallIgnored
             this.directory.mkdir(); // Make directory
         }
         this.file = new File(this.directory, this.fileName);

@@ -1,4 +1,4 @@
-package io.github.paldiu.simplexcore.future;
+package io.github.paldiu.simplexcore.concurrent;
 
 import io.github.paldiu.simplexcore.chat.Messages;
 import io.github.paldiu.simplexcore.utils.Constants;

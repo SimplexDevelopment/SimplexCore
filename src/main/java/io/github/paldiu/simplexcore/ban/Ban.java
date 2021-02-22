@@ -58,7 +58,7 @@ public abstract class Ban implements IBan {
         if (separateFiles) {
             Yaml yaml = new YamlFactory(Constants.getPlugin()).from(null, fileLocation, player.getName() + ".yml");
             yaml.getConfig().createSection(getOffender().toString());
-            ConfigurationSection section = yaml.getConfigurationSection(getOffender().toString());
+            ConfigurationSection section = yaml.getConfigurationSection(getOffender()::toString);
             section.set("name", player.getName());
             section.set("ban_id", banId);
             section.set("sender", sender.getName());
@@ -74,6 +74,7 @@ public abstract class Ban implements IBan {
             yaml.reload();
         } else {
             // TODO: Write to a single file as separate sections per UUID.
+            Yaml yaml = new YamlFactory(Constants.getPlugin()).from(null, fileLocation, "bans.yml");
         }
     }
 }
