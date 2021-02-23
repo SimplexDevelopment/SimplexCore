@@ -34,16 +34,14 @@ public final class Cuboid {
             int b = t2 + y;
             int c = t3 + z;
 
-            while (t1 < a) {
-                while (t2 < b) {
-                    while (t3 < c) {
-                        t3++;
-                        location.getWorld().getBlockAt(t1, t2, t3).setType(material);
+            for (int currentX = t1; currentX < a; currentX++) {
+                for (int currentY = t2; currentY < b; currentY++) {
+                    for (int currentZ = t3; currentZ < c; currentZ++) {
+                        location.getWorld().getBlockAt(currentX, currentY, currentZ).setType(material);
                     }
-                    t2++;
                 }
-                t1++;
             }
+
         };
 
         Constants.getScheduler().runTaskLaterAsynchronously(Constants.getPlugin(), task, Constants.getTimeValues().SECOND());
