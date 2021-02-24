@@ -9,6 +9,7 @@ io\github\paldiu\simplexcore\listener\DependencyListener$1.class
 io\github\paldiu\simplexcore\concurrent\SimplexTask.class
 io\github\paldiu\simplexcore\potion\PotionsFactory.class
 io\github\paldiu\simplexcore\plugin\SimplexAddon.class
+io\github\paldiu\simplexcore\math\Pyramid.class
 io\github\paldiu\simplexcore\chat\Messages.class
 io\github\paldiu\simplexcore\gui\Action.class
 io\github\paldiu\simplexcore\gui\GUIHandler.class

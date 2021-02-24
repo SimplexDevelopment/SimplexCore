@@ -7,6 +7,8 @@ import io.github.paldiu.simplexcore.listener.SimplexListener;
 import io.github.paldiu.simplexcore.plugin.SimplexAddon;
 import io.github.paldiu.simplexcore.utils.Constants;
 
+// This comment was added to force a test on Jenkins AutoBuild
+// https://jenkins.coomware.dev/job/SimplexCore
 public final class SimplexCore extends SimplexAddon<SimplexCore> {
     protected static boolean debug = false;
     protected static boolean suspended = false;

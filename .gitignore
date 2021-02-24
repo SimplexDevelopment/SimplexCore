@@ -27,3 +27,6 @@ hs_err_pid*
 *.lst
 *.lst
 target/classes/config.yml
+target/classes/plugin.yml
+target/maven-archiver/pom.properties
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
