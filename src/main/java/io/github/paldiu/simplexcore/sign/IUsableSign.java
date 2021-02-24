@@ -14,4 +14,6 @@ public interface IUsableSign {
     String getSignText();
 
     void executeOnInteract();
+
+    String signTag();
 }

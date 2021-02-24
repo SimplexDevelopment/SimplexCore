@@ -23,3 +23,7 @@
 hs_err_pid*
 *.iml
 *.xml
+*.txt
+*.lst
+*.lst
+target/classes/config.yml

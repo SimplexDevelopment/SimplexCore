@@ -14,11 +14,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.logging.Logger;
 
 public final class Constants {
-    // Utility class should not be instantiated.
-    private Constants() {
-        throw new AssertionError();
-    }
-
     private static final SimplexCore plugin = JavaPlugin.getPlugin(SimplexCore.class);
     private static final Server server = plugin.getServer();
     private static final Logger logger = plugin.getLogger();
@@ -27,6 +22,10 @@ public final class Constants {
     private static final DependencyManagement dpm = new DependencyManagement();
     private static final Yaml config = new YamlFactory(plugin).setDefaultPathways();
     private static final TimeValues time = new TimeValues();
+    // Utility class should not be instantiated.
+    private Constants() {
+        throw new AssertionError();
+    }
 
     public static SimplexCore getPlugin() {
         return plugin;

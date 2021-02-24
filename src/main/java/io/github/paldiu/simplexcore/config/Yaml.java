@@ -1,10 +1,7 @@
 package io.github.paldiu.simplexcore.config;
 
-import io.github.paldiu.simplexcore.functional.Guard;
 import io.github.paldiu.simplexcore.plugin.SimplexAddon;
-import io.github.paldiu.simplexcore.utils.Bean;
 import io.github.paldiu.simplexcore.utils.Constants;
-import io.github.paldiu.simplexcore.utils.Utilities;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,11 +21,11 @@ public final class Yaml implements IConfig {
 
     Yaml(SimplexAddon<?> plugin, String fileName, File directory, String resourcePath) {
         if (!fileName.endsWith(".yml")) {
-            fileName+=".yml";
+            fileName += ".yml";
         }
 
         if (!resourcePath.endsWith(".yml")) {
-            resourcePath+=".yml";
+            resourcePath += ".yml";
         }
 
         this.plugin = plugin;

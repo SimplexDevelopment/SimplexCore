@@ -2,11 +2,30 @@ package io.github.paldiu.simplexcore.utils;
 
 import io.github.paldiu.simplexcore.ban.BanType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.SplittableRandom;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public final class Utilities {
+    private static final SplittableRandom random = new SplittableRandom();
+    private static final SplittableRandom numbers = new SplittableRandom();
+    private static final List<Character> list = new ArrayList<>() {{
+        add('0');
+        add('1');
+        add('2');
+        add('3');
+        add('4');
+        add('5');
+        add('6');
+        add('7');
+        add('8');
+        add('9');
+        add('-');
+    }};
+
     //Utility class should not be instantiated.
     private Utilities() {
         throw new AssertionError();
@@ -40,22 +59,6 @@ public final class Utilities {
         sb.setCharAt(2, capitalize(sb.charAt(2)));
         return sb.toString();
     }
-
-    private static final SplittableRandom random = new SplittableRandom();
-    private static final SplittableRandom numbers = new SplittableRandom();
-    private static final List<Character> list = new ArrayList<>(){{
-        add('0');
-        add('1');
-        add('2');
-        add('3');
-        add('4');
-        add('5');
-        add('6');
-        add('7');
-        add('8');
-        add('9');
-        add('-');
-    }};
 
     private static char capitalize(char character) {
         if (list.contains(character)) {

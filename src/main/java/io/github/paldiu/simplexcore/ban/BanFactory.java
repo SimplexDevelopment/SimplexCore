@@ -50,6 +50,7 @@ public final class BanFactory {
 
     /**
      * Creates a new instance of the abstract class Ban.
+     *
      * @return A new ban instance.
      */
     public Ban create() {

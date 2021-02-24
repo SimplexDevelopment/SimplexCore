@@ -10,10 +10,6 @@ public enum BanType {
         this.prefix = prefix;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
     public static String value(BanType type) {
         if (type.equals(PERMANENT)) {
             return "Permanent";
@@ -22,5 +18,9 @@ public enum BanType {
         } else {
             return "Unknown";
         }
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 }

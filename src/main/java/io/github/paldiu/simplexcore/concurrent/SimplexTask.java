@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.Date;
 import java.util.function.Consumer;
 
+// TODO: Rewrite this entire class and the task system to have more control over tasks.
 public abstract class SimplexTask implements Consumer<BukkitTask> {
     protected final long DELAY;
     protected final long INTERVAL;
@@ -29,13 +30,13 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
 
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
-            Constants.getScheduler().runTaskTimerAsynchronously(plugin, task, DELAY, INTERVAL);
+            Constants.getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
         } else if (delayed) {
-            Constants.getScheduler().runTaskLaterAsynchronously(plugin, task, DELAY);
+            Constants.getScheduler().runTaskLater(plugin, task, DELAY);
         } else if (repeating) {
-            Constants.getScheduler().runTaskTimerAsynchronously(plugin, task, 0L, INTERVAL);
+            Constants.getScheduler().runTaskTimer(plugin, task, 0L, INTERVAL);
         } else {
-            Constants.getScheduler().runTaskAsynchronously(plugin, task);
+            Constants.getScheduler().runTask(plugin, task);
         }
     }
 
