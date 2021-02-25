@@ -26,7 +26,10 @@ hs_err_pid*
 *.txt
 *.lst
 *.lst
-target/classes/config.yml
-target/classes/plugin.yml
-target/maven-archiver/pom.properties
-target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+
+/target/
+/out/
+/build/
+/.idea/
+# Ignore Gradle project-specific cache directory
+/.gradle/

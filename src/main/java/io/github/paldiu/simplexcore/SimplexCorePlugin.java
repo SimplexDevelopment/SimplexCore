@@ -9,7 +9,7 @@ import io.github.paldiu.simplexcore.utils.Constants;
 
 // This comment was added to force a test on Jenkins AutoBuild
 // https://jenkins.coomware.dev/job/SimplexCore
-public final class SimplexCore extends SimplexAddon<SimplexCore> {
+public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
     protected static boolean debug = false;
     protected static boolean suspended = false;
 
@@ -26,7 +26,7 @@ public final class SimplexCore extends SimplexAddon<SimplexCore> {
     }
 
     @Override
-    public SimplexCore getPlugin() {
+    public SimplexCorePlugin getPlugin() {
         return this;
     }
 

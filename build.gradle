@@ -1,0 +1,76 @@
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+version project.properties["pluginVersion"]
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+
+    //maven artifact repo urls
+    [
+            "https://jitpack.io",
+            "https://papermc.io/repo/repository/maven-public/",
+            "https://oss.sonatype.org/content/groups/public/",
+            "https://repo.extendedclip.com/content/repositories/placeholderapi/",
+            "http://repo.comphenix.net/content/repositories/releases/",
+            "http://repo.comphenix.net/content/repositories/snapshots/"
+    ].each { s ->
+        maven {
+            url s
+        }
+    }
+}
+
+dependencies {
+    //provided
+    [
+            "com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT",
+            "me.clip:placeholderapi:2.10.9",
+    ].each {s ->
+        compileOnly s
+    }
+
+    compileOnly ("com.github.dmulloy2:ProtocolLib:4.5.1") {
+        exclude group: "com.comphenix.executors"
+    }
+
+    //compile
+    [
+            "org.jetbrains:annotations:20.1.0",
+            "org.reflections:reflections:0.9.12"
+    ].each {s ->
+        implementation s
+    }
+}
+
+shadowJar {
+    classifier project.properties["pluginJarClassifier"].toString()
+    baseName project.properties["pluginName"].toString()
+
+    //shading and relocation
+    [
+            "org.reflections",
+            "javassist"
+    ].each {s ->
+        relocate s, "${project.properties["pluginMainPackage"]}.shaded.$s"
+    }
+}
+
+processResources {
+    //update resources when building
+    doFirst {
+        file("$buildDir/resources/main").listFiles().each {
+            it.delete()
+        }
+    }
+
+    //define variables
+    expand(
+            "pluginVersion": project.version,
+            "pluginName": project.properties["pluginName"],
+            "pluginMain": "${project.properties["pluginMainPackage"]}.${project.properties["pluginMain"]}"
+    )
+}
