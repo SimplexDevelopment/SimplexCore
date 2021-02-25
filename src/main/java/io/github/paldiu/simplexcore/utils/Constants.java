@@ -1,6 +1,6 @@
 package io.github.paldiu.simplexcore.utils;
 
-import io.github.paldiu.simplexcore.SimplexCore;
+import io.github.paldiu.simplexcore.SimplexCorePlugin;
 import io.github.paldiu.simplexcore.command.CommandLoader;
 import io.github.paldiu.simplexcore.config.Yaml;
 import io.github.paldiu.simplexcore.config.YamlFactory;
@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.logging.Logger;
 
 public final class Constants {
-    private static final SimplexCore plugin = JavaPlugin.getPlugin(SimplexCore.class);
+    private static final SimplexCorePlugin plugin = JavaPlugin.getPlugin(SimplexCorePlugin.class);
     private static final Server server = plugin.getServer();
     private static final Logger logger = plugin.getLogger();
     private static final PluginManager manager = server.getPluginManager();
@@ -27,7 +27,7 @@ public final class Constants {
         throw new AssertionError();
     }
 
-    public static SimplexCore getPlugin() {
+    public static SimplexCorePlugin getPlugin() {
         return plugin;
     }
 

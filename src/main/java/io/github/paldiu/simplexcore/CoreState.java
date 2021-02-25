@@ -23,7 +23,7 @@ public class CoreState {
     }
 
     public State getState() {
-        if (SimplexCore.isDebug()) {
+        if (SimplexCorePlugin.isDebug()) {
             return State.DEBUG;
         }
 
@@ -31,7 +31,7 @@ public class CoreState {
             return State.ON;
         }
 
-        if (SimplexCore.isSuspended()) {
+        if (SimplexCorePlugin.isSuspended()) {
             return State.SUSPENDED;
         }
 

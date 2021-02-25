@@ -1,7 +1,9 @@
-name: SimplexCore
-version: ${project.version}
-main: io.github.paldiu.simplexcore.SimplexCore
+name: ${pluginName}
+version: ${pluginVersion}
+main: ${pluginMain}
 api-version: 1.16
 prefix: Simplex
-authors: [ Paldiu ]
+authors:
+  - Paldiu
+  - Conclure
 description: Core for a group of plugins designed to enhance gameplay to the max
