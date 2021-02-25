@@ -1,7 +1,0 @@
-name: SimplexCore
-version: 1.13-BLEEDING
-main: io.github.paldiu.simplexcore.SimplexCore
-api-version: 1.16
-prefix: Simplex
-authors: [ Paldiu ]
-description: Core for a group of plugins designed to enhance gameplay to the max
