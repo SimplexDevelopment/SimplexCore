@@ -1,19 +1,19 @@
 package io.github.simplexdev.simplexcore.chat;
 
-import io.github.simplexdev.simplexcore.utils.Bean;
+import io.github.simplexdev.simplexcore.utils.Wrapper;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 
 public final class ChatUtils {
-    protected final Bean<? extends CommandSender> target;
+    protected final Wrapper<? extends CommandSender> target;
     protected final TextComponentFactory factory = new TextComponentFactory();
 
-    private ChatUtils(Bean<? extends CommandSender> target) {
+    private ChatUtils(Wrapper<? extends CommandSender> target) {
         this.target = target;
     }
 
     public static <T extends CommandSender> ChatUtils target(T target) {
-        return new ChatUtils(new Bean<>(target));
+        return new ChatUtils(new Wrapper<>(target));
     }
 
     public void msg(String message) {

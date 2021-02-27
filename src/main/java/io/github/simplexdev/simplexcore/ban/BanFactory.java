@@ -2,7 +2,7 @@ package io.github.simplexdev.simplexcore.ban;
 
 import io.github.simplexdev.api.IBan;
 import io.github.simplexdev.simplexcore.chat.Messages;
-import io.github.simplexdev.api.func.Guard;
+import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.utils.Constants;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.command.CommandSender;
@@ -20,7 +20,7 @@ public final class BanFactory {
     private String banReason;
     private long banDuration;
 
-    private BanFactory(Player player, CommandSender sender, Date banDate, BanType type) {
+    public BanFactory(Player player, CommandSender sender, Date banDate, BanType type) {
         this.player = player;
         this.sender = sender;
         this.banDate = banDate;
@@ -29,10 +29,6 @@ public final class BanFactory {
         this.banReason = Messages.BAN.getMessage();
 
         banId = createBanId();
-    }
-
-    public static BanFactory define(Player player, CommandSender sender, Date banDate, BanType type) {
-        return new BanFactory(player, sender, banDate, type);
     }
 
     /**
@@ -96,7 +92,7 @@ public final class BanFactory {
 
     }
 
-    private Guard assignBanDuration() {
+    private VoidSupplier assignBanDuration() {
         return () -> {
             if (type.equals(BanType.PERMANENT)) {
                 banDuration = Constants.getPlugin().getInstances().getTimeValues().YEAR() * 99;

@@ -1,6 +1,5 @@
 package io.github.simplexdev.simplexcore.utils;
 
-import io.github.simplexdev.api.func.Guard;
 import io.github.simplexdev.simplexcore.ban.BanType;
 
 import java.util.ArrayList;

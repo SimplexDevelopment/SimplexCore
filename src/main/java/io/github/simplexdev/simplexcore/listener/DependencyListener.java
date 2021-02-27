@@ -34,11 +34,11 @@ public final class DependencyListener extends SimplexListener {
         Validate temp2 = () -> PAPI_NAMES.contains(event.getPlugin().getName());
 
         if (temp.isValid()) {
-            Constants.getDependencyManager().registerProtocolLib();
+            Constants.getPlugin().getInstances().getDependencyManager().registerProtocolLib();
         }
 
         if (temp2.isValid()) {
-            Constants.getDependencyManager().registerPAPI();
+            Constants.getPlugin().getInstances().getDependencyManager().registerPAPI();
         }
     }
 }

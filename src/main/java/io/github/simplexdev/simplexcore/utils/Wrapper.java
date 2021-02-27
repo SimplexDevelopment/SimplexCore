@@ -3,10 +3,10 @@ package io.github.simplexdev.simplexcore.utils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public final class Bean<T> {
+public final class Wrapper<T> {
     protected T bean;
 
-    public Bean(T bean) {
+    public Wrapper(T bean) {
         this.bean = bean;
     }
 
@@ -25,7 +25,7 @@ public final class Bean<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Bean<?>)) {
+        if (!(obj instanceof Wrapper<?>)) {
             return false;
         }
 
@@ -33,7 +33,7 @@ public final class Bean<T> {
             return true;
         }
 
-        return new EqualsBuilder().append(((Bean<?>) obj).get(), get()).isEquals();
+        return new EqualsBuilder().append(((Wrapper<?>) obj).get(), get()).isEquals();
     }
 
     @Override
