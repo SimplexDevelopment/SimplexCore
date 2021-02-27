@@ -8,8 +8,6 @@ import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
 import io.github.simplexdev.simplexcore.utils.Constants;
 import io.github.simplexdev.simplexcore.utils.Instances;
 
-// This comment was added to force a test on Jenkins AutoBuild
-// https://jenkins.coomware.dev/job/SimplexCore
 public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
     protected static boolean debug = false;
     protected static boolean suspended = false;
