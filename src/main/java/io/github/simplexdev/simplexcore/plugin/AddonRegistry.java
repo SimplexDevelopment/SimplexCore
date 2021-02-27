@@ -1,7 +1,7 @@
 package io.github.simplexdev.simplexcore.plugin;
 
-import io.github.simplexdev.api.annotations.ServerInfo;
-import io.github.simplexdev.api.func.Guard;
+import io.github.simplexdev.api.annotations.ReqType;
+import io.github.simplexdev.api.annotations.Requires;
 import io.github.simplexdev.simplexcore.utils.Constants;
 
 import java.util.HashSet;
@@ -51,16 +51,23 @@ public final class AddonRegistry {
         }
     }
 
+    private boolean checkAnnotation(Requires info, ReqType type) {
+        return info.value() == type;
+    }
+
     public <T extends SimplexAddon<T>> void register(T addon) {
-        if (addon.getClass().isAnnotationPresent(ServerInfo.class)) {
-            ServerInfo info = addon.getClass().getDeclaredAnnotation(ServerInfo.class);
-            if (info.isPaper() && !isPaper(addon)) {
+        if (addon.getClass().isAnnotationPresent(Requires.class)) {
+            Requires info = addon.getClass().getDeclaredAnnotation(Requires.class);
+            if (checkAnnotation(info, ReqType.PAPER)
+                    && !isPaper(addon)) {
                 return;
             }
-            if (info.isBungeeCord() && !isBungee(addon)) {
+            if (checkAnnotation(info, ReqType.BUNGEECORD)
+                    && !isBungee(addon)) {
                 return;
             }
-            if (info.isWaterfall() && !isWaterfall(addon)) {
+            if (checkAnnotation(info, ReqType.WATERFALL)
+                    && !isWaterfall(addon)) {
                 return;
             }
         }

@@ -7,10 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ServerInfo {
-    boolean isPaper() default false;
-
-    boolean isWaterfall() default false;
-
-    boolean isBungeeCord() default false;
+public @interface Requires {
+    ReqType value();
 }
