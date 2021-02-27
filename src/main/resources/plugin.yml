@@ -7,3 +7,6 @@ authors:
   - Paldiu
   - Conclure
 description: Core for a group of plugins designed to enhance gameplay to the max
+softdepend:
+  - PlaceholderAPI
+  - ProtocolLib

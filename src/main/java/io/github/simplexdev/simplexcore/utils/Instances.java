@@ -6,7 +6,7 @@ import io.github.simplexdev.simplexcore.config.YamlFactory;
 import io.github.simplexdev.simplexcore.plugin.AddonRegistry;
 import io.github.simplexdev.simplexcore.plugin.DependencyManagement;
 
-public class Instances {
+public final class Instances {
     private final DependencyManagement dpm = new DependencyManagement();
     private final Yaml config = new YamlFactory(Constants.getPlugin()).setDefaultPathways();
     private final TimeValues time = new TimeValues();
