@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Set;
 
 public final class ReflectionTools {
@@ -58,7 +59,7 @@ public final class ReflectionTools {
     public Method getMethod(Class<?> clazz, String name, Class<?>... params) {
         try {
             return Wrapper.of(clazz.getMethod(name, params))
-                    .filter(obj -> obj.setAccessible(true))
+                    .perform(obj -> obj.setAccessible(true))
                     .get();
         } catch (NoSuchMethodException e) {
             return null;

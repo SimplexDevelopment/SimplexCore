@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public final class Wrapper<T> {
     protected T bean;
@@ -61,7 +62,7 @@ public final class Wrapper<T> {
         return new Wrapper<>(function.apply(get()));
     }
 
-    public final Wrapper<T> filter(Consumer<? super T> consumer) {
+    public final Wrapper<T> perform(Consumer<? super T> consumer) {
         consumer.accept(get());
         return this;
     }
@@ -69,5 +70,9 @@ public final class Wrapper<T> {
     public final Wrapper<T> then(VoidSupplier supplier) {
         supplier.get();
         return this;
+    }
+
+    public final Wrapper<T> filter(Predicate<? super T> predicate) {
+        return predicate.test(get()) ? this : null;
     }
 }
