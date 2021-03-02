@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 public final class ReflectionTools {
@@ -47,8 +48,19 @@ public final class ReflectionTools {
     @Nullable
     public Wrapper<?> initConstructor(Constructor<?> constructor, Object... initializers) {
         try {
-            return new Wrapper<>(constructor.newInstance(initializers));
+            return Wrapper.of(constructor.newInstance(initializers));
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    public Method getMethod(Class<?> clazz, String name, Class<?>... params) {
+        try {
+            return Wrapper.of(clazz.getMethod(name, params))
+                    .filter(obj -> obj.setAccessible(true))
+                    .get();
+        } catch (NoSuchMethodException e) {
             return null;
         }
     }

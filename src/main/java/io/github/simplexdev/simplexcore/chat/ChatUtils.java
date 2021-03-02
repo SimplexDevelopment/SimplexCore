@@ -13,7 +13,7 @@ public final class ChatUtils {
     }
 
     public static <T extends CommandSender> ChatUtils target(T target) {
-        return new ChatUtils(new Wrapper<>(target));
+        return new ChatUtils(Wrapper.of(target));
     }
 
     public void msg(String message) {

@@ -5,17 +5,18 @@ import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
 import io.github.simplexdev.simplexcore.utils.Constants;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.jetbrains.annotations.Contract;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SignFactory {
     private static final List<Material> SIGN_TYPES = new ArrayList<>() {{
@@ -72,13 +73,13 @@ public class SignFactory {
             AbstractSign abs = SignData.getUnlabeledSigns().get(sign);
             for (Object tag : tags) {
                 if (tag instanceof VoidSupplier) {
-                    abs.setExecuteScript((VoidSupplier)tag);
+                    abs.setExecuteScript((VoidSupplier) tag);
                 }
                 if (tag instanceof String) {
-                    abs.setSignTag((String)tag);
+                    abs.setSignTag((String) tag);
                 }
                 if (tag instanceof Boolean) {
-                    abs.setCanInteract((Boolean)tag);
+                    abs.setCanInteract((Boolean) tag);
                 }
             }
             return abs;
@@ -98,11 +99,6 @@ public class SignFactory {
             public void execute() {
                 executeScript.get();
             }
-
-            @Override
-            public String signTag() {
-                return signTag;
-            }
         };
     }
 
@@ -120,6 +116,22 @@ public class SignFactory {
                 Sign sign = (Sign) event.getBlockPlaced();
                 AbstractSign abs = new SignFactory().createNoTag(sign);
                 signMap.put(sign, abs);
+            }
+        }
+
+        @EventHandler
+        public void blockInteractEvent(PlayerInteractEvent event) {
+            if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                    && event.getClickedBlock() != null
+                    && SIGN_TYPES.contains(event.getClickedBlock().getType())) {
+                Sign sign = (Sign) event.getClickedBlock();
+                if (signMap.containsKey(sign)) {
+                    IUsableSign isign = signMap.get(sign);
+                    String tag = isign.signTag();
+                    if (isign.getLines().get(0).equals(tag)) {
+                        isign.execute();
+                    }
+                }
             }
         }
 

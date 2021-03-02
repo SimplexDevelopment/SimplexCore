@@ -3,10 +3,14 @@ package io.github.simplexdev.simplexcore.utils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public final class Wrapper<T> {
     protected T bean;
 
-    public Wrapper(T bean) {
+    private Wrapper(T bean) {
         this.bean = bean;
     }
 
@@ -39,5 +43,26 @@ public final class Wrapper<T> {
     @Override
     public String toString() {
         return get().toString();
+    }
+
+    public static <T> Wrapper<T> of(T object) {
+        return new Wrapper<>(object);
+    }
+
+    public final <P> P as(Function<? super Wrapper<T>, P> function) {
+        return function.apply(this);
+    }
+
+    public final <R> Wrapper<R> flatMap(Function<? super T, ? extends Wrapper<? extends R>> function) {
+        return new Wrapper<>(function.apply(get()).get());
+    }
+
+    public final <R> Wrapper<R> map(Function<? super T, ? extends R> function) {
+        return new Wrapper<>(function.apply(get()));
+    }
+
+    public final Wrapper<T> filter(Consumer<? super T> predicate) {
+        predicate.accept(get());
+        return this;
     }
 }

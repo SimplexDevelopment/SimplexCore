@@ -46,6 +46,11 @@ public abstract class AbstractSign implements IUsableSign {
         return lines;
     }
 
+    @Override
+    public String signTag() {
+        return "[Tag]";
+    }
+
     public void setSignTag(String signTag) {
         this.signTag = signTag();
     }
