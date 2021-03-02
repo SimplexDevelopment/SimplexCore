@@ -1,15 +1,19 @@
 package io.github.simplexdev.simplexcore.ban;
 
 import io.github.simplexdev.api.IBan;
-import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.api.func.VoidSupplier;
+import io.github.simplexdev.simplexcore.chat.Messages;
+import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.utils.Constants;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
+
+import static io.github.simplexdev.simplexcore.utils.Utilities.pathway;
 
 public final class BanFactory {
     private final Player player;
@@ -42,6 +46,21 @@ public final class BanFactory {
         this.banDuration = banDuration;
         this.banReason = banReason;
         return this;
+    }
+
+    public void write(Yaml yaml, IBan ban) {
+        yaml.set(pathway("offender"), ban.getOffender());
+        yaml.set(pathway("sender"), ban.getSender());
+        yaml.set(pathway("duration"), ban.getBanDuration());
+        yaml.set(pathway("date"), ban.getDate());
+        yaml.set(pathway("type"), ban.getBanType());
+        yaml.set(pathway("id"), ban.getBanId());
+        yaml.set(pathway("reason"), ban.getBanReason());
+        yaml.create();
+    }
+
+    public Yaml read(File yamlFile) {
+        return null;
     }
 
     /**
@@ -90,6 +109,18 @@ public final class BanFactory {
 
     public void deleteBan(IBan ban) {
 
+    }
+
+    public IBan getBan(String banId) {
+        return null;
+    }
+
+    public IBan getBan(Player player) {
+        return null;
+    }
+
+    public IBan getBan(UUID offenderUUID) {
+        return null;
     }
 
     private VoidSupplier assignBanDuration() {

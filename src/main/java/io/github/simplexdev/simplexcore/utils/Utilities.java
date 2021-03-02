@@ -1,5 +1,6 @@
 package io.github.simplexdev.simplexcore.utils;
 
+import io.github.simplexdev.api.func.Path;
 import io.github.simplexdev.simplexcore.ban.BanType;
 
 import java.util.ArrayList;
@@ -67,5 +68,9 @@ public final class Utilities {
 
         String temp = String.valueOf(character).toUpperCase();
         return temp.charAt(0);
+    }
+
+    public static Path pathway(String pathway) {
+        return () -> pathway;
     }
 }

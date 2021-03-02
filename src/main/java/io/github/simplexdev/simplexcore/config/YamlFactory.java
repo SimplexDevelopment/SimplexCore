@@ -2,6 +2,8 @@ package io.github.simplexdev.simplexcore.config;
 
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
 import io.github.simplexdev.simplexcore.utils.Trio;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
@@ -20,6 +22,10 @@ public final class YamlFactory {
         this.directory = directory;
         this.fileName = fileName;
         return new Yaml(plugin, resourcePath, directory, fileName);
+    }
+
+    public FileConfiguration load(File yamlFile) {
+        return YamlConfiguration.loadConfiguration(yamlFile);
     }
 
     public Yaml setDefaultPathways() {

@@ -6,6 +6,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.io.File;
+
 public interface IStructure {
     NamespacedKey getNamespacedKey();
 
@@ -26,4 +28,6 @@ public interface IStructure {
     Size getApproximateSize();
 
     Block[] getBlocks();
+
+    File getStructureFile();
 }
