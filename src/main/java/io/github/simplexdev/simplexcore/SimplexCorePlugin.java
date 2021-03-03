@@ -30,6 +30,7 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
             instances.getRegistry().register(this);
             instances.getCommandLoader().classpath(Command_info.class).load();
             instances.getConfig().reload();
+            instances.getInternals().reload();
             //
             SimplexListener.register(new DependencyListener(), this);
             new Announcer();

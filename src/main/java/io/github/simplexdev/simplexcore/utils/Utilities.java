@@ -2,17 +2,21 @@ package io.github.simplexdev.simplexcore.utils;
 
 import io.github.simplexdev.api.func.Path;
 import io.github.simplexdev.simplexcore.ban.BanType;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.SplittableRandom;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public final class Utilities {
     private static final SplittableRandom random = new SplittableRandom();
     private static final SplittableRandom numbers = new SplittableRandom();
+    private static final List<String> versions = Constants.getPlugin().getInstances().getInternals().getStringList(pathway("supported_versions"));
+
     private static final List<Character> list = new ArrayList<>() {{
         add('0');
         add('1');
@@ -72,5 +76,32 @@ public final class Utilities {
 
     public static Path pathway(String pathway) {
         return () -> pathway;
+    }
+
+    public static String getNMSVersion() {
+        return Bukkit.getServer().getClass().getPackage().getName().substring(23).replaceFirst("v", "");
+    }
+
+    public static String[] formatVersion(String version) {
+        return (version).split(":");
+    }
+
+    public static boolean matchVersions() {
+        return versions.contains(getNMSVersion());
+    }
+
+    public static String getSpigotVersion() {
+        if (!matchVersions()) return "UNKNOWN";
+
+        for (String version : versions) {
+            String nms = formatVersion(version)[0];
+            String spigot = formatVersion(version)[1];
+            if (nms.equalsIgnoreCase(getNMSVersion())) {
+                return spigot;
+            }
+        }
+
+        throw new RuntimeException("Unable to determine the Spigot version: NMS v"
+                + getNMSVersion() + " is not supported!");
     }
 }

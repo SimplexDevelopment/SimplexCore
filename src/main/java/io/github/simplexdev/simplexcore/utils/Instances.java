@@ -10,6 +10,7 @@ public final class Instances {
     private final DependencyManagement dpm = new DependencyManagement();
     private final Yaml config = new YamlFactory(Constants.getPlugin()).setDefaultPathways();
     private final TimeValues time = new TimeValues();
+    private final Yaml internals = new YamlFactory(Constants.getPlugin()).from("internals.yml", Constants.getDataFolder(), "internals.yml");
 
     public synchronized AddonRegistry getRegistry() {
         return AddonRegistry.getInstance();
@@ -30,4 +31,6 @@ public final class Instances {
     public Yaml getConfig() {
         return config;
     }
+
+    public Yaml getInternals() { return internals; }
 }

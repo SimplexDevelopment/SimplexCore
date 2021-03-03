@@ -11,33 +11,34 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 public final class Constants {
     private static final SimplexCorePlugin plugin = JavaPlugin.getPlugin(SimplexCorePlugin.class);
-    private static final Server server = plugin.getServer();
-    private static final Logger logger = plugin.getLogger();
-    private static final PluginManager manager = server.getPluginManager();
-    private static final BukkitScheduler scheduler = server.getScheduler();
 
     public static SimplexCorePlugin getPlugin() {
         return plugin;
     }
 
     public static Server getServer() {
-        return server;
+        return plugin.getServer();
     }
 
     public static Logger getLogger() {
-        return logger;
+        return plugin.getServer().getLogger();
     }
 
     public static PluginManager getManager() {
-        return manager;
+        return plugin.getServer().getPluginManager();
     }
 
     public static BukkitScheduler getScheduler() {
-        return scheduler;
+        return plugin.getServer().getScheduler();
+    }
+
+    public static File getDataFolder() {
+        return plugin.getDataFolder();
     }
 }
 
