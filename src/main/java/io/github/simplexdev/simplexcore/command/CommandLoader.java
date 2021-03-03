@@ -3,6 +3,7 @@ package io.github.simplexdev.simplexcore.command;
 import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.command.defaults.DefaultCommand;
 import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.utils.ReflectionTools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
@@ -13,7 +14,6 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -52,7 +52,7 @@ public final class CommandLoader {
             PluginCommand objectToRegister = Registry.create(Constants.getPlugin(), info.name().toLowerCase());
             objectToRegister.setAliases(Arrays.asList(info.aliases().split(",")));
             objectToRegister.setDescription(info.description());
-            objectToRegister.setExecutor(getFromSetName(info.name()));
+            objectToRegister.setExecutor(getExecutorFromName(info.name()));
             objectToRegister.setLabel(info.name().toLowerCase());
             objectToRegister.setPermission(info.permission());
             objectToRegister.setPermissionMessage(info.permissionMessage());
@@ -62,7 +62,7 @@ public final class CommandLoader {
         });
     }
 
-    public synchronized CommandExecutor getFromSetName(String name) {
+    public synchronized CommandExecutor getExecutorFromName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
                 throw new RuntimeException("Missing annotation CommandInfo!");
@@ -73,8 +73,9 @@ public final class CommandLoader {
             if (name.equalsIgnoreCase(info.name())) {
                 try {
                     Constructor<? extends CommandExecutor> constr = obj.getDeclaredConstructor();
+                    constr.setAccessible(true);
                     return constr.newInstance();
-                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                } catch (ReflectiveOperationException ignored) {
                     return new DefaultCommand();
                 }
             }
@@ -93,8 +94,9 @@ public final class CommandLoader {
             if (name.equalsIgnoreCase(info.name())) {
                 try {
                     Constructor<? extends TabCompleter> constr = obj.getDeclaredConstructor();
+                    constr.setAccessible(true);
                     return constr.newInstance();
-                } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                } catch (ReflectiveOperationException ignored) {
                     return new DefaultCommand();
                 }
             }
@@ -108,40 +110,13 @@ public final class CommandLoader {
         private static final Field knownCmdsField;
 
         static {
-            Constructor<PluginCommand> temp;
-            try {
-                temp = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-                temp.setAccessible(true);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-            constructor = temp;
-
-            Field cmf;
-            try {
-                cmf = SimplePluginManager.class.getDeclaredField("commandMap");
-                cmf.setAccessible(true);
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException(e);
-            }
-            cmdMapField = cmf;
-
-            Field kcf;
-            try {
-                kcf = SimpleCommandMap.class.getDeclaredField("knownCommands");
-                kcf.setAccessible(true);
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException(e);
-            }
-            knownCmdsField = kcf;
+            constructor = ReflectionTools.getDeclaredConstructor(PluginCommand.class, String.class, Plugin.class);
+            cmdMapField = ReflectionTools.getDeclaredField(SimplePluginManager.class, "commandMap");
+            knownCmdsField = ReflectionTools.getDeclaredField(SimpleCommandMap.class, "knownCommands");
         }
 
         public static PluginCommand create(@NotNull Plugin plugin, @NotNull String name) {
-            try {
-                return constructor.newInstance(name, plugin);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            return ReflectionTools.initConstructor(constructor, name, plugin);
         }
 
         public static void registerCommand(PluginCommand command) {

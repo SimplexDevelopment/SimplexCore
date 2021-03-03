@@ -1,6 +1,6 @@
 package io.github.simplexdev.simplexcore.gui;
 
-import io.github.simplexdev.api.func.Action;
+import io.github.simplexdev.api.func.ClickAction;
 import io.github.simplexdev.api.IGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import java.util.*;
 
 public abstract class AbstractGUI implements InventoryHolder, IGUI {
     private final Inventory INV;
-    private final Map<Integer, Action> actions;
+    private final Map<Integer, ClickAction> actions;
     private final UUID uuid;
 
     private final List<Integer> validSize = new ArrayList<>(){{
@@ -53,10 +53,10 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
     }
 
     @Override
-    public void setItem(int slot, @NotNull ItemStack stack, @Nullable Action action) {
+    public void setItem(int slot, @NotNull ItemStack stack, @Nullable ClickAction clickAction) {
         INV.setItem(slot, stack);
-        if (action != null) {
-            actions.put(slot, action);
+        if (clickAction != null) {
+            actions.put(slot, clickAction);
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
     }
 
     @Override
-    public Map<Integer, Action> getActions() {
+    public Map<Integer, ClickAction> getActions() {
         return actions;
     }
 

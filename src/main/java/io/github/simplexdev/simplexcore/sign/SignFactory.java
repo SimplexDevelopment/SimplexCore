@@ -70,6 +70,10 @@ public class SignFactory {
     @Nullable
     public IUsableSign addTagsToSign(Sign sign, Object... tags) {
         if (getSignData() != null) {
+            if (!SignData.getUnlabeledSigns().containsKey(sign)) {
+                createNoTag(sign);
+            }
+
             AbstractSign abs = SignData.getUnlabeledSigns().get(sign);
             for (Object tag : tags) {
                 if (tag instanceof VoidSupplier) {
@@ -126,10 +130,10 @@ public class SignFactory {
                     && SIGN_TYPES.contains(event.getClickedBlock().getType())) {
                 Sign sign = (Sign) event.getClickedBlock();
                 if (signMap.containsKey(sign)) {
-                    IUsableSign isign = signMap.get(sign);
-                    String tag = isign.signTag();
-                    if (isign.getLines().get(0).equals(tag)) {
-                        isign.execute();
+                    IUsableSign iSign = signMap.get(sign);
+                    String tag = iSign.signTag();
+                    if (iSign.getLines().get(0).equals(tag)) {
+                        iSign.execute();
                     }
                 }
             }
