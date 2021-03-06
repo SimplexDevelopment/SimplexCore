@@ -1,7 +1,7 @@
-package io.github.simplexdev.simplexcore.concurrent;
+package io.github.simplexdev.simplexcore.task;
 
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -14,12 +14,12 @@ public class Announcer extends SimplexTask {
     private final List<String> stringList = new ArrayList<>() {{
         add("Join our discord!" + Messages.DISCORD.getMessage());
         add("Thank you for using SimplexCore!");
-        add("https://github.com/Paldiu/SimplexCore");
+        add("https://github.com/SimplexDevelopment/SimplexCore");
     }};
 
     public Announcer() {
         super(20L);
-        register(this, Constants.getPlugin(), true, false);
+        register(this, SimplexCorePlugin.getInstance(), true, false);
     }
 
     @Override

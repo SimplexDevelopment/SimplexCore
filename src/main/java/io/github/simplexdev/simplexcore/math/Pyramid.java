@@ -1,6 +1,6 @@
 package io.github.simplexdev.simplexcore.math;
 
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,7 +50,7 @@ public final class Pyramid {
                 createOddFull();
         };
 
-        Constants.getScheduler().runTaskLater(Constants.getPlugin(), consumer, 20L);
+        SimplexCorePlugin.getInstance().getScheduler().runTaskLater(SimplexCorePlugin.getInstance(), consumer, 20L);
     }
 
     private void createOddFull() {

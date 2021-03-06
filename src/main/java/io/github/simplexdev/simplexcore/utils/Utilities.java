@@ -1,6 +1,7 @@
 package io.github.simplexdev.simplexcore.utils;
 
 import io.github.simplexdev.api.func.Path;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.ban.BanType;
 import org.bukkit.Bukkit;
 
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 public final class Utilities {
     private static final SplittableRandom random = new SplittableRandom();
     private static final SplittableRandom numbers = new SplittableRandom();
-    private static final List<String> versions = Constants.getPlugin().getInstances().getInternals().getStringList(pathway("supported_versions"));
+    private static final List<String> versions = SimplexCorePlugin.getInstance().getInternals().getStringList(pathway("supported_versions"));
 
     private static final List<Character> list = new ArrayList<>() {{
         add('0');

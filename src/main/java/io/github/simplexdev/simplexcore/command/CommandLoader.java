@@ -2,7 +2,7 @@ package io.github.simplexdev.simplexcore.command;
 
 import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.command.defaults.DefaultCommand;
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
 import io.github.simplexdev.simplexcore.utils.ReflectionTools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -19,22 +19,33 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 public final class CommandLoader {
-    private static final CommandLoader instance = new CommandLoader();
     private Reflections reflections;
-
-    protected CommandLoader() {
-    }
+    private static final CommandLoader instance = new CommandLoader();
 
     public static CommandLoader getInstance() {
         return instance;
     }
 
+    /**
+     * Prepares the CommandLoader to load your plugin's commands from its own package location.
+     * This is synchronized, so it only registers commands from one plugin at a time.
+     * All your commands MUST be placed in their own package.
+     * <p>
+     * If your command classes do not have the {@link CommandInfo} annotation, they will not be loaded.
+     * If the class provided does not have the {@link CommandInfo} annotation, the loader will throw a new
+     * {@link MissingResourceException} and will not load your plugin's commands.
+     * If the class provided does not extend {@link SimplexCommand}, the loader will throw a new
+     * {@link RuntimeException} and your commands will not be loaded.
+     * </p>
+     * @param clazz The command class to load from
+     * @return An instance of this where the classpath has been prepared for loading the commands.
+     */
     public synchronized CommandLoader classpath(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
             throw new MissingResourceException("Cannot register this class as the main resource location!", clazz.getSimpleName(), "@CommandInfo");
         }
 
-        if (!clazz.isAssignableFrom(CommandExecutor.class)) {
+        if (!clazz.isAssignableFrom(SimplexCommand.class)) {
             throw new RuntimeException("Unable to assign an executor!");
         }
 
@@ -42,14 +53,21 @@ public final class CommandLoader {
         return this;
     }
 
-    public synchronized void load() {
+    /**
+     * Loads all the commands from the specified classpath.
+     * This should be used immediately after {@link CommandLoader#classpath(Class)} has been called.
+     * If used before, an exception will be thrown, and your commands will not be loaded.
+     *
+     * @param plugin An instance of your plugin to assign as the parent plugin for each command.
+     */
+    public synchronized void load(SimplexAddon<?> plugin) {
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
             if (info == null) return;
             if (!SimplexCommand.class.isAssignableFrom(annotated)) return;
 
-            PluginCommand objectToRegister = Registry.create(Constants.getPlugin(), info.name().toLowerCase());
+            PluginCommand objectToRegister = Registry.create(plugin, info.name().toLowerCase());
             objectToRegister.setAliases(Arrays.asList(info.aliases().split(",")));
             objectToRegister.setDescription(info.description());
             objectToRegister.setExecutor(getExecutorFromName(info.name()));
@@ -104,6 +122,9 @@ public final class CommandLoader {
         return null;
     }
 
+    /**
+     * Registry class, which forces all necessary fields to accessible.
+     */
     private static class Registry {
         private static final Constructor<PluginCommand> constructor;
         private static final Field cmdMapField;

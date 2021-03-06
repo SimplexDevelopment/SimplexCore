@@ -1,7 +1,5 @@
 package io.github.simplexdev.simplexcore;
 
-import io.github.simplexdev.simplexcore.utils.Constants;
-
 public class CoreState {
     String message;
 
@@ -27,7 +25,7 @@ public class CoreState {
             return State.DEBUG;
         }
 
-        if (Constants.getPlugin().isEnabled()) {
+        if (SimplexCorePlugin.getInstance().isEnabled()) {
             return State.ON;
         }
 

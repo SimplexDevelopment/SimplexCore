@@ -2,9 +2,9 @@ package io.github.simplexdev.simplexcore.ban;
 
 import io.github.simplexdev.api.IBan;
 import io.github.simplexdev.api.func.VoidSupplier;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -126,11 +126,11 @@ public final class BanFactory {
     private VoidSupplier assignBanDuration() {
         return () -> {
             if (type.equals(BanType.PERMANENT)) {
-                banDuration = Constants.getPlugin().getInstances().getTimeValues().YEAR() * 99;
+                banDuration = SimplexCorePlugin.getInstance().getTimeValues().YEAR() * 99;
             } else if (type.equals(BanType.TEMPORARY)) {
-                banDuration = Constants.getPlugin().getInstances().getTimeValues().DAY();
+                banDuration = SimplexCorePlugin.getInstance().getTimeValues().DAY();
             } else {
-                banDuration = Constants.getPlugin().getInstances().getTimeValues().MINUTE() * 5;
+                banDuration = SimplexCorePlugin.getInstance().getTimeValues().MINUTE() * 5;
             }
         };
     }

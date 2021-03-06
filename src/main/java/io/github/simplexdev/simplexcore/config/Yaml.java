@@ -2,8 +2,8 @@ package io.github.simplexdev.simplexcore.config;
 
 import io.github.simplexdev.api.IConfig;
 import io.github.simplexdev.api.func.Path;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -150,13 +150,13 @@ public final class Yaml implements IConfig {
      * Called when a file is created.
      */
     public void create() {
-        Constants.getLogger().info("File created!");
+        SimplexCorePlugin.getInstance().getLogger().info("File created!");
     }
 
     /**
      * Called when then file is reloaded
      */
     public void onReload() {
-        Constants.getLogger().info("The plugin configuration has been reloaded!");
+        SimplexCorePlugin.getInstance().getLogger().info("The plugin configuration has been reloaded!");
     }
 }

@@ -2,9 +2,9 @@ package io.github.simplexdev.simplexcore.sign;
 
 import io.github.simplexdev.api.IUsableSign;
 import io.github.simplexdev.api.func.VoidSupplier;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -41,7 +41,7 @@ public class SignFactory {
     private SignData signData = null;
 
     public void activateBasicSignDataListener() {
-        signData = new SignData(Constants.getPlugin());
+        signData = new SignData(SimplexCorePlugin.getInstance());
     }
 
     public SignData getSignData() {

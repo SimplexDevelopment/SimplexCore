@@ -1,7 +1,7 @@
 package io.github.simplexdev.simplexcore.listener;
 
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
@@ -16,7 +16,7 @@ public abstract class SimplexListener implements Listener {
      */
     public static void registerFromClass(Class<? extends SimplexListener> cls, SimplexAddon<?> plugin) {
         if (!SimplexListener.class.isAssignableFrom(cls)) {
-            Constants.getLogger().severe("You can only register subclasses of SimplexListener with this method.");
+            SimplexCorePlugin.getInstance().getLogger().severe("You can only register subclasses of SimplexListener with this method.");
             return;
         }
 
@@ -24,7 +24,7 @@ public abstract class SimplexListener implements Listener {
             Constructor<? extends SimplexListener> constr = cls.getDeclaredConstructor();
             register(constr.newInstance(), plugin);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            Constants.getLogger().severe("Could not register this listener!");
+            SimplexCorePlugin.getInstance().getLogger().severe("Could not register this listener!");
         }
     }
 
@@ -36,6 +36,6 @@ public abstract class SimplexListener implements Listener {
      * @param <T>      Type of which extends SimplexListener.
      */
     public static <T extends SimplexListener> void register(T listener, SimplexAddon<?> plugin) {
-        Constants.getManager().registerEvents(listener, plugin);
+        SimplexCorePlugin.getInstance().getManager().registerEvents(listener, plugin);
     }
 }

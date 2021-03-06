@@ -1,17 +1,17 @@
 package io.github.simplexdev.simplexcore.plugin;
 
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 
 public final class AddonManager {
     public AddonManager() {
     }
 
     public void disable(SimplexAddon<?> simplexAddon) {
-        Constants.getManager().disablePlugin(simplexAddon);
+        SimplexCorePlugin.getInstance().getManager().disablePlugin(simplexAddon);
     }
 
     public void enable(SimplexAddon<?> simplexAddon) {
-        Constants.getManager().enablePlugin(simplexAddon);
+        SimplexCorePlugin.getInstance().getManager().enablePlugin(simplexAddon);
     }
 
     public void reload(SimplexAddon<?> simplexAddon) {

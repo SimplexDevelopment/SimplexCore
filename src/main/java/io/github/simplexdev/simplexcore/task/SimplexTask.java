@@ -1,7 +1,7 @@
-package io.github.simplexdev.simplexcore.concurrent;
+package io.github.simplexdev.simplexcore.task;
 
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Date;
@@ -24,19 +24,19 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
     }
 
     protected SimplexTask() {
-        DELAY = Constants.getPlugin().getInstances().getTimeValues().SECOND() * 30; // 30 seconds until the task triggers for the first time.
-        INTERVAL = Constants.getPlugin().getInstances().getTimeValues().MINUTE() * 5; // Task will run at 5 minute intervals once the first trigger has been called.
+        DELAY = SimplexCorePlugin.getInstance().getTimeValues().SECOND() * 30; // 30 seconds until the task triggers for the first time.
+        INTERVAL = SimplexCorePlugin.getInstance().getTimeValues().MINUTE() * 5; // Task will run at 5 minute intervals once the first trigger has been called.
     }
 
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
-            Constants.getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
+            SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
         } else if (delayed) {
-            Constants.getScheduler().runTaskLater(plugin, task, DELAY);
+            SimplexCorePlugin.getInstance().getScheduler().runTaskLater(plugin, task, DELAY);
         } else if (repeating) {
-            Constants.getScheduler().runTaskTimer(plugin, task, 0L, INTERVAL);
+            SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, 0L, INTERVAL);
         } else {
-            Constants.getScheduler().runTask(plugin, task);
+            SimplexCorePlugin.getInstance().getScheduler().runTask(plugin, task);
         }
     }
 

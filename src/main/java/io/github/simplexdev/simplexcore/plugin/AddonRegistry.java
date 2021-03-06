@@ -2,7 +2,7 @@ package io.github.simplexdev.simplexcore.plugin;
 
 import io.github.simplexdev.api.annotations.ReqType;
 import io.github.simplexdev.api.annotations.Requires;
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +24,7 @@ public final class AddonRegistry {
             return true;
         } catch (ClassNotFoundException ignored) {
             addon.stop();
-            Constants.getLogger().severe(addon.getName() + " has been disabled: This module requires Paper!");
+            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Paper!");
             return false;
         }
     }
@@ -35,7 +35,7 @@ public final class AddonRegistry {
             return true;
         } catch (ClassNotFoundException ignored) {
             addon.stop();
-            Constants.getLogger().severe(addon.getName() + " has been disabled: This module requires Bungeecord!");
+            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Bungeecord!");
             return false;
         }
     }
@@ -46,7 +46,7 @@ public final class AddonRegistry {
             return true;
         } catch (ClassNotFoundException ignored) {
             addon.stop();
-            Constants.getLogger().severe(addon.getName() + " has been disabled: This module requires Waterfall!");
+            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Waterfall!");
             return false;
         }
     }

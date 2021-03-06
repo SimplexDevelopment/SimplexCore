@@ -1,6 +1,6 @@
 package io.github.simplexdev.simplexcore.command;
 
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,12 +22,12 @@ public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
 
     @Nullable
     public Player getPlayer(String name) {
-        return Constants.getServer().getPlayer(name);
+        return SimplexCorePlugin.getInstance().getServer().getPlayer(name);
     }
 
     @Nullable
     public Player getPlayer(UUID uuid) {
-        return Constants.getServer().getPlayer(uuid);
+        return SimplexCorePlugin.getInstance().getServer().getPlayer(uuid);
     }
 
     @Nullable

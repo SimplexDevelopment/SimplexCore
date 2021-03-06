@@ -1,18 +1,32 @@
 package io.github.simplexdev.simplexcore;
 
+import io.github.simplexdev.simplexcore.command.CommandLoader;
 import io.github.simplexdev.simplexcore.command.defaults.Command_info;
-import io.github.simplexdev.simplexcore.concurrent.Announcer;
+import io.github.simplexdev.simplexcore.config.Yaml;
+import io.github.simplexdev.simplexcore.config.YamlFactory;
+import io.github.simplexdev.simplexcore.plugin.AddonRegistry;
+import io.github.simplexdev.simplexcore.plugin.DependencyManagement;
+import io.github.simplexdev.simplexcore.task.Announcer;
 import io.github.simplexdev.simplexcore.listener.DependencyListener;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.Constants;
-import io.github.simplexdev.simplexcore.utils.Instances;
+import io.github.simplexdev.simplexcore.utils.TimeValues;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
+
+import java.io.File;
+import java.util.logging.Logger;
 
 public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
     protected static boolean debug = false;
     protected static boolean suspended = false;
+    private DependencyManagement dpm;
+    private Yaml config;
+    private TimeValues time;
+    private Yaml internals;
 
-    protected Instances instances;
+    // should this just be 'new SimplexCorePlugin()' ?
+    protected static final SimplexCorePlugin instance = getPlugin(SimplexCorePlugin.class);
 
     @Override
     public SimplexCorePlugin getPlugin() {
@@ -21,16 +35,19 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     @Override
     public void init() {
-        instances = new Instances();
+        this.dpm = new DependencyManagement();
+        this.config = new YamlFactory(this).setDefaultPathways();
+        this.time = new TimeValues();
+        this.internals = new YamlFactory(this).from("internals.yml", getParentFolder(), "internals.yml");
     }
 
     @Override
     public void start() {
         try {
-            instances.getRegistry().register(this);
-            instances.getCommandLoader().classpath(Command_info.class).load();
-            instances.getConfig().reload();
-            instances.getInternals().reload();
+            getRegistry().register(this);
+            getCommandLoader().classpath(Command_info.class).load(this);
+            getYamlConfig().reload();
+            getInternals().reload();
             //
             SimplexListener.register(new DependencyListener(), this);
             new Announcer();
@@ -40,7 +57,7 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
         }
 
         CoreState state = new CoreState();
-        Constants.getLogger().info(state.getMessage());
+        getLogger().info(state.getMessage());
     }
 
     @Override
@@ -60,7 +77,45 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
         return suspended;
     }
 
-    public final Instances getInstances() {
-        return instances;
+    public static SimplexCorePlugin getInstance() {
+        return instance;
     }
+
+    public Logger getLogger() {
+        return this.getServer().getLogger();
+    }
+
+    public PluginManager getManager() {
+        return this.getServer().getPluginManager();
+    }
+
+    public BukkitScheduler getScheduler() {
+        return this.getServer().getScheduler();
+    }
+
+    public File getParentFolder() {
+        return this.getDataFolder();
+    }
+
+    public synchronized AddonRegistry getRegistry() {
+        return AddonRegistry.getInstance();
+    }
+
+    public synchronized CommandLoader getCommandLoader() {
+        return CommandLoader.getInstance();
+    }
+
+    public DependencyManagement getDependencyManager() {
+        return dpm;
+    }
+
+    public TimeValues getTimeValues() {
+        return time;
+    }
+
+    public Yaml getYamlConfig() {
+        return config;
+    }
+
+    public Yaml getInternals() { return internals; }
 }

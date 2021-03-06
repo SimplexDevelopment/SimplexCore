@@ -1,6 +1,6 @@
 package io.github.simplexdev.simplexcore.listener;
 
-import io.github.simplexdev.simplexcore.utils.Constants;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -34,11 +34,11 @@ public final class DependencyListener extends SimplexListener {
         BooleanSupplier temp2 = () -> PAPI_NAMES.contains(event.getPlugin().getName());
 
         if (temp.getAsBoolean()) {
-            Constants.getPlugin().getInstances().getDependencyManager().registerProtocolLib();
+            SimplexCorePlugin.getInstance().getDependencyManager().registerProtocolLib();
         }
 
         if (temp2.getAsBoolean()) {
-            Constants.getPlugin().getInstances().getDependencyManager().registerPAPI();
+            SimplexCorePlugin.getInstance().getDependencyManager().registerPAPI();
         }
     }
 }

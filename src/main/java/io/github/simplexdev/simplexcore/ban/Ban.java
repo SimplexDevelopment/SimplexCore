@@ -1,10 +1,10 @@
 package io.github.simplexdev.simplexcore.ban;
 
 import io.github.simplexdev.api.IBan;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
-import io.github.simplexdev.simplexcore.utils.Constants;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public abstract class Ban implements IBan {
     }
 
     public Ban(Player player, CommandSender sender, BanType type) {
-        this(player, sender, type, Constants.getPlugin().getInstances().getTimeValues().DAY());
+        this(player, sender, type, SimplexCorePlugin.getInstance().getTimeValues().DAY());
     }
 
     public Ban(Player player, CommandSender sender, BanType type, long banDuration) {
@@ -55,10 +55,10 @@ public abstract class Ban implements IBan {
     }
 
     public void writeToFile(boolean separateFiles) {
-        File fileLocation = new File(Constants.getPlugin().getDataFolder(), "bans");
+        File fileLocation = new File(SimplexCorePlugin.getInstance().getParentFolder(), "bans");
 
         if (separateFiles) {
-            Yaml yaml = new YamlFactory(Constants.getPlugin()).from(null, fileLocation, player.getName() + ".yml");
+            Yaml yaml = new YamlFactory(SimplexCorePlugin.getInstance()).from(null, fileLocation, player.getName() + ".yml");
             yaml.getConfig().createSection(getOffender().toString());
             ConfigurationSection section = yaml.getConfigurationSection(getOffender()::toString);
             section.set("name", player.getName());
@@ -71,12 +71,12 @@ public abstract class Ban implements IBan {
             try {
                 yaml.save();
             } catch (IOException e) {
-                Constants.getLogger().severe(e.getMessage());
+                SimplexCorePlugin.getInstance().getLogger().severe(e.getMessage());
             }
             yaml.reload();
         } else {
             // TODO: Write to a single file as separate sections per UUID.
-            Yaml yaml = new YamlFactory(Constants.getPlugin()).from(null, fileLocation, "bans.yml");
+            Yaml yaml = new YamlFactory(SimplexCorePlugin.getInstance()).from(null, fileLocation, "bans.yml");
         }
     }
 }
