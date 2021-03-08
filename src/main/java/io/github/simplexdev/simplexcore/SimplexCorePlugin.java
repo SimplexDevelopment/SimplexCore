@@ -25,8 +25,10 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
     private TimeValues time;
     private Yaml internals;
 
-    // should this just be 'new SimplexCorePlugin()' ?
-    protected static final SimplexCorePlugin instance = getPlugin(SimplexCorePlugin.class);
+    protected static SimplexCorePlugin instance; // = getPlugin(SimplexCorePlugin.class);
+    public static SimplexCorePlugin getInstance() {
+        return instance;
+    }
 
     @Override
     public SimplexCorePlugin getPlugin() {
@@ -35,6 +37,7 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     @Override
     public void init() {
+        instance = this;
         this.dpm = new DependencyManagement();
         this.config = new YamlFactory(this).setDefaultPathways();
         this.time = new TimeValues();
@@ -75,10 +78,6 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     public static boolean isSuspended() {
         return suspended;
-    }
-
-    public static SimplexCorePlugin getInstance() {
-        return instance;
     }
 
     public Logger getLogger() {

@@ -22,7 +22,10 @@ public final class CommandLoader {
     private Reflections reflections;
     private static final CommandLoader instance = new CommandLoader();
 
-    public static CommandLoader getInstance() {
+    /**
+     * @return A Singleton Pattern instance of this class.
+     */
+    public static synchronized CommandLoader getInstance() {
         return instance;
     }
 
@@ -80,6 +83,13 @@ public final class CommandLoader {
         });
     }
 
+    /**
+     * Gets the command class as a child of {@link CommandExecutor} from the {@link CommandInfo#name()} annotation.
+     * This is for registering the CommandExecutor of the provided command with Bukkit.
+     * This should only be used by the CommandLoader.
+     * @param name The name of the command.
+     * @return An instance of the command class as a CommandExecutor.
+     */
     public synchronized CommandExecutor getExecutorFromName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
@@ -101,6 +111,13 @@ public final class CommandLoader {
         throw new RuntimeException("Unable to get a command executor! Terminating!");
     }
 
+    /**
+     * Gets the command class as a child of {@link TabCompleter} from the {@link CommandInfo#name()} annotation.
+     * This is for registering the TabCompleter of the provided command with Bukkit.
+     * This should only be used by the CommandLoader.
+     * @param name The name of the command
+     * @return The command as an instance of TabCompleter
+     */
     @Nullable
     public synchronized TabCompleter getTabFromName(String name) {
         for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {

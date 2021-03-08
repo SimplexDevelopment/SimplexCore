@@ -14,7 +14,7 @@ public final class AddonRegistry {
     protected AddonRegistry() {
     }
 
-    public static AddonRegistry getInstance() {
+    public static synchronized AddonRegistry getInstance() {
         return instance;
     }
 
