@@ -21,7 +21,7 @@ public final class YamlFactory {
         this.resourcePath = resourcePath;
         this.directory = directory;
         this.fileName = fileName;
-        return new Yaml(plugin, resourcePath, directory, fileName);
+        return new Yaml(plugin, fileName, directory, resourcePath);
     }
 
     public FileConfiguration load(File yamlFile) {

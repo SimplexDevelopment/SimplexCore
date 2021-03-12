@@ -48,8 +48,8 @@ public final class CommandLoader {
             throw new MissingResourceException("Cannot register this class as the main resource location!", clazz.getSimpleName(), "@CommandInfo");
         }
 
-        if (!clazz.isAssignableFrom(SimplexCommand.class)) {
-            throw new RuntimeException("Unable to assign an executor!");
+        if (!SimplexCommand.class.isAssignableFrom(clazz)) {
+            throw new RuntimeException("Your command must extend SimplexCommand.class for it to be used as the reference point for loading commands.");
         }
 
         reflections = new Reflections(clazz);

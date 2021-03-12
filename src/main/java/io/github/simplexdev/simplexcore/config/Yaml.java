@@ -21,6 +21,7 @@ public final class Yaml implements IConfig {
     private FileConfiguration config;
     private File file;
 
+    // Package private ;)
     Yaml(SimplexAddon<?> plugin, String fileName, File directory, String resourcePath) {
         if (!fileName.endsWith(".yml")) {
             fileName += ".yml";

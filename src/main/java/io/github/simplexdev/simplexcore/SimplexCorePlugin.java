@@ -25,10 +25,10 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
     private TimeValues time;
     private Yaml internals;
 
-    protected static SimplexCorePlugin instance; // = getPlugin(SimplexCorePlugin.class);
+    protected static SimplexCorePlugin instance;
     public static SimplexCorePlugin getInstance() {
         return instance;
-    }
+    } // I understand this could be an issue.
 
     @Override
     public SimplexCorePlugin getPlugin() {
@@ -37,7 +37,7 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     @Override
     public void init() {
-        instance = this;
+        instance = this; // However, if the module is written correctly, this wont be an issue.
         this.dpm = new DependencyManagement();
         this.config = new YamlFactory(this).setDefaultPathways();
         this.time = new TimeValues();
@@ -78,30 +78,6 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     public static boolean isSuspended() {
         return suspended;
-    }
-
-    public Logger getLogger() {
-        return this.getServer().getLogger();
-    }
-
-    public PluginManager getManager() {
-        return this.getServer().getPluginManager();
-    }
-
-    public BukkitScheduler getScheduler() {
-        return this.getServer().getScheduler();
-    }
-
-    public File getParentFolder() {
-        return this.getDataFolder();
-    }
-
-    public synchronized AddonRegistry getRegistry() {
-        return AddonRegistry.getInstance();
-    }
-
-    public synchronized CommandLoader getCommandLoader() {
-        return CommandLoader.getInstance();
     }
 
     public DependencyManagement getDependencyManager() {
