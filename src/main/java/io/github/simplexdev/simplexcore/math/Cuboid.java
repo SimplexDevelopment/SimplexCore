@@ -1,6 +1,7 @@
 package io.github.simplexdev.simplexcore.math;
 
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
+import io.github.simplexdev.simplexcore.utils.TickedTime;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitTask;
@@ -44,6 +45,7 @@ public final class Cuboid {
 
         };
 
-        SimplexCorePlugin.getInstance().getScheduler().runTaskLaterAsynchronously(SimplexCorePlugin.getInstance(), task, SimplexCorePlugin.getInstance().getTimeValues().SECOND());
+        SimplexCorePlugin.getInstance().getScheduler().runTaskLaterAsynchronously(SimplexCorePlugin.getInstance(), task,
+            TickedTime.SECOND);
     }
 }

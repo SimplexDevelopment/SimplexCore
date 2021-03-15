@@ -3,6 +3,7 @@ package io.github.simplexdev.simplexcore.task;
 import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.utils.TickedTime;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Date;
@@ -28,8 +29,8 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
     }
 
     protected SimplexTask() {
-        DELAY = SimplexCorePlugin.getInstance().getTimeValues().SECOND() * 30; // 30 seconds until the task triggers for the first time.
-        INTERVAL = SimplexCorePlugin.getInstance().getTimeValues().MINUTE() * 5; // Task will run at 5 minute intervals once the first trigger has been called.
+        DELAY = TickedTime.SECOND * 30; // 30 seconds until the task triggers for the first time.
+        INTERVAL = TickedTime.MINUTE * 5; // Task will run at 5 minute intervals once the first trigger has been called.
     }
 
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean repeating, boolean delayed) {

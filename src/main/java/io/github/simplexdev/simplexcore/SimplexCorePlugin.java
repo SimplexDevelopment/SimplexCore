@@ -1,34 +1,25 @@
 package io.github.simplexdev.simplexcore;
 
-import io.github.simplexdev.simplexcore.command.CommandLoader;
 import io.github.simplexdev.simplexcore.command.defaults.Command_info;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
-import io.github.simplexdev.simplexcore.plugin.AddonRegistry;
 import io.github.simplexdev.simplexcore.plugin.DependencyManagement;
 import io.github.simplexdev.simplexcore.task.Announcer;
 import io.github.simplexdev.simplexcore.listener.DependencyListener;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
-import io.github.simplexdev.simplexcore.utils.TimeValues;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
-
-import java.io.File;
-import java.util.logging.Logger;
 
 public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
-    protected static boolean debug = false;
-    protected static boolean suspended = false;
+    private static boolean debug = false;
+    private static boolean suspended = false;
+    private static SimplexCorePlugin instance;
     private DependencyManagement dpm;
     private Yaml config;
-    private TimeValues time;
     private Yaml internals;
 
-    protected static SimplexCorePlugin instance;
     public static SimplexCorePlugin getInstance() {
         return instance;
-    } // I understand this could be an issue.
+    }
 
     @Override
     public SimplexCorePlugin getPlugin() {
@@ -37,10 +28,9 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     @Override
     public void init() {
-        instance = this; // However, if the module is written correctly, this wont be an issue.
+        SimplexCorePlugin.instance = this;
         this.dpm = new DependencyManagement();
         this.config = new YamlFactory(this).setDefaultPathways();
-        this.time = new TimeValues();
         this.internals = new YamlFactory(this).from("internals.yml", getParentFolder(), "internals.yml");
     }
 
@@ -59,7 +49,7 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
             // TODO: Write an output to a file with why it suspended.
         }
 
-        CoreState state = new CoreState();
+        CoreState state = new CoreState(this);
         getLogger().info(state.getMessage());
     }
 
@@ -82,10 +72,6 @@ public final class SimplexCorePlugin extends SimplexAddon<SimplexCorePlugin> {
 
     public DependencyManagement getDependencyManager() {
         return dpm;
-    }
-
-    public TimeValues getTimeValues() {
-        return time;
     }
 
     public Yaml getYamlConfig() {

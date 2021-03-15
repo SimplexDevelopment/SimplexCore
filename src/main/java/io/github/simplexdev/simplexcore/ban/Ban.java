@@ -5,6 +5,7 @@ import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
+import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,7 @@ public abstract class Ban implements IBan {
     }
 
     public Ban(Player player, CommandSender sender, BanType type) {
-        this(player, sender, type, SimplexCorePlugin.getInstance().getTimeValues().DAY());
+        this(player, sender, type, TickedTime.DAY);
     }
 
     public Ban(Player player, CommandSender sender, BanType type, long banDuration) {

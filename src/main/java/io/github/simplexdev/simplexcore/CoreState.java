@@ -1,9 +1,11 @@
 package io.github.simplexdev.simplexcore;
 
 public class CoreState {
-    String message;
+    private final SimplexCorePlugin plugin;
+    private String message;
 
-    public CoreState() {
+    public CoreState(SimplexCorePlugin plugin) {
+        this.plugin = plugin;
         switch (getState()) {
             case ON:
                 message = "The Core is currently ON";
@@ -25,7 +27,7 @@ public class CoreState {
             return State.DEBUG;
         }
 
-        if (SimplexCorePlugin.getInstance().isEnabled()) {
+        if (this.plugin.isEnabled()) {
             return State.ON;
         }
 
