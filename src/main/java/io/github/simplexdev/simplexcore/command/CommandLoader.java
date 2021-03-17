@@ -25,7 +25,7 @@ public final class CommandLoader {
     /**
      * @return A Singleton Pattern instance of this class.
      */
-    public static synchronized CommandLoader getInstance() {
+    public static CommandLoader getInstance() {
         return instance;
     }
 
@@ -43,7 +43,11 @@ public final class CommandLoader {
      * @param clazz The command class to load from
      * @return An instance of this where the classpath has been prepared for loading the commands.
      */
-    public synchronized CommandLoader classpath(Class<?> clazz) {
+    public <T extends SimplexCommand> CommandLoader classpath(Class<T> clazz) {
+        if (clazz == null) {
+            throw new IllegalStateException("The class provided cannot be found!");
+        }
+
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
             throw new MissingResourceException("Cannot register this class as the main resource location!", clazz.getSimpleName(), "@CommandInfo");
         }
@@ -53,6 +57,7 @@ public final class CommandLoader {
         }
 
         reflections = new Reflections(clazz);
+
         return this;
     }
 
@@ -63,23 +68,23 @@ public final class CommandLoader {
      *
      * @param plugin An instance of your plugin to assign as the parent plugin for each command.
      */
-    public synchronized void load(SimplexAddon<?> plugin) {
+    public void load(SimplexAddon<?> plugin) {
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
             if (info == null) return;
             if (!SimplexCommand.class.isAssignableFrom(annotated)) return;
 
-            PluginCommand objectToRegister = Registry.create(plugin, info.name().toLowerCase());
-            objectToRegister.setAliases(Arrays.asList(info.aliases().split(",")));
-            objectToRegister.setDescription(info.description());
-            objectToRegister.setExecutor(getExecutorFromName(info.name()));
-            objectToRegister.setLabel(info.name().toLowerCase());
-            objectToRegister.setPermission(info.permission());
-            objectToRegister.setPermissionMessage(info.permissionMessage());
-            objectToRegister.setTabCompleter(getTabFromName(info.name()));
-            objectToRegister.setUsage(info.usage());
-            Registry.registerCommand(objectToRegister);
+            PluginCommand command = Registry.create(plugin, info.name().toLowerCase());
+            command.setAliases(Arrays.asList(info.aliases().split(",")));
+            command.setDescription(info.description());
+            command.setExecutor(getExecutorFromName(info.name()));
+            command.setLabel(info.name().toLowerCase());
+            command.setPermission(info.permission());
+            command.setPermissionMessage(info.permissionMessage());
+            command.setTabCompleter(getTabFromName(info.name()));
+            command.setUsage(info.usage());
+            Registry.registerCommand(command);
         });
     }
 
@@ -90,7 +95,7 @@ public final class CommandLoader {
      * @param name The name of the command.
      * @return An instance of the command class as a CommandExecutor.
      */
-    public synchronized CommandExecutor getExecutorFromName(String name) {
+    public CommandExecutor getExecutorFromName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
                 throw new RuntimeException("Missing annotation CommandInfo!");
@@ -119,7 +124,7 @@ public final class CommandLoader {
      * @return The command as an instance of TabCompleter
      */
     @Nullable
-    public synchronized TabCompleter getTabFromName(String name) {
+    public TabCompleter getTabFromName(String name) {
         for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
                 throw new RuntimeException("Missing annotation CommandInfo!");
