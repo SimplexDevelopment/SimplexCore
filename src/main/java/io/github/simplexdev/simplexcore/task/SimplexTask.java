@@ -17,22 +17,50 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
     protected final long INTERVAL;
     protected Date lastRan = new Date();
     protected Timer timer = new Timer();
+    protected int taskId;
 
+    /**
+     * Creates a new instance of this class, with a custom defined DELAY and INTERVAL.
+     *
+     * @param initialDelay How long before the first time the task executes.
+     * @param interval     How long before the task repeats itself.
+     */
     protected SimplexTask(long initialDelay, long interval) {
         DELAY = initialDelay;
         INTERVAL = interval;
     }
-    
+
+    /**
+     * Constructor which automatically registers the DELAY as 0 seconds (NO DELAY)
+     * and assigns a custom INTERVAL at which it executes.
+     *
+     * @param interval How often the task should repeat. Every 20L is 1 second.
+     *                 You should use {@link TickedTime} for determining the related server timings.
+     */
     protected SimplexTask(long interval) {
         DELAY = 0L;
         INTERVAL = interval;
     }
 
+    /**
+     * Constructor which automatically registers the DELAY as 30 seconds
+     * and the INTERVAL at which it executes as 5 minutes.
+     */
     protected SimplexTask() {
         DELAY = TickedTime.SECOND * 30; // 30 seconds until the task triggers for the first time.
         INTERVAL = TickedTime.MINUTE * 5; // Task will run at 5 minute intervals once the first trigger has been called.
     }
 
+    /**
+     * Registers the parent interface {@link Consumer<BukkitTask>} with the
+     * {@link org.bukkit.scheduler.BukkitScheduler}.
+     *
+     * @param task      The instance of a subclass of this class.
+     * @param plugin    Your plugin instance.
+     * @param repeating Whether or not the task should repeat.
+     * @param delayed   Whether or not to delay the first time the task runs.
+     * @param <T>       A subclass of SimplexTask.
+     */
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
             SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
@@ -45,26 +73,69 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
         }
     }
 
+
+    /**
+     * Registers the parent interface {@link Consumer<BukkitTask>} with the
+     * {@link org.bukkit.scheduler.BukkitScheduler}.
+     * This version of this method will not create a repeating task..
+     *
+     * @param task    The instance of a subclass of this class.
+     * @param plugin  Your plugin instance.
+     * @param delayed Whether or not to delay the start of the task.
+     * @param <T>     A subclass of SimplexTask.
+     */
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean delayed) {
         register(task, plugin, false, delayed);
     }
 
+    /**
+     * Registers the parent interface {@link Consumer<BukkitTask>} with the
+     * {@link org.bukkit.scheduler.BukkitScheduler}.
+     * This version of this method will not create a delayed or repeating task.
+     *
+     * @param task   The instance of a subclass of this class.
+     * @param plugin Your plugin instance.
+     * @param <T>    A subclass of SimplexTask.
+     */
     public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin) {
         register(task, plugin, false, false);
     }
 
+    /**
+     * Gets the last time the task ran.
+     *
+     * @return The last time as a {@link Date} this task last ran.
+     */
     public Date getLastRan() {
         return lastRan;
     }
 
+    /**
+     * Sets the last time this task ran. This should be done in a subclass inside of the
+     * {@link Consumer#accept(Object)} method.
+     *
+     * @param lastRan An instance of {@link Date} returning the last time this task ran.
+     */
     public void setLastRan(Date lastRan) {
         this.lastRan = lastRan;
     }
 
+    /**
+     * Gets the {@link Timer} instance associated with this class.
+     * This is for creating and running tasks separate from the {@link org.bukkit.scheduler.BukkitScheduler}.
+     *
+     * @return A {@link Timer} object.
+     */
     protected Timer getTimer() {
         return timer;
     }
 
+    /**
+     * Creates a new {@link TimerTask} to run with the {@link Timer}
+     *
+     * @param supplier A task to complete.
+     * @return A new instance of TimerTask.
+     */
     protected TimerTask newTimer(VoidSupplier supplier) {
         return new TimerTask() {
             @Override
@@ -72,5 +143,9 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
                 supplier.get();
             }
         };
+    }
+
+    private void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }

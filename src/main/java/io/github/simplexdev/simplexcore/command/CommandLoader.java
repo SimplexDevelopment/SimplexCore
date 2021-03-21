@@ -40,6 +40,7 @@ public final class CommandLoader {
      * If the class provided does not extend {@link SimplexCommand}, the loader will throw a new
      * {@link RuntimeException} and your commands will not be loaded.
      * </p>
+     *
      * @param clazz The command class to load from
      * @return An instance of this where the classpath has been prepared for loading the commands.
      */
@@ -56,7 +57,7 @@ public final class CommandLoader {
             throw new RuntimeException("Your command must extend SimplexCommand.class for it to be used as the reference point for loading commands.");
         }
 
-        reflections = new Reflections(clazz);
+        reflections = ReflectionTools.reflect(clazz);
 
         return this;
     }
@@ -92,6 +93,7 @@ public final class CommandLoader {
      * Gets the command class as a child of {@link CommandExecutor} from the {@link CommandInfo#name()} annotation.
      * This is for registering the CommandExecutor of the provided command with Bukkit.
      * This should only be used by the CommandLoader.
+     *
      * @param name The name of the command.
      * @return An instance of the command class as a CommandExecutor.
      */
@@ -120,6 +122,7 @@ public final class CommandLoader {
      * Gets the command class as a child of {@link TabCompleter} from the {@link CommandInfo#name()} annotation.
      * This is for registering the TabCompleter of the provided command with Bukkit.
      * This should only be used by the CommandLoader.
+     *
      * @param name The name of the command
      * @return The command as an instance of TabCompleter
      */
