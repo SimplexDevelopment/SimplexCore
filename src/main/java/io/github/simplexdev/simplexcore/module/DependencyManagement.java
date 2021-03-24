@@ -1,4 +1,4 @@
-package io.github.simplexdev.simplexcore.plugin;
+package io.github.simplexdev.simplexcore.module;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;

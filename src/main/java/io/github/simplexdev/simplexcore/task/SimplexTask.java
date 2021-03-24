@@ -2,7 +2,7 @@ package io.github.simplexdev.simplexcore.task;
 
 import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -61,7 +61,7 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param delayed   Whether or not to delay the first time the task runs.
      * @param <T>       A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean repeating, boolean delayed) {
+    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
             SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
         } else if (delayed) {
@@ -84,7 +84,7 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param delayed Whether or not to delay the start of the task.
      * @param <T>     A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin, boolean delayed) {
+    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin, boolean delayed) {
         register(task, plugin, false, delayed);
     }
 
@@ -97,7 +97,7 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param plugin Your plugin instance.
      * @param <T>    A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexAddon<?> plugin) {
+    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin) {
         register(task, plugin, false, false);
     }
 

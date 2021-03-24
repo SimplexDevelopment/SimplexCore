@@ -4,7 +4,7 @@ import io.github.simplexdev.api.IUsableSign;
 import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -107,7 +107,7 @@ public class SignFactory {
     }
 
     private static class SignData extends SimplexListener {
-        public SignData(SimplexAddon<?> plugin) {
+        public SignData(SimplexModule<?> plugin) {
             register(this, plugin);
         }
 

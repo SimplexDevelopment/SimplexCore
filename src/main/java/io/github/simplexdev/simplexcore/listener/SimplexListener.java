@@ -1,7 +1,7 @@
 package io.github.simplexdev.simplexcore.listener;
 
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
@@ -14,7 +14,7 @@ public abstract class SimplexListener implements Listener {
      *
      * @param cls The class to register.
      */
-    public static void registerFromClass(Class<? extends SimplexListener> cls, SimplexAddon<?> plugin) {
+    public static void registerFromClass(Class<? extends SimplexListener> cls, SimplexModule<?> plugin) {
         if (!SimplexListener.class.isAssignableFrom(cls)) {
             SimplexCorePlugin.getInstance().getLogger().severe("You can only register subclasses of SimplexListener with this method.");
             return;
@@ -35,7 +35,7 @@ public abstract class SimplexListener implements Listener {
      * @param plugin   Your plugin instance
      * @param <T>      Type of which extends SimplexListener.
      */
-    public static <T extends SimplexListener> void register(T listener, SimplexAddon<?> plugin) {
+    public static <T extends SimplexListener> void register(T listener, SimplexModule<?> plugin) {
         SimplexCorePlugin.getInstance().getManager().registerEvents(listener, plugin);
     }
 }

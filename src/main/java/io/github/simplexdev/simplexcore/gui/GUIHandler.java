@@ -3,18 +3,17 @@ package io.github.simplexdev.simplexcore.gui;
 import io.github.simplexdev.api.func.ClickAction;
 import io.github.simplexdev.api.IGUI;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import java.util.UUID;
 
 public final class GUIHandler extends SimplexListener {
-    public GUIHandler(SimplexAddon<?> plugin) {
+    public GUIHandler(SimplexModule<?> plugin) {
         register(this, plugin);
     }
 

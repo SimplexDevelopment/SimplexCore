@@ -3,7 +3,7 @@ package io.github.simplexdev.simplexcore.config;
 import io.github.simplexdev.api.IConfig;
 import io.github.simplexdev.api.func.Path;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +14,7 @@ import java.nio.file.NotDirectoryException;
 import java.util.List;
 
 public final class Yaml implements IConfig {
-    private final SimplexAddon<?> plugin;
+    private final SimplexModule<?> plugin;
     private final String fileName;
     private final File directory;
     private final String resourcePath;
@@ -22,7 +22,7 @@ public final class Yaml implements IConfig {
     private File file;
 
     // Package private ;)
-    Yaml(SimplexAddon<?> plugin, String fileName, File directory, String resourcePath) {
+    Yaml(SimplexModule<?> plugin, String fileName, File directory, String resourcePath) {
         if (!fileName.endsWith(".yml")) {
             fileName += ".yml";
         }

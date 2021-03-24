@@ -2,7 +2,7 @@ package io.github.simplexdev.simplexcore.command;
 
 import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.command.defaults.DefaultCommand;
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.ReflectionTools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -69,7 +69,7 @@ public final class CommandLoader {
      *
      * @param plugin An instance of your plugin to assign as the parent plugin for each command.
      */
-    public void load(SimplexAddon<?> plugin) {
+    public void load(SimplexModule<?> plugin) {
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 

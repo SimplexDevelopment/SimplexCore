@@ -1,4 +1,4 @@
-package io.github.simplexdev.simplexcore.plugin;
+package io.github.simplexdev.simplexcore.module;
 
 import io.github.simplexdev.api.annotations.ReqType;
 import io.github.simplexdev.api.annotations.Requires;
@@ -7,18 +7,18 @@ import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class AddonRegistry {
-    private static final AddonRegistry instance = new AddonRegistry();
-    private final Set<SimplexAddon<?>> components = new HashSet<>();
+public final class ModuleRegistry {
+    private static final ModuleRegistry instance = new ModuleRegistry();
+    private final Set<SimplexModule<?>> modules = new HashSet<>();
 
-    protected AddonRegistry() {
+    protected ModuleRegistry() {
     }
 
-    public static synchronized AddonRegistry getInstance() {
+    public static synchronized ModuleRegistry getInstance() {
         return instance;
     }
 
-    public <T extends SimplexAddon<T>> boolean isPaper(T addon) {
+    public <T extends SimplexModule<T>> boolean isPaper(T addon) {
         try {
             Class.forName(com.destroystokyo.paper.Namespaced.class.getName());
             return true;
@@ -29,7 +29,7 @@ public final class AddonRegistry {
         }
     }
 
-    private <T extends SimplexAddon<T>> boolean isBungee(T addon) {
+    private <T extends SimplexModule<T>> boolean isBungee(T addon) {
         try {
             Class.forName(net.md_5.bungee.Util.class.getName());
             return true;
@@ -40,7 +40,7 @@ public final class AddonRegistry {
         }
     }
 
-    private <T extends SimplexAddon<T>> boolean isWaterfall(T addon) {
+    private <T extends SimplexModule<T>> boolean isWaterfall(T addon) {
         try {
             Class.forName(io.github.waterfallmc.waterfall.utils.Hex.class.getName());
             return true;
@@ -55,7 +55,7 @@ public final class AddonRegistry {
         return info.value() == type;
     }
 
-    public <T extends SimplexAddon<T>> void register(T addon) {
+    public <T extends SimplexModule<T>> void register(T addon) {
         if (addon.getClass().isAnnotationPresent(Requires.class)) {
             Requires info = addon.getClass().getDeclaredAnnotation(Requires.class);
             if (checkAnnotation(info, ReqType.PAPER)
@@ -71,10 +71,10 @@ public final class AddonRegistry {
                 return;
             }
         }
-        getComponents().add(addon);
+        getModules().add(addon);
     }
 
-    public Set<SimplexAddon<?>> getComponents() {
-        return components;
+    public Set<SimplexModule<?>> getModules() {
+        return modules;
     }
 }

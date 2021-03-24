@@ -2,6 +2,7 @@ package io.github.simplexdev.simplexcore.task;
 
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
+import io.github.simplexdev.simplexcore.utils.TickedTime;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -18,7 +19,7 @@ public class Announcer extends SimplexTask {
     }};
 
     public Announcer() {
-        super(20L);
+        super(TickedTime.HOUR);
         register(this, SimplexCorePlugin.getInstance(), true, false);
     }
 

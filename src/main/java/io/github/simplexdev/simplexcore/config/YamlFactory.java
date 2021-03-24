@@ -1,6 +1,6 @@
 package io.github.simplexdev.simplexcore.config;
 
-import io.github.simplexdev.simplexcore.plugin.SimplexAddon;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.Trio;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,12 +8,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 
 public final class YamlFactory {
-    private final SimplexAddon<?> plugin;
+    private final SimplexModule<?> plugin;
     private String resourcePath;
     private File directory;
     private String fileName;
 
-    public YamlFactory(SimplexAddon<?> plugin) {
+    public YamlFactory(SimplexModule<?> plugin) {
         this.plugin = plugin;
     }
 
