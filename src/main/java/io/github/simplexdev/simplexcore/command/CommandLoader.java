@@ -4,6 +4,7 @@ import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.command.defaults.DefaultCommand;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.ReflectionTools;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
@@ -73,8 +74,21 @@ public final class CommandLoader {
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
-            if (info == null) return;
-            if (!SimplexCommand.class.isAssignableFrom(annotated)) return;
+            if (info == null) {
+                SimplexCorePlugin.getInstance()
+                        .getLogger().warning(annotated.getSimpleName()
+                        + " is missing a required annotation: "
+                        + CommandInfo.class.getSimpleName());
+                return;
+            }
+
+            if (!SimplexCommand.class.isAssignableFrom(annotated)) {
+                SimplexCorePlugin.getInstance()
+                        .getLogger().warning(annotated.getSimpleName()
+                        + " must extend " + SimplexCommand.class.getSimpleName()
+                        + " to be registered as a command.");
+                return;
+            }
 
             PluginCommand command = Registry.create(plugin, info.name().toLowerCase());
             command.setAliases(Arrays.asList(info.aliases().split(",")));
@@ -100,7 +114,10 @@ public final class CommandLoader {
     public CommandExecutor getExecutorFromName(String name) {
         for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
-                throw new RuntimeException("Missing annotation CommandInfo!");
+                SimplexCorePlugin.getInstance()
+                        .getLogger().warning(obj.getSimpleName()
+                        + " is missing a required annotation: "
+                        + CommandInfo.class.getSimpleName());
             }
 
             CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
@@ -115,7 +132,7 @@ public final class CommandLoader {
                 }
             }
         }
-        throw new RuntimeException("Unable to get a command executor! Terminating!");
+        throw new RuntimeException("Unable to assign a CommandExecutor from the provided classes!");
     }
 
     /**
@@ -130,7 +147,11 @@ public final class CommandLoader {
     public TabCompleter getTabFromName(String name) {
         for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
-                throw new RuntimeException("Missing annotation CommandInfo!");
+                SimplexCorePlugin.getInstance()
+                        .getLogger().warning(obj.getSimpleName()
+                        + " is missing required annotation: "
+                        + CommandInfo.class.getSimpleName());
+                continue;
             }
 
             CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
@@ -153,12 +174,10 @@ public final class CommandLoader {
     private static class Registry {
         private static final Constructor<PluginCommand> constructor;
         private static final Field cmdMapField;
-        private static final Field knownCmdsField;
 
         static {
             constructor = ReflectionTools.getDeclaredConstructor(PluginCommand.class, String.class, Plugin.class);
             cmdMapField = ReflectionTools.getDeclaredField(SimplePluginManager.class, "commandMap");
-            knownCmdsField = ReflectionTools.getDeclaredField(SimpleCommandMap.class, "knownCommands");
         }
 
         public static PluginCommand create(@NotNull Plugin plugin, @NotNull String name) {
@@ -168,12 +187,6 @@ public final class CommandLoader {
         public static void registerCommand(PluginCommand command) {
             try {
                 CommandMap map = (CommandMap) cmdMapField.get(Bukkit.getPluginManager());
-                Map<String, Command> knownCommands = map.getKnownCommands();
-
-                if (knownCommands.containsKey(command.getName().toLowerCase())) {
-                    knownCommands.replace(command.getName().toLowerCase(), command);
-                }
-
                 map.register(command.getName().toLowerCase(), command);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
