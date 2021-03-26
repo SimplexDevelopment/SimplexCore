@@ -1,18 +1,21 @@
 package io.github.simplexdev.simplexcore.particle;
 
 import io.github.simplexdev.api.IParticleEffect;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.*;
 
 import java.util.*;
 
-public class ParticleFactory {
+public final class ParticleFactory {
+    private final SimplexModule<?> plugin;
     private float size = 2F;
     private long duration = 20L * 15L;
     private final Set<Particle> particleSet = new HashSet<>();
     private final Map<Particle, Color> particleColorMap = new HashMap<>();
     private final Set<Effect> particleEffects = new HashSet<>();
 
-    public ParticleFactory() {
+    public ParticleFactory(SimplexModule<?> plugin) {
+        this.plugin = plugin;
     }
 
     public ParticleFactory setSize(float size) {
@@ -89,5 +92,9 @@ public class ParticleFactory {
            Color color = effect.getParticleColors().get(particle);
            world.spawnParticle(particle, location, 20);
         });
+    }
+
+    public final SimplexModule<?> getPlugin() {
+        return plugin;
     }
 }

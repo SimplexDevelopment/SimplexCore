@@ -43,7 +43,7 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
             getInternals().reload();
             //
             SimplexListener.register(new DependencyListener(), this);
-            new Announcer();
+            new Announcer(this);
         } catch (Exception ex) {
             suspended = true;
             // TODO: Write an output to a file with why it suspended.

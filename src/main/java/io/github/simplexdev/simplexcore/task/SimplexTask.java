@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 public abstract class SimplexTask implements Consumer<BukkitTask> {
     protected final long DELAY;
     protected final long INTERVAL;
+    protected final SimplexModule<?> plugin;
     protected Date lastRan = new Date();
     protected Timer timer = new Timer();
     protected int taskId;
@@ -25,9 +26,10 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param initialDelay How long before the first time the task executes.
      * @param interval     How long before the task repeats itself.
      */
-    protected SimplexTask(long initialDelay, long interval) {
+    protected SimplexTask(SimplexModule<?> plugin, long initialDelay, long interval) {
         DELAY = initialDelay;
         INTERVAL = interval;
+        this.plugin = plugin;
     }
 
     /**
@@ -37,16 +39,18 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param interval How often the task should repeat. Every 20L is 1 second.
      *                 You should use {@link TickedTime} for determining the related server timings.
      */
-    protected SimplexTask(long interval) {
+    protected SimplexTask(SimplexModule<?> plugin, long interval) {
         DELAY = 0L;
         INTERVAL = interval;
+        this.plugin = plugin;
     }
 
     /**
      * Constructor which automatically registers the DELAY as 30 seconds
      * and the INTERVAL at which it executes as 5 minutes.
      */
-    protected SimplexTask() {
+    protected SimplexTask(SimplexModule<?> plugin) {
+        this.plugin = plugin;
         DELAY = TickedTime.SECOND * 30; // 30 seconds until the task triggers for the first time.
         INTERVAL = TickedTime.MINUTE * 5; // Task will run at 5 minute intervals once the first trigger has been called.
     }
@@ -56,12 +60,11 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * {@link org.bukkit.scheduler.BukkitScheduler}.
      *
      * @param task      The instance of a subclass of this class.
-     * @param plugin    Your plugin instance.
      * @param repeating Whether or not the task should repeat.
      * @param delayed   Whether or not to delay the first time the task runs.
      * @param <T>       A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin, boolean repeating, boolean delayed) {
+    public <T extends SimplexTask> void register(T task, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
             SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
         } else if (delayed) {
@@ -85,7 +88,7 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param <T>     A subclass of SimplexTask.
      */
     public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin, boolean delayed) {
-        register(task, plugin, false, delayed);
+        register(task, false, delayed);
     }
 
     /**
@@ -98,7 +101,7 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * @param <T>    A subclass of SimplexTask.
      */
     public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin) {
-        register(task, plugin, false, false);
+        register(task, false, false);
     }
 
     /**

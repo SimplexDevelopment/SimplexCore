@@ -8,7 +8,7 @@ import net.minecraft.server.v1_16_R3.Enchantment;
 import org.bukkit.NamespacedKey;
 
 public abstract class SimplexEnch extends Enchantment implements IEnchant {
-    protected final SimplexModule<?> plugin; // What was your question?
+    protected final SimplexModule<?> plugin;
 
     protected SimplexEnch(SimplexModule<?> plugin, Rarity rarity, EnchantmentSlotType type, EnumItemSlot[] enumSlot) {
         super(rarity, type, enumSlot);

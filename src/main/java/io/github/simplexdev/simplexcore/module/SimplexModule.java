@@ -1,5 +1,6 @@
 package io.github.simplexdev.simplexcore.module;
 
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.command.CommandLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -63,11 +64,15 @@ public abstract class SimplexModule<T extends SimplexModule<T>> extends JavaPlug
         return this.getDataFolder();
     }
 
-    public synchronized ModuleRegistry getRegistry() {
+    public ModuleRegistry getRegistry() {
         return ModuleRegistry.getInstance();
     }
 
-    public synchronized CommandLoader getCommandLoader() {
+    public CommandLoader getCommandLoader() {
         return CommandLoader.getInstance();
+    }
+
+    public SimplexCorePlugin getProvider() {
+        return SimplexCorePlugin.getInstance();
     }
 }

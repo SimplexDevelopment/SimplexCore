@@ -11,8 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static io.github.simplexdev.simplexcore.utils.Utilities.pathway;
 
@@ -124,12 +126,18 @@ public final class BanFactory {
         return null;
     }
 
-    private VoidSupplier assignBanDuration() {
+    private VoidSupplier assignBanDuration(Long... time) {
         return () -> {
             if (type.equals(BanType.PERMANENT)) {
                 banDuration = TickedTime.YEAR * 99;
             } else if (type.equals(BanType.TEMPORARY)) {
                 banDuration = TickedTime.DAY;
+            } else if (type.equals(BanType.CUSTOM)) {
+                long tmp = 0L;
+                for (long t : time) {
+                    tmp += t;
+                }
+                banDuration = tmp;
             } else {
                 banDuration = TickedTime.MINUTE * 5;
             }

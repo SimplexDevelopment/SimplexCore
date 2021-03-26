@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public final class PotionsFactory {
     private PotionsFactory() {
-
+        throw new AssertionError("This class should not be instantiated!");
     }
 
     public static void applyEffect(LivingEntity entity, PotionEffect... effect) {

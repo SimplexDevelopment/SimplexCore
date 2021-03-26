@@ -2,7 +2,8 @@ package io.github.simplexdev.simplexcore.ban;
 
 public enum BanType {
     PERMANENT("P-"),
-    TEMPORARY("T-");
+    TEMPORARY("T-"),
+    CUSTOM("C-");
 
     private final String prefix;
 
