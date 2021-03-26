@@ -1,15 +1,19 @@
 package io.github.simplexdev.simplexcore.structures.block;
 
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import io.github.simplexdev.simplexcore.structures.exception.InvalidSchematic;
+
+import java.util.Vector;
 
 public abstract class NBTBlock {
-    private final NBTTagCompound nbttag;
+    private  Object nbttag;
 
-    public NBTBlock(NBTTagCompound nbttag){
-        this.nbttag = nbttag;
-    }
-
-    public NBTTagCompound getNbttag(){
+    public Object getNbttag(){
         return nbttag;
     }
+
+    public abstract Vector getOffset() throws InvalidSchematic;
+
+    public abstract boolean isEmpty();
+
+
 }
