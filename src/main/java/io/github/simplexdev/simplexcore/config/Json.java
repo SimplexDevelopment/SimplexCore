@@ -1,96 +1,33 @@
 package io.github.simplexdev.simplexcore.config;
 
-import io.github.simplexdev.api.IConfig;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.github.simplexdev.api.IJson;
 import io.github.simplexdev.api.func.Path;
-import org.bukkit.configuration.ConfigurationSection;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
+import org.json.simple.JSONObject;
 
-import java.util.List;
-
-public class Json implements IConfig {
+public final class Json implements IJson {
     // TODO: Write actual JSON implementations.
+    //
+    private final Gson gson;
+    private final SimplexModule<?> plugin;
 
-    @Override
-    public void set(Path path, Object value) {
+    Json(SimplexModule<?> plugin) {
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.plugin = plugin;
+    }
 
+    final Gson getGson() {
+        return gson;
+    }
+
+    public final SimplexModule<?> getPlugin() {
+        return plugin;
     }
 
     @Override
-    public boolean contains(Path path) {
-        return false;
-    }
-
-    @Override
-    public ConfigurationSection getConfigurationSection(Path path) {
-        return null;
-    }
-
-    @Override
-    public List<String> getStringList(Path path) {
-        return null;
-    }
-
-    @Override
-    public long getLong(Path path) {
-        return 0;
-    }
-
-    @Override
-    public List<?> getList(Path path) {
-        return null;
-    }
-
-    @Override
-    public boolean getBoolean(Path path) {
-        return false;
-    }
-
-    @Override
-    public int getInt(Path path) {
-        return 0;
-    }
-
-    @Override
-    public double getDouble(Path path) {
-        return 0;
-    }
-
-    @Override
-    public String getString(Path path) {
-        return null;
-    }
-
-    @Override
-    public long getLong(Path path, long def) {
-        return 0;
-    }
-
-    @Override
-    public List<?> getList(Path path, List<?> def) {
-        return null;
-    }
-
-    @Override
-    public boolean getBoolean(Path path, boolean def) {
-        return false;
-    }
-
-    @Override
-    public int getInt(Path path, int def) {
-        return 0;
-    }
-
-    @Override
-    public double getDouble(Path path, double def) {
-        return 0;
-    }
-
-    @Override
-    public String getString(Path path, String def) {
-        return null;
-    }
-
-    @Override
-    public Object get(Path path, Object def) {
+    public JSONObject getJSONObject(Path path) {
         return null;
     }
 }
