@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 public final class Structure {
-    public Plugin plugin;
+    private Plugin plugin;
     private File schematic;
     private short width = 0;
     private short height = 0;
