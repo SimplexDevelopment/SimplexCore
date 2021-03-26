@@ -23,23 +23,19 @@ public final class Structure {
     private HashMap<Vector, NBTBlock> nbtBlocks = new HashMap<>();
     private HashMap<Integer, BlockData> blocks = new HashMap<>();
 
-    public Structure(SimplexModule<?> plugin,File schematic)
-    {
+    public Structure(SimplexModule<?> plugin,File schematic) {
         this.plugin = plugin.getPlugin();
         this.schematic = schematic;
     }
 
-    public void load() throws InvalidSchematic
-    {
+    public void load() throws InvalidSchematic {
 
     }
 
-    public void paste(Location loc,PasteType pasteType) throws SchematicNotLoaded
-    {
+    public void paste(Location loc,PasteType pasteType) throws SchematicNotLoaded {
         if (width == 0 || height == 0 || length == 0 || blocks.isEmpty()) {
             throw new SchematicNotLoaded("Schematic not loaded please load schematic first...");
         }
-
 
     }
 }
