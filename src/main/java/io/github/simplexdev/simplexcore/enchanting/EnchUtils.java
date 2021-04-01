@@ -25,7 +25,5 @@ public class EnchUtils {
         });
     }
 
-    public <T extends SimplexEnch> void load(T enchantment) {
-        EnchantmentWrapper.registerEnchantment(enchantment);
-    }
+    public <T extends SimplexEnch> void load(T enchantment) {} // TODO
 }
