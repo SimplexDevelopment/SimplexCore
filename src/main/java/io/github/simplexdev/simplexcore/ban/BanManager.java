@@ -36,11 +36,12 @@ public class BanManager extends SimplexListener {
         }
 
         AtomicReference<Ban> temp = new AtomicReference<>();
-        banMap.forEach((ban, type) -> {
-            if (ban.getOffender().equals(player.getUniqueId())) {
-                temp.set(ban);
-            }
-        });
+
+        banMap.keySet()
+                .stream()
+                .filter(ban -> ban.getOffender().equals(player.getUniqueId()))
+                .forEach(temp::set);
+
         return temp.get();
     }
 
