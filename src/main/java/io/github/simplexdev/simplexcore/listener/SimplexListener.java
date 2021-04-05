@@ -2,6 +2,7 @@ package io.github.simplexdev.simplexcore.listener;
 
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
+import io.github.simplexdev.simplexcore.utils.ReflectionTools;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
@@ -20,12 +21,8 @@ public abstract class SimplexListener implements Listener {
             return;
         }
 
-        try {
-            Constructor<? extends SimplexListener> constr = cls.getDeclaredConstructor();
-            register(constr.newInstance(), plugin);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            SimplexCorePlugin.getInstance().getLogger().severe("Could not register this listener!");
-        }
+        Constructor<? extends SimplexListener> constr = ReflectionTools.getDeclaredConstructor(cls);
+        register(ReflectionTools.initConstructor(constr), plugin);
     }
 
     /**

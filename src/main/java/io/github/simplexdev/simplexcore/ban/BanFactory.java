@@ -2,23 +2,22 @@ package io.github.simplexdev.simplexcore.ban;
 
 import io.github.simplexdev.api.IBan;
 import io.github.simplexdev.api.func.VoidSupplier;
-import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static io.github.simplexdev.simplexcore.utils.Utilities.pathway;
 
 public final class BanFactory {
+    private final SimplexModule<?> plugin;
     private final Player player;
     private final CommandSender sender;
     private final Date banDate;
@@ -27,7 +26,8 @@ public final class BanFactory {
     private String banReason;
     private long banDuration;
 
-    public BanFactory(Player player, CommandSender sender, Date banDate, BanType type) {
+    public BanFactory(SimplexModule<?> plugin, Player player, CommandSender sender, Date banDate, BanType type) {
+        this.plugin = plugin;
         this.player = player;
         this.sender = sender;
         this.banDate = banDate;
@@ -72,7 +72,7 @@ public final class BanFactory {
      * @return A new ban instance.
      */
     public Ban create() {
-        return new Ban(player, sender, type, banDuration) {
+        return new Ban(plugin, player, sender, type, banDuration) {
             @Override
             public UUID getOffender() {
                 return player.getUniqueId();

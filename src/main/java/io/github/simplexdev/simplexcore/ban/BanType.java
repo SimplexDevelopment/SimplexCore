@@ -3,7 +3,8 @@ package io.github.simplexdev.simplexcore.ban;
 public enum BanType {
     PERMANENT("P-"),
     TEMPORARY("T-"),
-    CUSTOM("C-");
+    CUSTOM("C-"),
+    UNKNOWN("");
 
     private final String prefix;
 
@@ -18,6 +19,18 @@ public enum BanType {
             return "Temporary";
         } else {
             return "Unknown";
+        }
+    }
+
+    public static BanType getFromId(String banId) {
+        if (banId.startsWith("P")) {
+            return PERMANENT;
+        } else if (banId.startsWith("T")) {
+            return TEMPORARY;
+        } else if (banId.startsWith("C")){
+            return CUSTOM;
+        } else {
+            return UNKNOWN;
         }
     }
 

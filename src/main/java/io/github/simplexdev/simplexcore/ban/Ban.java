@@ -5,9 +5,10 @@ import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
+import io.github.simplexdev.simplexcore.listener.SimplexListener;
+import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
-import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -29,23 +30,25 @@ public abstract class Ban implements IBan {
     private final BanType type;
     private final Date banDate;
     private final long banDuration;
+    private final SimplexModule<?> plugin;
 
     private final String banId;
     private final String banReason;
 
-    public Ban(Player player, CommandSender sender) {
-        this(player, sender, BanType.TEMPORARY);
+    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender) {
+        this(plugin, player, sender, BanType.TEMPORARY);
     }
 
-    public Ban(Player player, CommandSender sender, BanType type) {
-        this(player, sender, type, TickedTime.DAY);
+    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type) {
+        this(plugin, player, sender, type, TickedTime.DAY);
     }
 
-    public Ban(Player player, CommandSender sender, BanType type, long banDuration) {
-        this(player, sender, type, Utilities.generateBanId(type), Messages.BAN.getMessage(), new Date(), banDuration);
+    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, long banDuration) {
+        this(plugin, player, sender, type, Utilities.generateBanId(type), Messages.BAN.getMessage(), new Date(), banDuration);
     }
 
-    public Ban(Player player, CommandSender sender, BanType type, String banId, String banReason, Date banDate, long banDuration) {
+    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, String banId, String banReason, Date banDate, long banDuration) {
+        this.plugin = plugin;
         this.player = player;
         this.sender = sender;
         this.type = type;

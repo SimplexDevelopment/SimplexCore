@@ -1,7 +1,6 @@
 package io.github.simplexdev.api.annotations;
 
 public enum ReqType {
-    PAPER,
-    WATERFALL,
+    SPIGOT,
     BUNGEECORD
 }

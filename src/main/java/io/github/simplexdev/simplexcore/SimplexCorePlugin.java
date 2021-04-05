@@ -1,14 +1,18 @@
 package io.github.simplexdev.simplexcore;
 
+import io.github.simplexdev.api.annotations.ReqType;
+import io.github.simplexdev.api.annotations.Requires;
 import io.github.simplexdev.simplexcore.command.defaults.Command_info;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
+import io.github.simplexdev.simplexcore.crafting.RecipeBuilder;
 import io.github.simplexdev.simplexcore.module.DependencyManagement;
 import io.github.simplexdev.simplexcore.task.Announcer;
 import io.github.simplexdev.simplexcore.listener.DependencyListener;
 import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 
+@Requires(ReqType.SPIGOT)
 public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
     private static boolean debug = false;
     private static boolean suspended = false;

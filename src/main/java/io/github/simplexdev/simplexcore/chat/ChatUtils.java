@@ -20,7 +20,7 @@ public final class ChatUtils {
     }
 
     public void msg(TextComponent component) {
-        target.sendMessage(component);
+        target.spigot().sendMessage(component);
     }
 
     public void err(Messages message) {

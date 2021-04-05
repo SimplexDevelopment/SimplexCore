@@ -29,6 +29,17 @@ public final class ModuleRegistry {
         }
     }
 
+    public <T extends SimplexModule<T>> boolean isSpigot(T addon) {
+        try {
+            Class.forName(org.spigotmc.WatchdogThread.class.getName());
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            addon.stop();
+            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Paper!");
+            return false;
+        }
+    }
+
     private <T extends SimplexModule<T>> boolean isBungee(T addon) {
         try {
             Class.forName(net.md_5.bungee.Util.class.getName());
@@ -40,17 +51,6 @@ public final class ModuleRegistry {
         }
     }
 
-    private <T extends SimplexModule<T>> boolean isWaterfall(T addon) {
-        try {
-            Class.forName(io.github.waterfallmc.waterfall.utils.Hex.class.getName());
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            addon.stop();
-            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Waterfall!");
-            return false;
-        }
-    }
-
     private boolean checkAnnotation(Requires info, ReqType type) {
         return info.value() == type;
     }
@@ -58,16 +58,12 @@ public final class ModuleRegistry {
     public <T extends SimplexModule<T>> void register(T addon) {
         if (addon.getClass().isAnnotationPresent(Requires.class)) {
             Requires info = addon.getClass().getDeclaredAnnotation(Requires.class);
-            if (checkAnnotation(info, ReqType.PAPER)
-                    && !isPaper(addon)) {
+            if (checkAnnotation(info, ReqType.SPIGOT)
+                    && (!isSpigot(addon) || !isPaper(addon))) {
                 return;
             }
             if (checkAnnotation(info, ReqType.BUNGEECORD)
                     && !isBungee(addon)) {
-                return;
-            }
-            if (checkAnnotation(info, ReqType.WATERFALL)
-                    && !isWaterfall(addon)) {
                 return;
             }
         }
