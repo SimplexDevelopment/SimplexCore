@@ -26,13 +26,13 @@ public final class RecipeBuilder {
         return new Worker(result, recipeName, isShaped);
     }
 
-    private final class Worker {
+    protected final class Worker {
         private final Map<Character, Material> ingredients = new HashMap<>();
         private final ItemStack stack;
         private final NamespacedKey key;
         private final boolean shaped;
         private final List<Material> materials = new ArrayList<>();
-        private String[] shape = {"", "", ""};
+        private String[] shape = {"aaa", "aaa", "aaa"};
 
         public Worker(ItemStack stack, String name, boolean isShaped) {
             this.stack = stack;
@@ -57,7 +57,7 @@ public final class RecipeBuilder {
             return recipe;
         }
 
-        public void make() {
+        public void create() {
             plugin.getServer().addRecipe(shaped ? sha() : nosha());
         }
 
