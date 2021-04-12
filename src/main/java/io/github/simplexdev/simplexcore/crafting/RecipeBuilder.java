@@ -22,6 +22,14 @@ public final class RecipeBuilder {
         this.plugin = plugin;
     }
 
+    /**
+     * Create a new RecipeBuilder Worker.
+     * @param result The resulting item.
+     * @param recipeName The name of the recipe.
+     *                   This should be separated by "_" where spaced would be used.
+     * @param isShaped Whether or not the recipe is shaped or shapeless.
+     * @return A new appendable RecipeBuilder Worker instance based on the given parameters.
+     */
     public final Worker of(ItemStack result, String recipeName, boolean isShaped) {
         return new Worker(result, recipeName, isShaped);
     }
@@ -32,8 +40,15 @@ public final class RecipeBuilder {
         private final NamespacedKey key;
         private final boolean shaped;
         private final List<Material> materials = new ArrayList<>();
-        private String[] shape = {"aaa", "aaa", "aaa"};
+        private String[] shape = {"", "", ""};
 
+        /**
+         * @param stack The item to build a recipe for. This may be an item with custom metadata,
+         *              or even an item without a native crafting recipe.
+         * @param name The recipe name; it should be all lowercase,
+         *              separated by underscores where spaced would be used.
+         * @param isShaped If the recipe is shaped or shapeless.
+         */
         public Worker(ItemStack stack, String name, boolean isShaped) {
             this.stack = stack;
             this.key = new NamespacedKey(plugin, name);
@@ -62,17 +77,28 @@ public final class RecipeBuilder {
         }
 
         /**
-         * This is for shaped crafting.
+         * This is for shaped crafting. Please use {@link Worker#addIngredients(Material...)}
+         * for shapeless crafting.
          *
          * @param identifier The specific identifier
          * @param ingredient The ingredient represented by the identifier.
-         * @return
+         * @return An appendable worker instance.
          */
         public Worker addIngredient(@NotNull Character identifier, @NotNull Material ingredient) {
             ingredients.put(identifier, ingredient);
             return this;
         }
 
+        /**
+         * Sets the shape for the crafting recipe. This is not required if the recipe is shapeless.
+         * @param top The top three slots represented by "___" where any specific letter
+         *               is represented by the relative ingredient identifier.
+         * @param middle The middle three slots represented by "___" where any specific letter
+         *               is represented by the relative ingredient identifier.
+         * @param bottom The bottom three slots represented by "___" where any specific letter
+         *               is represented by the relative ingredient identifier.
+         * @return An appendable worker instance.
+         */
         public Worker setShape(@Nullable String top, @Nullable String middle, @Nullable String bottom) {
             String a = "";
             String b = "";
@@ -92,10 +118,11 @@ public final class RecipeBuilder {
         }
 
         /**
-         * This is for shapeless crafting.
+         * This is for shapeless crafting. Please use {@link Worker#addIngredient(Character, Material)}
+         * for shaped crafting.
          *
          * @param ingredients any number (up to nine) of ingredients required to craft this recipe.
-         * @return An appendable instance of this class.
+         * @return An appendable worker instance.
          */
         public Worker addIngredients(Material... ingredients) {
             Utilities.forEach(ingredients, materials::add);

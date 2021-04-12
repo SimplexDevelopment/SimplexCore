@@ -30,7 +30,7 @@ public class RBImpl {
     }
 
     public void customWand() {
-        ItemStack is = bldr.itemBuilder(Material.BLAZE_ROD)
+        ItemStack is = bldr.newItem(Material.BLAZE_ROD)
                 .setName("Magic Wand")
                 .addLore("This wand is magical.")
                 .addEnchant(Enchantment.KNOCKBACK, 10)

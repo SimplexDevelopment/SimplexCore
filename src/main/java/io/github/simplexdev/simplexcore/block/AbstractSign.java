@@ -1,4 +1,4 @@
-package io.github.simplexdev.simplexcore.sign;
+package io.github.simplexdev.simplexcore.block;
 
 import io.github.simplexdev.api.IUsableSign;
 import io.github.simplexdev.api.func.VoidSupplier;
