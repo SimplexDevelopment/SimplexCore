@@ -6,10 +6,6 @@ import java.sql.SQLException;
 
 public class Database {
 
-    /*
-    * More to be added soon.
-     */
-
     public static void createTable(String table, String columns) {
         PreparedStatement ps;
         try {
@@ -70,6 +66,106 @@ public class Database {
         return false;
     }
 
+    public static String getString(String table, String column, String gate, Object gate_value) {
+        PreparedStatement ps;
+        try {
+            ps = MySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + table
+                    + " WHERE " + gate + "=?");
+            ps.setObject(1, gate_value);
+
+            ResultSet rs = ps.executeQuery();
+            String toReturn;
+
+            if (rs.next()) {
+                toReturn = rs.getString(column);
+                return toReturn;
+            }
+        } catch (SQLException ex) {
+            // TODO
+        }
+        return null;
+    }
+
+    public static int getInt(String table, String column, String gate, Object gate_value) {
+        PreparedStatement ps;
+        try {
+            ps = MySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + table
+                    + " WHERE " + gate + "=?");
+            ps.setObject(1, gate_value);
+
+            ResultSet rs = ps.executeQuery();
+            int toReturn;
+
+            if (rs.next()) {
+                toReturn = rs.getInt(column);
+                return toReturn;
+            }
+        } catch (SQLException ex) {
+            // TODO
+        }
+        return 0;
+    }
+
+    public static Double getDouble(String table, String column, String gate, Object gate_value) {
+        PreparedStatement ps;
+        try {
+            ps = MySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + table
+                    + " WHERE " + gate + "=?");
+            ps.setObject(1, gate_value);
+
+            ResultSet rs = ps.executeQuery();
+            double toReturn;
+
+            if (rs.next()) {
+                toReturn = rs.getDouble(column);
+                return toReturn;
+            }
+        } catch (SQLException ex) {
+            // TODO
+        }
+        return null;
+    }
+
+    public static long getLong(String table, String column, String gate, Object gate_value) {
+        PreparedStatement ps;
+        try {
+            ps = MySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + table
+                    + " WHERE " + gate + "=?");
+            ps.setObject(1, gate_value);
+
+            ResultSet rs = ps.executeQuery();
+            long toReturn;
+
+            if (rs.next()) {
+                toReturn = rs.getLong(column);
+                return toReturn;
+            }
+        } catch (SQLException ex) {
+            // TODO
+        }
+        return 0;
+    }
+
+    public static byte getByte(String table, String column, String gate, Object gate_value) {
+        PreparedStatement ps;
+        try {
+            ps = MySQL.getConnection().prepareStatement("SELECT " + column + " FROM " + table
+                    + " WHERE " + gate + "=?");
+            ps.setObject(1, gate_value);
+
+            ResultSet rs = ps.executeQuery();
+            byte toReturn;
+
+            if (rs.next()) {
+                toReturn = rs.getByte(column);
+                return toReturn;
+            }
+        } catch (SQLException ex) {
+            // TODO
+        }
+        return 0;
+    }
+
     public static Object get(String table, String column, String gate, Object gate_value) {
         PreparedStatement ps;
         try {
@@ -81,7 +177,7 @@ public class Database {
             Object toReturn;
 
             if (rs.next()) {
-                toReturn = rs.getObject("CODE");
+                toReturn = rs.getObject(column);
                 return toReturn;
             }
         } catch(SQLException ex) {
