@@ -42,7 +42,7 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
     public void start() {
         try {
             getRegistry().register(this);
-            getCommandLoader().classpath(Command_info.class).load(this);
+            getCommandLoader().classpath(this, Command_info.class).load();
             getYamlConfig().reload();
             getInternals().reload();
             //

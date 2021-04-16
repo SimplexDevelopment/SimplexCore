@@ -1,12 +1,13 @@
 package io.github.simplexdev.simplexcore.command;
 
 import io.github.simplexdev.api.annotations.CommandInfo;
-import io.github.simplexdev.simplexcore.command.defaults.DefaultCommand;
+import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.ReflectionTools;
-import io.github.simplexdev.simplexcore.SimplexCorePlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.command.*;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,10 @@ import java.util.MissingResourceException;
 
 public final class CommandLoader {
     private Reflections reflections;
+    private ClassLoader classLoader;
+    private SimplexModule<?> plugin;
     private static final CommandLoader instance = new CommandLoader();
+    private final Registry registry = new Registry();
 
     /**
      * @return A Singleton Pattern instance of this class.
@@ -38,15 +42,15 @@ public final class CommandLoader {
      * If the class provided does not have the {@link CommandInfo} annotation, the loader will throw a new
      * {@link MissingResourceException} and will not load your plugin's commands.
      * If the class provided does not extend {@link SimplexCommand}, the loader will throw a new
-     * {@link RuntimeException} and your commands will not be loaded.
+     * {@link CommandLoaderException} and your commands will not be loaded.
      * </p>
      *
      * @param clazz The command class to load from
      * @return An instance of this where the classpath has been prepared for loading the commands.
      */
-    public <T extends SimplexCommand> CommandLoader classpath(Class<T> clazz) {
+    public <T extends SimplexCommand> CommandLoader classpath(SimplexModule<?> plugin, Class<T> clazz) {
         if (clazz == null) {
-            throw new IllegalStateException("The class provided cannot be found!");
+            throw new IllegalArgumentException("The class provided cannot be found!");
         }
 
         if (!clazz.isAnnotationPresent(CommandInfo.class)) {
@@ -54,22 +58,26 @@ public final class CommandLoader {
         }
 
         if (!SimplexCommand.class.isAssignableFrom(clazz)) {
-            throw new RuntimeException("Your command must extend SimplexCommand.class for it to be used as the reference point for loading commands.");
+            throw new CommandLoaderException("Your command must extend SimplexCommand.class for it to be used as the reference point for loading commands.");
         }
 
-        reflections = ReflectionTools.reflect(clazz);
+        this.reflections = ReflectionTools.reflect(clazz);
+        this.plugin = plugin;
+        this.classLoader = plugin.getClass().getClassLoader();
 
         return this;
     }
 
     /**
      * Loads all the commands from the specified classpath.
-     * This should be used immediately after {@link CommandLoader#classpath(Class)} has been called.
+     * This should be used immediately after {@link CommandLoader#classpath(SimplexModule, Class)} has been called.
      * If used before, an exception will be thrown, and your commands will not be loaded.
-     *
-     * @param plugin An instance of your plugin to assign as the parent plugin for each command.
      */
-    public void load(SimplexModule<?> plugin) {
+    public void load() {
+        if (reflections == null || plugin == null || classLoader == null) {
+            throw new CommandLoaderException("Please run CommandLoader#classpath(SimplexModule, Class) first!");
+        }
+
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
@@ -89,7 +97,7 @@ public final class CommandLoader {
                 return;
             }
 
-            PluginCommand command = Registry.create(plugin, info.name().toLowerCase());
+            PluginCommand command = registry.create(plugin, info.name().toLowerCase());
             command.setAliases(Arrays.asList(info.aliases().split(",")));
             command.setDescription(info.description());
             command.setExecutor(getExecutorFromName(info.name()));
@@ -98,7 +106,7 @@ public final class CommandLoader {
             command.setPermissionMessage(info.permissionMessage());
             command.setTabCompleter(getTabFromName(info.name()));
             command.setUsage(info.usage());
-            Registry.registerCommand(command);
+            registry.registerCommand(command);
         });
     }
 
@@ -110,28 +118,27 @@ public final class CommandLoader {
      * @param name The name of the command.
      * @return An instance of the command class as a CommandExecutor.
      */
-    public CommandExecutor getExecutorFromName(String name) {
-        for (Class<? extends CommandExecutor> obj : reflections.getSubTypesOf(CommandExecutor.class)) {
+    private CommandExecutor getExecutorFromName(String name) {
+        for (Class<? extends SimplexCommand> obj : reflections.getSubTypesOf(SimplexCommand.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
-                SimplexCorePlugin.getInstance()
-                        .getLogger().warning(obj.getSimpleName()
+                plugin.getLogger().warning(obj.getSimpleName()
                         + " is missing a required annotation: "
                         + CommandInfo.class.getSimpleName());
+                continue;
             }
 
             CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
 
             if (name.equalsIgnoreCase(info.name())) {
-                try {
-                    Constructor<? extends CommandExecutor> constr = obj.getDeclaredConstructor();
-                    constr.setAccessible(true);
-                    return constr.newInstance();
-                } catch (ReflectiveOperationException ignored) {
-                    return new DefaultCommand();
+                Constructor<? extends CommandExecutor> constr =
+                        ReflectionTools.getDeclaredConstructor(obj, SimplexModule.class);
+                if (constr == null) {
+                    throw new CommandLoaderException("Constructor does not exist! Are you extending SimplexCommand properly?");
                 }
+                return ReflectionTools.initConstructor(constr, plugin);
             }
         }
-        throw new RuntimeException("Unable to assign a CommandExecutor from the provided classes!");
+        throw new CommandLoaderException("Unable to assign a CommandExecutor from the provided classes!");
     }
 
     /**
@@ -143,52 +150,50 @@ public final class CommandLoader {
      * @return The command as an instance of TabCompleter
      */
     @Nullable
-    public TabCompleter getTabFromName(String name) {
-        for (Class<? extends TabCompleter> obj : reflections.getSubTypesOf(TabCompleter.class)) {
+    private TabCompleter getTabFromName(String name) {
+        for (Class<? extends SimplexCommand> obj : reflections.getSubTypesOf(SimplexCommand.class)) {
             if (!obj.isAnnotationPresent(CommandInfo.class)) {
-                SimplexCorePlugin.getInstance()
-                        .getLogger().warning(obj.getSimpleName()
+                plugin.getLogger().warning(obj.getSimpleName()
                         + " is missing required annotation: "
                         + CommandInfo.class.getSimpleName());
                 continue;
             }
 
             CommandInfo info = obj.getDeclaredAnnotation(CommandInfo.class);
+
             if (name.equalsIgnoreCase(info.name())) {
-                try {
-                    Constructor<? extends TabCompleter> constr = obj.getDeclaredConstructor();
-                    constr.setAccessible(true);
-                    return constr.newInstance();
-                } catch (ReflectiveOperationException ignored) {
-                    return new DefaultCommand();
+                Constructor<? extends TabCompleter> constr = ReflectionTools.getDeclaredConstructor(obj, SimplexModule.class);
+                if (constr == null) {
+                    throw new CommandLoaderException("Constructor does not exist! Are you extending SimplexCommand properly?");
                 }
+                return ReflectionTools.initConstructor(constr, plugin);
             }
         }
-        return null;
+        throw new CommandLoaderException("Unable to assign a TabCompleter from the provided classes!");
     }
 
     /**
      * Registry class, which forces all necessary fields to accessible.
      */
-    private static class Registry {
-        private static final Constructor<PluginCommand> constructor;
-        private static final Field cmdMapField;
+    private final class Registry {
+        private final Constructor<PluginCommand> constructor;
+        private final Field cmdMapField;
 
-        static {
+        public Registry() {
             constructor = ReflectionTools.getDeclaredConstructor(PluginCommand.class, String.class, Plugin.class);
             cmdMapField = ReflectionTools.getDeclaredField(SimplePluginManager.class, "commandMap");
         }
 
-        public static PluginCommand create(@NotNull Plugin plugin, @NotNull String name) {
+        public PluginCommand create(@NotNull SimplexModule<?> plugin, @NotNull String name) {
             return ReflectionTools.initConstructor(constructor, name, plugin);
         }
 
-        public static void registerCommand(PluginCommand command) {
+        public void registerCommand(PluginCommand command) {
             try {
-                CommandMap map = (CommandMap) cmdMapField.get(Bukkit.getPluginManager());
+                CommandMap map = (CommandMap) cmdMapField.get(plugin.getManager());
                 map.register(command.getName().toLowerCase(), command);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new CommandLoaderException(e);
             }
         }
     }
