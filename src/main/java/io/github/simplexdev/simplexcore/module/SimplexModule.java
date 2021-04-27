@@ -71,8 +71,4 @@ public abstract class SimplexModule<T extends SimplexModule<T>> extends JavaPlug
     public CommandLoader getCommandLoader() {
         return CommandLoader.getInstance();
     }
-
-    public SimplexCorePlugin getProvider() {
-        return SimplexCorePlugin.getInstance();
-    }
 }

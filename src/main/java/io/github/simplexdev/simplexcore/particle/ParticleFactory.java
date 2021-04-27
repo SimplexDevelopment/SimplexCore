@@ -85,9 +85,9 @@ public final class ParticleFactory {
         };
     }
 
-    // TODO: Needs work :)
     public void spawnParticle(IParticleEffect effect, Location location) {
         World world = location.getWorld();
+        if (world == null) return;
         effect.getParticles().forEach(particle -> {
            Color color = effect.getParticleColors().get(particle);
            world.spawnParticle(particle, location, 20);

@@ -196,14 +196,22 @@ public class ItemBuilder {
 
         public final Worker setUnbreakable(boolean unbreakable) {
             meta.setUnbreakable(unbreakable);
+            stack.setItemMeta(meta);
             return this;
         }
 
         /**
          * @return The final item.
          */
-        public final ItemStack get() {
+        public final ItemStack getItem() {
             return stack;
+        }
+
+        /**
+         * @return The ItemMeta of the item.
+         */
+        public final ItemMeta getItemMeta() {
+            return meta;
         }
     }
 }

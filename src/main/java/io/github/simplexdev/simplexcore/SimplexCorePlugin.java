@@ -5,11 +5,6 @@ import io.github.simplexdev.api.annotations.Requires;
 import io.github.simplexdev.simplexcore.command.defaults.Command_info;
 import io.github.simplexdev.simplexcore.config.Yaml;
 import io.github.simplexdev.simplexcore.config.YamlFactory;
-import io.github.simplexdev.simplexcore.crafting.RecipeBuilder;
-import io.github.simplexdev.simplexcore.module.DependencyManagement;
-import io.github.simplexdev.simplexcore.task.Announcer;
-import io.github.simplexdev.simplexcore.listener.DependencyListener;
-import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 
 @Requires(ReqType.SPIGOT)
@@ -17,7 +12,6 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
     private static boolean debug = false;
     private static boolean suspended = false;
     private static SimplexCorePlugin instance;
-    private DependencyManagement dpm;
     private Yaml config;
     private Yaml internals;
 
@@ -33,7 +27,6 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
     @Override
     public void init() {
         SimplexCorePlugin.instance = this;
-        this.dpm = new DependencyManagement();
         this.config = new YamlFactory(this).setDefaultPathways();
         this.internals = new YamlFactory(this).from("internals.yml", getParentFolder(), "internals.yml");
     }
@@ -45,9 +38,6 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
             getCommandLoader().classpath(this, Command_info.class).load();
             getYamlConfig().reload();
             getInternals().reload();
-            //
-            SimplexListener.register(new DependencyListener(), this);
-            new Announcer(this);
         } catch (Exception ex) {
             suspended = true;
             // TODO: Write an output to a file with why it suspended.
@@ -74,13 +64,11 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
         return suspended;
     }
 
-    public DependencyManagement getDependencyManager() {
-        return dpm;
-    }
-
     public Yaml getYamlConfig() {
         return config;
     }
 
-    public Yaml getInternals() { return internals; }
+    public Yaml getInternals() {
+        return internals;
+    }
 }

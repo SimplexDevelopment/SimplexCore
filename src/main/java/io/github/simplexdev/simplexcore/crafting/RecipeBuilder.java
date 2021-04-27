@@ -4,7 +4,12 @@ import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.Utilities;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +35,7 @@ public final class RecipeBuilder {
      * @param isShaped Whether or not the recipe is shaped or shapeless.
      * @return A new appendable RecipeBuilder Worker instance based on the given parameters.
      */
-    public final Worker of(ItemStack result, String recipeName, boolean isShaped) {
+    public final Worker newRecipe(ItemStack result, String recipeName, boolean isShaped) {
         return new Worker(result, recipeName, isShaped);
     }
 
@@ -72,6 +77,9 @@ public final class RecipeBuilder {
             return recipe;
         }
 
+        /**
+         * Creates the recipe and registers it with Bukkit.
+         */
         public void create() {
             plugin.getServer().addRecipe(shaped ? sha() : nosha());
         }

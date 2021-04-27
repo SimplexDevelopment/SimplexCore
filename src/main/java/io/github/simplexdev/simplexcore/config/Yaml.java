@@ -151,13 +151,13 @@ public final class Yaml implements IConfig {
      * Called when a file is created.
      */
     public void create() {
-        SimplexCorePlugin.getInstance().getLogger().info("File created!");
+        plugin.getLogger().info("File created!");
     }
 
     /**
      * Called when then file is reloaded
      */
     public void onReload() {
-        SimplexCorePlugin.getInstance().getLogger().info("The plugin configuration has been reloaded!");
+        plugin.getLogger().info("The plugin configuration has been reloaded!");
     }
 }

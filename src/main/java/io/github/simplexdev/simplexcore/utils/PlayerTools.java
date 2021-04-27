@@ -11,7 +11,7 @@ import java.util.UUID;
 public final class PlayerTools {
 
     @NotNull
-    public static String stringUUID(@NotNull Player player) {
+    public static String stringedUUID(@NotNull Player player) {
         return player.getUniqueId().toString();
     }
 
