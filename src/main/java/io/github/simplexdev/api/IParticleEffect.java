@@ -1,20 +1,18 @@
 package io.github.simplexdev.api;
 
 import org.bukkit.Color;
-import org.bukkit.Effect;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.Particle;
-
-import java.util.Map;
 import java.util.Set;
 
 public interface IParticleEffect {
-    Set<Particle> getParticles();
+    Particle getParticle();
 
-    Map<Particle, Color> getParticleColors();
+    Color getParticleColor();
 
-    Set<Effect> getEffects();
+    Set<PotionEffect> getEffects();
 
     Float getSize();
 
-    Long getDuration();
+    Integer getDuration();
 }

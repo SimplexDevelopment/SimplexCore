@@ -19,14 +19,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class PotionsFactory {
+public final class PotionEffectFactory {
     private final Player player;
     private final Map<Player, ICompoundEffect> map = new HashMap<>();
 
-    public PotionsFactory(Player player) {
+    public PotionEffectFactory(Player player) {
         this.player = player;
     }
 
+    /**
+     * Creates a new compound effect with the specified parameters.
+     * @param plugin The plugin to use when registering a new NamespacedKey
+     * @param name
+     * @param duration
+     * @param amplifier
+     * @param effects
+     * @return
+     */
     public static ICompoundEffect compoundEffect(SimplexModule<?> plugin, String name, int duration, int amplifier, PotionEffectType... effects) {
         List<PotionEffect> list = new ArrayList<>();
 
@@ -67,10 +76,12 @@ public final class PotionsFactory {
         };
     }
 
+    public static PotionEffect potionEffect(PotionEffectType type, int duration, int amplifier) {
+        return type.createEffect(duration, amplifier);
+    }
+
     public void applyCompoundEffect(ICompoundEffect effect) {
-        effect.getEffects().forEach(item -> {
-            item.apply(player);
-        });
+        effect.getEffects().forEach(player::addPotionEffect);
         map.put(player, effect);
     }
 
