@@ -4,6 +4,7 @@ import io.github.simplexdev.api.IBan;
 import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
+import io.github.simplexdev.simplexcore.config.YamlFactory;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
@@ -67,7 +68,7 @@ public final class BanFactory {
     }
 
     /**
-     * Creates a new instance of the abstract class Ban.
+     * Creates a new Ban Entry.
      *
      * @return A new ban instance.
      */

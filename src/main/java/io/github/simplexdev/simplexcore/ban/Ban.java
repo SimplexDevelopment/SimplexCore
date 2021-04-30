@@ -35,18 +35,50 @@ public abstract class Ban implements IBan {
     private final String banId;
     private final String banReason;
 
+    /**
+     * Creates a new Ban Entry.
+     * @param plugin Your plugin instance
+     * @param player The player to be banned
+     * @param sender The command sender.
+     */
     public Ban(SimplexModule<?> plugin, Player player, CommandSender sender) {
         this(plugin, player, sender, BanType.TEMPORARY);
     }
 
+    /**
+     * Creates a new Ban Entry.
+     * @param plugin Your plugin instance.
+     * @param player The player to be banned.
+     * @param sender The command sender.
+     * @param type The type of ban. See {@link BanType}.
+     */
     public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type) {
         this(plugin, player, sender, type, TickedTime.DAY);
     }
 
+    /**
+     * Creates a new Ban Entry.
+     * @param plugin Your plugin instance.
+     * @param player The player to be banned.
+     * @param sender The command sender.
+     * @param type The type of ban. See {@link BanType}.
+     * @param banDuration How long the ban should last.
+     */
     public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, long banDuration) {
         this(plugin, player, sender, type, Utilities.generateBanId(type), Messages.BAN.getMessage(), new Date(), banDuration);
     }
 
+    /**
+     * Creates a new Ban Entry.
+     * @param plugin Your plugin instance.
+     * @param player The player to be banned.
+     * @param sender The command sender.
+     * @param type The type of ban. See {@link BanType}.
+     * @param banId A custom Ban ID.
+     * @param banReason The reason why the user was banned.
+     * @param banDate The date when the ban was created.
+     * @param banDuration How long the ban should last.
+     */
     public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, String banId, String banReason, Date banDate, long banDuration) {
         this.plugin = plugin;
         this.player = player;
@@ -58,13 +90,16 @@ public abstract class Ban implements IBan {
         this.banDate = banDate;
     }
 
+    /**
+     * Writes the Ban to a file.
+     * @param separateFiles Whether or not to create individual files for players or store them all in one bans.yml file.
+     */
     public void writeToFile(boolean separateFiles) {
-        File fileLocation = new File(SimplexCorePlugin.getInstance().getParentFolder(), "bans");
+        File fileLocation = new File(plugin.getParentFolder(), "bans");
 
         if (separateFiles) {
-            Yaml yaml = new YamlFactory(SimplexCorePlugin.getInstance()).from(null, fileLocation, player.getName() + ".yml");
-            yaml.getConfig().createSection(getOffender().toString());
-            ConfigurationSection section = yaml.getConfigurationSection(getOffender()::toString);
+            Yaml yaml = new YamlFactory(plugin).from(null, fileLocation, player.getName() + ".yml");
+            ConfigurationSection section = yaml.getConfig().createSection(getOffender().toString());
             section.set("name", player.getName());
             section.set("ban_id", banId);
             section.set("sender", sender.getName());
@@ -75,12 +110,25 @@ public abstract class Ban implements IBan {
             try {
                 yaml.save();
             } catch (IOException e) {
-                SimplexCorePlugin.getInstance().getLogger().severe(e.getMessage());
+                plugin.getLogger().severe(e.getMessage());
             }
             yaml.reload();
         } else {
-            // TODO: Write to a single file as separate sections per UUID.
-            Yaml yaml = new YamlFactory(SimplexCorePlugin.getInstance()).from(null, fileLocation, "bans.yml");
+            Yaml yaml = new YamlFactory(plugin).from(null, fileLocation, "bans.yml");
+            ConfigurationSection section = yaml.getConfig().createSection(getOffender().toString());
+            section.set("name", player.getName());
+            section.set("ban_id", banId);
+            section.set("sender", sender.getName());
+            section.set("reason", banReason);
+            section.set("duration", banDuration);
+            section.set("date", banDate.getTime());
+            section.set("type", type.toString());
+            try {
+                yaml.save();
+            } catch (IOException ex) {
+                plugin.getLogger().severe(ex.getMessage());
+            }
+            yaml.reload();
         }
     }
 }

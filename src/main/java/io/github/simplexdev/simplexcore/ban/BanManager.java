@@ -17,12 +17,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
-public class BanManager extends SimplexListener {
+public final class BanManager extends SimplexListener {
     private final Map<Ban, BanType> banMap = new HashMap<>();
     private final SimplexModule<?> plugin;
 
-    public BanManager(SimplexModule<?> plugin) {
+    BanManager(SimplexModule<?> plugin) {
         this.plugin = plugin;
+        register(this, plugin);
     }
 
     public void addBan(Ban ban) {
