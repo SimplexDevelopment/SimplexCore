@@ -29,12 +29,12 @@ public final class PotionEffectFactory {
 
     /**
      * Creates a new compound effect with the specified parameters.
-     * @param plugin The plugin to use when registering a new NamespacedKey
-     * @param name
-     * @param duration
-     * @param amplifier
-     * @param effects
-     * @return
+     * @param plugin The plugin to use when registering a new NamespacedKey.
+     * @param name The effect name
+     * @param duration The duration of the effect
+     * @param amplifier the amplifier of the effect
+     * @param effects The {@link PotionEffectType}(s) you want to be included.
+     * @return A new compound effect.
      */
     public static ICompoundEffect compoundEffect(SimplexModule<?> plugin, String name, int duration, int amplifier, PotionEffectType... effects) {
         List<PotionEffect> list = new ArrayList<>();
@@ -76,15 +76,31 @@ public final class PotionEffectFactory {
         };
     }
 
+    /**
+     * Creates a new {@link PotionEffect}.
+     * @param type The type of potion effect
+     * @param duration How long the effect should last
+     * @param amplifier How strong the potion is.
+     * @return A new {@link PotionEffect}.
+     */
     public static PotionEffect potionEffect(PotionEffectType type, int duration, int amplifier) {
         return type.createEffect(duration, amplifier);
     }
 
+    /**
+     * Applies the compound effect to the defined player.
+     * @param effect The {@link ICompoundEffect} to apply.
+     */
     public void applyCompoundEffect(ICompoundEffect effect) {
         effect.getEffects().forEach(player::addPotionEffect);
         map.put(player, effect);
     }
 
+    /**
+     * Checks if a player currently has a compound effect.
+     * @param effect The {@link ICompoundEffect} to look for
+     * @return Whether or not the player has the compound effect.
+     */
     public boolean hasPotionEffect(ICompoundEffect effect) {
         return (map.containsKey(player) && map.get(player).equals(effect));
     }

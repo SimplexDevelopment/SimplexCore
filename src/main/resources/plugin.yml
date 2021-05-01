@@ -6,7 +6,10 @@ prefix: Simplex
 authors:
   - Paldiu
   - Conclure
-description: Core for a group of plugins designed to enhance gameplay to the max
+  - Fleek
+  - abhi289
+  - xDabDoub
+description: A Spigot Library and API.
 softdepend:
   - PlaceholderAPI
   - ProtocolLib

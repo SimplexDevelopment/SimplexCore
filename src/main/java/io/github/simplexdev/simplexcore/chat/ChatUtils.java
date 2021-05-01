@@ -34,4 +34,6 @@ public final class ChatUtils {
     public void color(TextComponent component) {
         target.sendMessage(factory.colorize(component.getText()));
     }
+
+
 }

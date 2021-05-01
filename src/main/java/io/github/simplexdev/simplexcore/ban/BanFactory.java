@@ -112,7 +112,7 @@ public final class BanFactory {
     }
 
     public void deleteBan(IBan ban) {
-
+        // TODO
     }
 
     public IBan getBan(String banId) {
