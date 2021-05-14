@@ -18,6 +18,7 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
     private final Inventory INV;
     private final Map<Integer, ClickAction> actions;
     private final UUID uuid;
+    private final Map<IGUI, List<AbstractGUI>> pagesByGUI = new HashMap<>();
 
     private final List<Integer> validSize = new ArrayList<>(){{
         add(9);
@@ -27,6 +28,8 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
         add(45);
         add(54);
     }};
+
+    private int pages = 0;
 
     public static final Map<UUID, IGUI> invByUUId = new HashMap<>();
     public static final Map<UUID, UUID> openInvs = new HashMap<>();
@@ -86,6 +89,18 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
             }
         });
         invByUUId.remove(getInvUUId());
+    }
+
+    public void addPage(AbstractGUI page) {
+        pages += 1;
+    }
+
+    public void deletePage(AbstractGUI page) {
+        if (pages == 0) {
+            return;
+        }
+
+        pages -= 1;
     }
 
     public static Map<UUID, IGUI> getInvByUUId() {

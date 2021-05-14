@@ -85,15 +85,17 @@ public final class CommandLoader {
                 SimplexCorePlugin.getInstance()
                         .getLogger().warning(annotated.getSimpleName()
                         + " is missing a required annotation: "
-                        + CommandInfo.class.getSimpleName());
+                        + CommandInfo.class.getSimpleName()
+                        + ". Ignoring.");
                 return;
             }
 
             if (!SimplexCommand.class.isAssignableFrom(annotated)) {
                 SimplexCorePlugin.getInstance()
                         .getLogger().warning(annotated.getSimpleName()
-                        + " must extend " + SimplexCommand.class.getSimpleName()
-                        + " to be registered as a command.");
+                        + " does not extend "
+                        + SimplexCommand.class.getSimpleName()
+                        + ". Ignoring.");
                 return;
             }
 
