@@ -3,6 +3,8 @@ package io.github.simplexdev.simplexcore.module;
 import io.github.simplexdev.api.annotations.ReqType;
 import io.github.simplexdev.api.annotations.Requires;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,62 +13,19 @@ public final class ModuleRegistry {
     private static final ModuleRegistry instance = new ModuleRegistry();
     private final Set<SimplexModule<?>> modules = new HashSet<>();
 
-    protected ModuleRegistry() {
+    private ModuleRegistry() {
     }
 
-    public static synchronized ModuleRegistry getInstance() {
+    public static ModuleRegistry getInstance() {
         return instance;
     }
 
-    public <T extends SimplexModule<T>> boolean isPaper(T addon) {
-        try {
-            Class.forName(com.destroystokyo.paper.Namespaced.class.getName());
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            addon.stop();
-            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Paper!");
-            return false;
-        }
-    }
-
-    public <T extends SimplexModule<T>> boolean isSpigot(T addon) {
-        try {
-            Class.forName(org.spigotmc.WatchdogThread.class.getName());
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            addon.stop();
-            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Paper!");
-            return false;
-        }
-    }
-
-    private <T extends SimplexModule<T>> boolean isBungee(T addon) {
-        try {
-            Class.forName(net.md_5.bungee.Util.class.getName());
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            addon.stop();
-            SimplexCorePlugin.getInstance().getLogger().severe(addon.getName() + " has been disabled: This module requires Bungeecord!");
-            return false;
-        }
-    }
-
-    private boolean checkAnnotation(Requires info, ReqType type) {
+    @Contract(pure = true)
+    private boolean checkAnnotation(@NotNull Requires info, ReqType type) {
         return info.value() == type;
     }
 
     public <T extends SimplexModule<T>> void register(T addon) {
-        if (addon.getClass().isAnnotationPresent(Requires.class)) {
-            Requires info = addon.getClass().getDeclaredAnnotation(Requires.class);
-            if (checkAnnotation(info, ReqType.SPIGOT)
-                    && (!isSpigot(addon) || !isPaper(addon))) {
-                return;
-            }
-            if (checkAnnotation(info, ReqType.BUNGEECORD)
-                    && !isBungee(addon)) {
-                return;
-            }
-        }
         getModules().add(addon);
     }
 

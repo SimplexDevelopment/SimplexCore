@@ -4,6 +4,7 @@ import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.command.SimplexCommand;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

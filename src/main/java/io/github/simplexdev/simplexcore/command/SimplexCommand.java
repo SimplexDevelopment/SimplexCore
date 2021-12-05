@@ -3,6 +3,9 @@ package io.github.simplexdev.simplexcore.command;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.Utilities;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
     private final SimplexModule<?> plugin;
@@ -71,23 +75,47 @@ public abstract class SimplexCommand implements CommandExecutor, TabCompleter {
      * @param player   The Player to send a message to
      * @param messages The messages to send.
      */
-    public void playerMsg(Player player, String... messages) {
+    public void playerMsg(@NotNull Player player, String... messages) {
         StringBuilder builder = new StringBuilder();
         Utilities.forEach(messages, builder::append);
-        player.sendMessage(builder.toString());
+        player.sendMessage(Component.text(builder.toString()));
     }
 
     /**
      * Send a message or a group of messages to a {@link CommandSender}
-     * If you want the messages to send on new lines, put \n at the end of each message to send.
+     * If you want the messages to send on separate lines,
+     * put \n at the end of each message to send.
      *
      * @param sender   The CommandSender to send a message to.
      * @param messages The messages to send.
      */
-    public void msg(CommandSender sender, String... messages) {
+    public void msg(@NotNull CommandSender sender, String... messages) {
         StringBuilder builder = new StringBuilder();
         Utilities.forEach(messages, builder::append);
-        sender.sendMessage(builder.toString());
+        sender.sendMessage(Component.text(builder.toString()));
+    }
+
+    /**
+     * Send a component or a group of components to a {@link CommandSender}.
+     * If you want the components to occupy separate lines,
+     * use the separator boolean.
+     *
+     * @param sender     The CommandSender to send components to
+     * @param components The components to send.
+     */
+    public void msg(@NotNull CommandSender sender, boolean separator, Component... components) {
+        if (separator) {
+            AtomicReference<Component> primary = new AtomicReference<>(Component.text(""));
+            AtomicReference<Component> temp = new AtomicReference<>(Component.text(""));
+            Utilities.forEach(components, component -> {
+                temp.set(Component.newline().append(component));
+                primary.set(primary.get().append(temp.get()));
+            }); // The way I'm doing this is probably unnecessary, but I did it anyway.
+            sender.sendMessage(primary.get());
+            return;
+        }
+
+        sender.sendMessage(Component.join(JoinConfiguration.builder().build(), components));
     }
 
     @Nullable

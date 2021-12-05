@@ -2,6 +2,7 @@ package io.github.simplexdev.simplexcore.utils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.jetbrains.annotations.NotNull;
 
 public final class Trio<A, B, C> {
     private final A primary;
@@ -52,7 +53,7 @@ public final class Trio<A, B, C> {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return getPrimary().toString() +
                 "\n" +
                 getSecondary().toString() +

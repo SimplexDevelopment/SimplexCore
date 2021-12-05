@@ -4,12 +4,15 @@ import io.github.simplexdev.api.func.Path;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.ban.BanType;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.SplittableRandom;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public final class Utilities {
@@ -36,17 +39,18 @@ public final class Utilities {
         throw new AssertionError();
     }
 
-    public static <T> void forEach(T[] array, Consumer<? super T> action) {
+    public static <T> void forEach(T @NotNull [] array, Consumer<? super T> action) {
         for (T obj : array) {
             action.accept(obj);
         }
     }
 
-    public static <T> Stream<T> stream(T[] array) {
+    @Contract(pure = true)
+    public static <T> @NotNull Stream<T> stream(T[] array) {
         return Arrays.stream(array);
     }
 
-    public static String generateBanId(BanType type) {
+    public static @NotNull String generateBanId(@NotNull BanType type) {
         final String charList = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
         final String numList = "0123456789";
         final int length = charList.length();
@@ -56,10 +60,10 @@ public final class Utilities {
 
         sb.append(type.getPrefix());
 
-        for (int x = 0; x < 4; x++) {
+        IntStream.range(0, 4).forEach(x -> {
             sb.append(charList.charAt(random.nextInt(length - 1)));
             sb.append(numList.charAt(numbers.nextInt(lng - 1)));
-        }
+        });
 
         sb.setCharAt(2, capitalize(sb.charAt(2)));
         return sb.toString();
@@ -74,15 +78,17 @@ public final class Utilities {
         return temp.charAt(0);
     }
 
-    public static Path pathway(String pathway) {
+    @Contract(pure = true)
+    public static @NotNull Path pathway(String pathway) {
         return () -> pathway;
     }
 
-    public static String getNMSVersion() {
+    public static @NotNull String getNMSVersion() {
         return Bukkit.getServer().getClass().getPackage().getName().substring(23).replaceFirst("v", "");
     }
 
-    public static String[] formatVersion(String version) {
+    @Contract(pure = true)
+    public static String @NotNull [] formatVersion(@NotNull String version) {
         return (version).split(":");
     }
 

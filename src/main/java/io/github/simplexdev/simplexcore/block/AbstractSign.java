@@ -5,6 +5,7 @@ import io.github.simplexdev.api.func.VoidSupplier;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public abstract class AbstractSign implements IUsableSign {
     protected VoidSupplier executeScript = null;
     protected boolean canInteract = false;
 
-    protected AbstractSign(Sign sign) {
+    protected AbstractSign(@NotNull Sign sign) {
         this.sign = sign;
         this.location = sign.getLocation();
         this.world = sign.getWorld();

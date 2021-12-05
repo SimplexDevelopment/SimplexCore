@@ -7,6 +7,8 @@ import io.github.simplexdev.simplexcore.module.SimplexModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +24,7 @@ public final class Yaml implements IConfig {
     private File file;
 
     // Package private ;)
-    Yaml(SimplexModule<?> plugin, String fileName, File directory, String resourcePath) {
+    Yaml(SimplexModule<?> plugin, @NotNull String fileName, File directory, String resourcePath) {
         if (!fileName.endsWith(".yml")) {
             fileName += ".yml";
         }
@@ -38,71 +40,74 @@ public final class Yaml implements IConfig {
     }
 
     @Override
-    public final void set(Path path, Object value) {
+    public final void set(@NotNull Path path, Object value) {
         this.getConfig().set(path.getPath(), value);
     }
 
-    public boolean contains(Path path) {
+    public boolean contains(@NotNull Path path) {
         return this.getConfig().contains(path.getPath());
     }
 
-    public ConfigurationSection getConfigurationSection(Path path) {
+    public ConfigurationSection getConfigurationSection(@NotNull Path path) {
         return this.getConfig().getConfigurationSection(path.getPath());
     }
 
-    public List<String> getStringList(Path path) {
+    public @NotNull List<String> getStringList(@NotNull Path path) {
         return this.getConfig().getStringList(path.getPath());
     }
 
-    public long getLong(Path path) {
+    public long getLong(@NotNull Path path) {
         return this.getConfig().getLong(path.getPath());
     }
 
-    public List<?> getList(Path path) {
+    public List<?> getList(@NotNull Path path) {
         return this.getConfig().getList(path.getPath());
     }
 
-    public boolean getBoolean(Path path) {
+    public boolean getBoolean(@NotNull Path path) {
         return this.getConfig().getBoolean(path.getPath());
     }
 
-    public int getInt(Path path) {
+    public int getInt(@NotNull Path path) {
         return this.getConfig().getInt(path.getPath());
     }
 
-    public double getDouble(Path path) {
+    public double getDouble(@NotNull Path path) {
         return this.getConfig().getDouble(path.getPath());
     }
 
-    public String getString(Path path) {
+    public String getString(@NotNull Path path) {
         return this.getConfig().getString(path.getPath());
     }
 
-    public long getLong(Path path, long def) {
+    public long getLong(@NotNull Path path, long def) {
         return this.getConfig().getLong(path.getPath(), def);
     }
 
-    public List<?> getList(Path path, List<?> def) {
+    @Contract("_, !null -> !null")
+    public List<?> getList(@NotNull Path path, List<?> def) {
         return this.getConfig().getList(path.getPath(), def);
     }
 
-    public boolean getBoolean(Path path, boolean def) {
+    public boolean getBoolean(@NotNull Path path, boolean def) {
         return this.getConfig().getBoolean(path.getPath(), def);
     }
 
-    public int getInt(Path path, int def) {
+    public int getInt(@NotNull Path path, int def) {
         return this.getConfig().getInt(path.getPath(), def);
     }
 
-    public double getDouble(Path path, double def) {
+    public double getDouble(@NotNull Path path, double def) {
         return this.getConfig().getDouble(path.getPath(), def);
     }
 
-    public String getString(Path path, String def) {
+    @Contract("_, !null -> !null")
+    public String getString(@NotNull Path path, String def) {
         return this.getConfig().getString(path.getPath(), def);
     }
 
-    public Object get(Path path, Object def) {
+    @Contract("_, !null -> !null")
+    public Object get(@NotNull Path path, Object def) {
         return this.getConfig().get(path.getPath(), def);
     }
 

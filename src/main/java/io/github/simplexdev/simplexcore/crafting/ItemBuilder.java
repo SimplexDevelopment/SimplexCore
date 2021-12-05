@@ -9,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -90,7 +91,7 @@ public class ItemBuilder {
      * Create a new AttributeModifier for an ItemStack's ItemMeta.
      * @param name The name of the modifier.
      * @param amount The amount to add
-     * @param scalar Whether or not it should add as a number or a magnitude.
+     * @param scalar Whether it should add as a number or a magnitude.
      * @return A new AttributeModifier.
      */
     public AttributeModifier add(String name, double amount, boolean scalar) {
@@ -117,7 +118,7 @@ public class ItemBuilder {
         /**
          * @param stack The item to work from.
          */
-        public Worker(ItemStack stack) {
+        public Worker(@NotNull ItemStack stack) {
             this.stack = stack;
             this.meta = stack.getItemMeta();
         }
@@ -127,7 +128,7 @@ public class ItemBuilder {
          * @param lore The item lore to add.
          * @return An appendable worker instance.
          */
-        public final Worker addLore(String... lore) {
+        public Worker addLore(String... lore) {
             meta.setLore(Arrays.asList(lore));
             stack.setItemMeta(meta);
             return this;
@@ -138,7 +139,7 @@ public class ItemBuilder {
          * @param customName The new name of the item.
          * @return An appendable worker instance.
          */
-        public final Worker setName(String customName) {
+        public Worker setName(String customName) {
             meta.setDisplayName(customName);
             stack.setItemMeta(meta);
             return this;
@@ -150,7 +151,7 @@ public class ItemBuilder {
          * @param level The level of the enchantment. This is non-restrictive.
          * @return An appendable worker instance.
          */
-        public final Worker addEnchant(Enchantment enchantment, int level) {
+        public Worker addEnchant(Enchantment enchantment, int level) {
             meta.addEnchant(enchantment, level, true);
             stack.setItemMeta(meta);
             return this;
@@ -162,7 +163,7 @@ public class ItemBuilder {
          * @param modifier The type of attribute modifier to use.
          * @return An appendable worker instance.
          */
-        public final Worker addAttribute(Attribute attribute, AttributeModifier modifier) {
+        public Worker addAttribute(Attribute attribute, AttributeModifier modifier) {
             meta.addAttributeModifier(attribute, modifier);
             stack.setItemMeta(meta);
             return this;
@@ -173,7 +174,7 @@ public class ItemBuilder {
          * @param flags Any amount of ItemFlags to add to the item.
          * @return An appendable worker instance.
          */
-        public final Worker addItemFlags(ItemFlag... flags) {
+        public Worker addItemFlags(ItemFlag... flags) {
             meta.addItemFlags(flags);
             stack.setItemMeta(meta);
             return this;
@@ -184,17 +185,17 @@ public class ItemBuilder {
          * @param amount The amount of items this stack should represent.
          * @return An appendable worker instance.
          */
-        public final Worker setAmount(int amount) {
+        public Worker setAmount(int amount) {
             stack.setAmount(amount);
             return this;
         }
 
-        public final Worker setType(Material material) {
+        public Worker setType(Material material) {
             stack.setType(material);
             return this;
         }
 
-        public final Worker setUnbreakable(boolean unbreakable) {
+        public Worker setUnbreakable(boolean unbreakable) {
             meta.setUnbreakable(unbreakable);
             stack.setItemMeta(meta);
             return this;
@@ -203,14 +204,14 @@ public class ItemBuilder {
         /**
          * @return The final item.
          */
-        public final ItemStack getItem() {
+        public ItemStack getItem() {
             return stack;
         }
 
         /**
          * @return The ItemMeta of the item.
          */
-        public final ItemMeta getItemMeta() {
+        public ItemMeta getItemMeta() {
             return meta;
         }
     }

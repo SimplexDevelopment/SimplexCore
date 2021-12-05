@@ -1,6 +1,7 @@
 package io.github.simplexdev.api;
 
 import io.github.simplexdev.api.func.ClickAction;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -74,10 +75,10 @@ public interface IGUI {
      * Creates a new ItemStack instance to place in the inventory provided by the interface instance.
      * @param material The item material
      * @param name The name of the item
-     * @param lore Optional item descriptions
+     * @param lore Optional item descriptions, as components.
      * @return The newly created item
      */
-    ItemStack newItem(@NotNull Material material, @NotNull String name, String... lore);
+    ItemStack newItem(@NotNull Material material, @NotNull String name, Component... lore);
 
     /**
      * Creates a new ItemStack instance to place in the inventory provided by the interface instance.

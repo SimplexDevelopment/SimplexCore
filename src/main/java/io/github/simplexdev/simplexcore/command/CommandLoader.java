@@ -2,6 +2,7 @@ package io.github.simplexdev.simplexcore.command;
 
 import io.github.simplexdev.api.annotations.CommandInfo;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
+import io.github.simplexdev.simplexcore.chat.TextComponentFactory;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.ReflectionTools;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +36,6 @@ public final class CommandLoader {
 
     /**
      * Prepares the CommandLoader to load your plugin's commands from its own package location.
-     * This is synchronized, so it only registers commands from one plugin at a time.
      * All your commands MUST be placed in their own package.
      * <p>
      * If your command classes do not have the {@link CommandInfo} annotation, they will not be loaded.
@@ -78,6 +78,8 @@ public final class CommandLoader {
             throw new CommandLoaderException("Please run CommandLoader#classpath(SimplexModule, Class) first!");
         }
 
+        TextComponentFactory factory = new TextComponentFactory();
+
         reflections.getTypesAnnotatedWith(CommandInfo.class).forEach(annotated -> {
             CommandInfo info = annotated.getDeclaredAnnotation(CommandInfo.class);
 
@@ -105,7 +107,7 @@ public final class CommandLoader {
             command.setExecutor(getExecutorFromName(info.name()));
             command.setLabel(info.name().toLowerCase());
             command.setPermission(info.permission());
-            command.setPermissionMessage(info.permissionMessage());
+            command.permissionMessage(factory.textComponent(info.permissionMessage()));
             command.setTabCompleter(getTabFromName(info.name()));
             command.setUsage(info.usage());
             registry.registerCommand(command);

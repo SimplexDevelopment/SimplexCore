@@ -11,6 +11,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,7 +132,7 @@ public final class ParticleFactory {
         };
     }
 
-    public void spawnParticleCloud(IParticleEffect effect, Location location) {
+    public void spawnParticleCloud(IParticleEffect effect, @NotNull Location location) {
         World world = location.getWorld();
         if (world == null) return;
         AreaEffectCloud cloud = (AreaEffectCloud) world.spawnEntity(location, EntityType.AREA_EFFECT_CLOUD);
@@ -145,25 +146,27 @@ public final class ParticleFactory {
         cloud.setPersistent(true);
     }
 
-    public void spawnDirectionalParticle(Particle particle, Location location, double xDirection, double yDirection, double zDirection) {
+    public void spawnDirectionalParticle(Particle particle, @NotNull Location location, double xDirection, double yDirection, double zDirection) {
         World world = location.getWorld();
         if (world == null) return;
 
         world.spawnParticle(particle, location, 0, xDirection, yDirection, zDirection);
     }
 
-    public void spawnRedstoneParticle(Location location, int count, Particle.DustOptions options) {
+    public void spawnRedstoneParticle(@NotNull Location location, int count, Particle.DustOptions options) {
         World world = location.getWorld();
         if (world == null) return;
 
         world.spawnParticle(Particle.REDSTONE, location, count, options);
     }
 
-    public static Particle.DustOptions options(IParticleEffect effect, float size) {
+    @Contract("_, _ -> new")
+    public static Particle.@NotNull DustOptions options(@NotNull IParticleEffect effect, float size) {
         return new Particle.DustOptions(effect.getParticleColor(), size);
     }
 
-    public static Particle.DustOptions options(int red, int green, int blue, float size) {
+    @Contract("_, _, _, _ -> new")
+    public static Particle.@NotNull DustOptions options(int red, int green, int blue, float size) {
         if (red > 255) {
             red = 255;
         }
@@ -176,7 +179,7 @@ public final class ParticleFactory {
         return new Particle.DustOptions(Color.fromRGB(red, green, blue), size);
     }
 
-    public void spawnParticle(IParticleEffect effect, Location location, int count) {
+    public void spawnParticle(IParticleEffect effect, @NotNull Location location, int count) {
         World world = location.getWorld();
         if (world == null) return;
 
@@ -220,7 +223,7 @@ public final class ParticleFactory {
         }
     }
 
-    public final SimplexModule<?> getPlugin() {
+    public SimplexModule<?> getPlugin() {
         return plugin;
     }
 

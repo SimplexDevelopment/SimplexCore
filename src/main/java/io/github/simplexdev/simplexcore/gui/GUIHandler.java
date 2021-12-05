@@ -9,21 +9,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public final class GUIHandler extends SimplexListener {
     public GUIHandler(SimplexModule<?> plugin) {
-        register(this, plugin);
+        super(plugin);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void invClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+    public void invClick(@NotNull InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
 
-        Player player = (Player) event.getWhoClicked();
         UUID pID = player.getUniqueId();
         UUID invUUID = AbstractGUI.getOpenInvs().get(pID);
 
@@ -38,7 +38,7 @@ public final class GUIHandler extends SimplexListener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onClose(InventoryCloseEvent event) {
+    public void onClose(@NotNull InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
         AbstractGUI.getOpenInvs().remove(player.getUniqueId());
     }

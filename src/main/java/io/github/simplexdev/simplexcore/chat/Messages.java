@@ -1,22 +1,23 @@
 package io.github.simplexdev.simplexcore.chat;
 
-import io.github.simplexdev.simplexcore.CoreState;
+import net.kyori.adventure.text.Component;
 
 public enum Messages {
-    NO_PERMS("You do not have permission to use this command!"),
-    DISCORD("https://discord.gg/Rumx5dTJuf"),
-    BAN("You have been banned from this server."),
-    KICK("You have been kicked by a moderator."),
-    AFK_KICK("You were kicked to ensure space for active players."),
-    PERMBAN("You are permanently banned from this server.");
+    NO_PERMS(Component.text("You do not have permission to use this command!")),
+    DISCORD(Component.text("https://discord.gg/Rumx5dTJuf")),
+    BAN(Component.text("You have been banned from this server.")),
+    KICK(Component.text("You have been kicked by a moderator.")),
+    AFK_KICK(Component.text("You were kicked to ensure space for active players.")),
+    PERMBAN(Component.text("You are permanently banned from this server."));
 
-    String message;
 
-    Messages(String message) {
+    final Component message;
+
+    Messages(Component message) {
         this.message = message;
     }
 
-    public String getMessage() {
+    public Component getMessage() {
         return message;
     }
 }

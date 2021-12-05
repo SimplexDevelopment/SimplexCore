@@ -1,5 +1,7 @@
 package io.github.simplexdev.simplexcore.ban;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum BanType {
     PERMANENT("P-"),
     TEMPORARY("T-"),
@@ -12,7 +14,7 @@ public enum BanType {
         this.prefix = prefix;
     }
 
-    public static String value(BanType type) {
+    public static @NotNull String value(@NotNull BanType type) {
         if (type.equals(PERMANENT)) {
             return "Permanent";
         } else if (type.equals(TEMPORARY)) {
@@ -22,7 +24,7 @@ public enum BanType {
         }
     }
 
-    public static BanType getFromId(String banId) {
+    public static BanType getFromId(@NotNull String banId) {
         if (banId.startsWith("P")) {
             return PERMANENT;
         } else if (banId.startsWith("T")) {

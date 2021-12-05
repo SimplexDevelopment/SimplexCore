@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -19,11 +20,9 @@ import static org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
 public final class BanManager extends SimplexListener {
     private final Map<Ban, BanType> banMap = new HashMap<>();
-    private final SimplexModule<?> plugin;
 
     BanManager(SimplexModule<?> plugin) {
-        this.plugin = plugin;
-        register(this, plugin);
+        super(plugin);
     }
 
     public void addBan(Ban ban) {
@@ -47,7 +46,7 @@ public final class BanManager extends SimplexListener {
     }
 
     @EventHandler
-    public void banHandler(AsyncPlayerPreLoginEvent event) {
+    public void banHandler(@NotNull AsyncPlayerPreLoginEvent event) {
         UUID player = event.getUniqueId();
         OfflinePlayer op = Bukkit.getOfflinePlayer(player);
         Ban ban = getBan(op);

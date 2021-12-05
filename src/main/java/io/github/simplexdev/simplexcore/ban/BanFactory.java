@@ -4,12 +4,15 @@ import io.github.simplexdev.api.IBan;
 import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.chat.Messages;
 import io.github.simplexdev.simplexcore.config.Yaml;
-import io.github.simplexdev.simplexcore.config.YamlFactory;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Date;
@@ -24,7 +27,7 @@ public final class BanFactory {
     private final Date banDate;
     private final BanType type;
     private final String banId;
-    private String banReason;
+    private Component banReason;
     private long banDuration;
 
     public BanFactory(SimplexModule<?> plugin, Player player, CommandSender sender, Date banDate, BanType type) {
@@ -46,13 +49,13 @@ public final class BanFactory {
      * @param banReason   The reason for the ban. By default, this uses Messages#BAN for the message.
      * @return The current instance of BanFactory.
      */
-    public BanFactory defineOptional(long banDuration, String banReason) {
+    public BanFactory defineOptional(long banDuration, Component banReason) {
         this.banDuration = banDuration;
         this.banReason = banReason;
         return this;
     }
 
-    public void write(Yaml yaml, IBan ban) {
+    public void write(@NotNull Yaml yaml, @NotNull IBan ban) {
         yaml.set(pathway("offender"), ban.getOffender());
         yaml.set(pathway("sender"), ban.getSender());
         yaml.set(pathway("duration"), ban.getBanDuration());
@@ -63,7 +66,8 @@ public final class BanFactory {
         yaml.create();
     }
 
-    public Yaml read(File yamlFile) {
+    @Contract(pure = true)
+    public @Nullable Yaml read(File yamlFile) {
         return null;
     }
 
@@ -72,7 +76,8 @@ public final class BanFactory {
      *
      * @return A new ban instance.
      */
-    public Ban create() {
+    @Contract(" -> new")
+    public @NotNull Ban create() {
         return new Ban(plugin, player, sender, type, banDuration) {
             @Override
             public UUID getOffender() {
@@ -85,7 +90,7 @@ public final class BanFactory {
             }
 
             @Override
-            public String getBanReason() {
+            public Component getBanReason() {
                 return banReason;
             }
 
@@ -115,19 +120,23 @@ public final class BanFactory {
         // TODO
     }
 
-    public IBan getBan(String banId) {
+    @Contract(pure = true)
+    public @Nullable IBan getBan(String banId) {
         return null;
     }
 
-    public IBan getBan(Player player) {
+    @Contract(pure = true)
+    public @Nullable IBan getBan(Player player) {
         return null;
     }
 
-    public IBan getBan(UUID offenderUUID) {
+    @Contract(pure = true)
+    public @Nullable IBan getBan(UUID offenderUUID) {
         return null;
     }
 
-    private VoidSupplier assignBanDuration(Long... time) {
+    @Contract(pure = true)
+    private @NotNull VoidSupplier assignBanDuration(Long... time) {
         return () -> {
             if (type.equals(BanType.PERMANENT)) {
                 banDuration = TickedTime.YEAR * 99;
@@ -145,7 +154,7 @@ public final class BanFactory {
         };
     }
 
-    private String createBanId() {
+    private @NotNull String createBanId() {
         return Utilities.generateBanId(type);
     }
 }

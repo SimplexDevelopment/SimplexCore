@@ -13,18 +13,19 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 public final class ReflectionTools {
+    @Contract("_ -> new")
     @NotNull
-    public static Reflections reflect(Class<?> loadFrom) {
+    public static Reflections reflect(@NotNull Class<?> loadFrom) {
         return new Reflections(loadFrom.getName());
     }
 
     @NotNull
-    public static Set<Class<?>> getAnnotatedClasses(Class<?> loadFrom, Class<? extends Annotation> annotation) {
+    public static Set<Class<?>> getAnnotatedClasses(@NotNull Class<?> loadFrom, Class<? extends Annotation> annotation) {
         return new Reflections(loadFrom.getName()).getTypesAnnotatedWith(annotation);
     }
 
     @Nullable
-    public static <T> Field getField(Class<T> cls, String name) {
+    public static <T> Field getField(@NotNull Class<T> cls, String name) {
         try {
             return asAccessible(cls.getField(name));
         } catch (NoSuchFieldException ignored) {
@@ -33,7 +34,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> Field getDeclaredField(Class<T> cls, String name) {
+    public static <T> Field getDeclaredField(@NotNull Class<T> cls, String name) {
         try {
             return asAccessible(cls.getDeclaredField(name));
         } catch (ReflectiveOperationException ignored) {
@@ -42,7 +43,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> Constructor<T> getConstructor(Class<T> cls, Class<?>... initializers) {
+    public static <T> Constructor<T> getConstructor(@NotNull Class<T> cls, Class<?>... initializers) {
         try {
             return asAccessible(cls.getConstructor(initializers));
         } catch (NoSuchMethodException ignored) {
@@ -51,7 +52,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> Constructor<T> getDeclaredConstructor(Class<T> cls, Class<?>... initializers) {
+    public static <T> Constructor<T> getDeclaredConstructor(@NotNull Class<T> cls, Class<?>... initializers) {
         try {
             return asAccessible(cls.getDeclaredConstructor(initializers));
         } catch (NoSuchMethodException ignored) {
@@ -60,7 +61,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> T initConstructor(Constructor<? extends T> constructor, Object... initializers) {
+    public static <T> T initConstructor(@NotNull Constructor<? extends T> constructor, Object... initializers) {
         try {
             return constructor.newInstance(initializers);
         } catch (ReflectiveOperationException e) {
@@ -69,7 +70,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> Method getMethod(Class<T> clazz, String name, Class<?>... params) {
+    public static <T> Method getMethod(@NotNull Class<T> clazz, String name, Class<?>... params) {
         try {
             return asAccessible(clazz.getMethod(name, params));
         } catch (NoSuchMethodException e) {
@@ -78,7 +79,7 @@ public final class ReflectionTools {
     }
 
     @Nullable
-    public static <T> Method getDeclaredMethod(Class<T> clazz, String name, Class<?>... params) {
+    public static <T> Method getDeclaredMethod(@NotNull Class<T> clazz, String name, Class<?>... params) {
         try {
             return asAccessible(clazz.getDeclaredMethod(name, params));
         } catch (ReflectiveOperationException ignored) {
@@ -88,7 +89,7 @@ public final class ReflectionTools {
 
     @NotNull
     @Contract(pure = true)
-    public static <T extends AccessibleObject> T asAccessible(T object) {
+    public static <T extends AccessibleObject> T asAccessible(@NotNull T object) {
         object.setAccessible(true);
         return object;
     }

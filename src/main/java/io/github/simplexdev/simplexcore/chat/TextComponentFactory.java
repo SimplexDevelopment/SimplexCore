@@ -1,72 +1,43 @@
 package io.github.simplexdev.simplexcore.chat;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class TextComponentFactory {
     @NotNull
     public TextComponent textComponent(@NotNull String message) {
-        TextComponent component = new TextComponent();
-        component.setText(message);
-        return component;
+        return Component.text(message);
     }
 
     @NotNull
-    public TextComponent clickableComponent(@NotNull String message, @NotNull String clickAction, @NotNull ClickEvent.Action actionType) {
-        TextComponent comp = new TextComponent();
-        ClickEvent onClick = new ClickEvent(actionType, clickAction);
-        comp.setText(message);
-        comp.setClickEvent(onClick);
-        return comp;
+    public Component clickableComponent(@NotNull String message, @NotNull String clickAction, @NotNull ClickEvent.Action actionType) {
+        Component comp = Component.text(message);
+        ClickEvent onClick = ClickEvent.clickEvent(actionType, clickAction);
+        return comp.clickEvent(onClick);
     }
 
     @NotNull
-    public TextComponent coloredComponent(@NotNull String message, @Nullable ChatColor color) {
-        TextComponent component = new TextComponent();
-        if (color != null) component.setColor(color);
-        component.setText(message);
-        return component;
+    public Component addColor(@NotNull Component component, @NotNull TextColor color) {
+        return component.color(color);
     }
 
     @NotNull
-    public TextComponent clickableColored(@NotNull String message, @NotNull String clickMessage, @NotNull ClickEvent.Action actionType, @Nullable ChatColor color) {
-        TextComponent comp = new TextComponent();
-        ClickEvent onClick = new ClickEvent(actionType, clickMessage);
-        if (color != null) comp.setColor(color);
-        comp.setText(message);
-        comp.setClickEvent(onClick);
-        return comp;
+    public Component resetColor(@NotNull Component component) {
+        return component.color(TextColor.fromHexString("#FFFFFF"));
     }
 
     @NotNull
-    public TextComponent addColor(@NotNull TextComponent component, @NotNull ChatColor color) {
-        component.setColor(color);
-        return component;
-    }
-
-    @NotNull
-    public TextComponent resetColor(@NotNull TextComponent component) {
-        component.setColor(ChatColor.RESET);
-        return component;
-    }
-
-    @NotNull
-    public TextComponent hoverableText(@NotNull String message, @NotNull String hoverMessage, @NotNull HoverEvent.Action action) {
-        TextComponent comp = new TextComponent();
-        comp.setText(message);
-        Text text = new Text(hoverMessage);
-        HoverEvent event = new HoverEvent(action, text);
-        comp.setHoverEvent(event);
-        return comp;
-    }
-
-    @NotNull
-    public String colorize(@NotNull String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+    public Component hoverText(@NotNull String message, @NotNull String hoverMessage) {
+        Component comp = Component.text(message);
+        Component msg = Component.text(hoverMessage);
+        HoverEvent<Component> event = HoverEvent.showText(msg);
+        return comp.hoverEvent(event);
     }
 }

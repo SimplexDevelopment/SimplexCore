@@ -1,5 +1,7 @@
 package io.github.simplexdev.simplexcore.sql;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -75,7 +77,7 @@ public class Database {
         return false;
     }
 
-    public static String getString(String table, String column, String gate, Object gate_value) {
+    public static @Nullable String getString(String table, String column, String gate, Object gate_value) {
         PreparedStatement ps;
         try {
             ps = MySQL.getConnection().prepareStatement("SELECT ? FROM ? WHERE ?=?");
@@ -119,7 +121,7 @@ public class Database {
         return 0;
     }
 
-    public static Double getDouble(String table, String column, String gate, Object gate_value) {
+    public static @Nullable Double getDouble(String table, String column, String gate, Object gate_value) {
         PreparedStatement ps;
         try {
             ps = MySQL.getConnection().prepareStatement("SELECT ? FROM ? WHERE ?=?");
@@ -185,7 +187,7 @@ public class Database {
         return 0;
     }
 
-    public static Object get(String table, String column, String gate, Object gate_value) {
+    public static @Nullable Object get(String table, String column, String gate, Object gate_value) {
         PreparedStatement ps;
         try {
             ps = MySQL.getConnection().prepareStatement("SELECT ? FROM ? WHERE ?=?");

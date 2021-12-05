@@ -4,6 +4,8 @@ import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.Trio;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -17,22 +19,26 @@ public final class YamlFactory {
         this.plugin = plugin;
     }
 
-    public Yaml from(String resourcePath, File directory, String fileName) {
+    @Contract("_, _, _ -> new")
+    public @NotNull Yaml from(String resourcePath, File directory, String fileName) {
         this.resourcePath = resourcePath;
         this.directory = directory;
         this.fileName = fileName;
         return new Yaml(plugin, fileName, directory, resourcePath);
     }
 
-    public FileConfiguration load(File yamlFile) {
+    @Contract("_ -> new")
+    public @NotNull FileConfiguration load(File yamlFile) {
         return YamlConfiguration.loadConfiguration(yamlFile);
     }
 
-    public Yaml setDefaultPathways() {
+    @Contract(" -> new")
+    public @NotNull Yaml setDefaultPathways() {
         return from("config.yml", plugin.getDataFolder(), "config.yml");
     }
 
-    public Trio<String, File, String> pathways() {
+    @Contract(value = " -> new", pure = true)
+    public @NotNull Trio<String, File, String> pathways() {
         return new Trio<>(resourcePath, directory, fileName);
     }
 }

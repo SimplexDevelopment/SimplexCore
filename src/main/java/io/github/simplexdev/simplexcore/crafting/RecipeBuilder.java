@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +36,8 @@ public final class RecipeBuilder {
      * @param isShaped Whether or not the recipe is shaped or shapeless.
      * @return A new appendable RecipeBuilder Worker instance based on the given parameters.
      */
-    public final Worker newRecipe(ItemStack result, String recipeName, boolean isShaped) {
+    @Contract("_, _, _ -> new")
+    public @NotNull Worker newRecipe(ItemStack result, String recipeName, boolean isShaped) {
         return new Worker(result, recipeName, isShaped);
     }
 
@@ -60,7 +62,7 @@ public final class RecipeBuilder {
             this.shaped = isShaped;
         }
 
-        private ShapelessRecipe nosha() {
+        private @NotNull ShapelessRecipe nosha() {
             ShapelessRecipe recipe = new ShapelessRecipe(key, stack);
             if (materials.size() > 9 || materials.isEmpty()) return recipe;
             materials.forEach(recipe::addIngredient);
@@ -68,7 +70,7 @@ public final class RecipeBuilder {
             return recipe;
         }
 
-        private ShapedRecipe sha() {
+        private @NotNull ShapedRecipe sha() {
             ShapedRecipe recipe = new ShapedRecipe(key, stack);
             if (ingredients.isEmpty()) return recipe;
             recipe.shape(shape);

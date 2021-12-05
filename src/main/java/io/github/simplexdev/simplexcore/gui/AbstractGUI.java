@@ -2,6 +2,7 @@ package io.github.simplexdev.simplexcore.gui;
 
 import io.github.simplexdev.api.func.ClickAction;
 import io.github.simplexdev.api.IGUI;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,35 +14,34 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractGUI implements InventoryHolder, IGUI {
     private final Inventory INV;
     private final Map<Integer, ClickAction> actions;
     private final UUID uuid;
-    private final Map<IGUI, List<AbstractGUI>> pagesByGUI = new HashMap<>();
-
-    private final List<Integer> validSize = new ArrayList<>(){{
-        add(9);
-        add(18);
-        add(27);
-        add(36);
-        add(45);
-        add(54);
-    }};
-
-    private int pages = 0;
 
     public static final Map<UUID, IGUI> invByUUId = new HashMap<>();
     public static final Map<UUID, UUID> openInvs = new HashMap<>();
+    private final Map<Integer, AbstractGUI> pages = new HashMap<>();
 
     public AbstractGUI(int size, String name) {
         uuid = UUID.randomUUID();
+        List<Integer> validSize = new ArrayList<>() {{
+            add(9);
+            add(18);
+            add(27);
+            add(36);
+            add(45);
+            add(54);
+        }};
         if (!validSize.contains(size)) {
-            throw new NumberFormatException("Inventory sizes must be a multiple of nine!");
+            throw new NumberFormatException("Inventory sizes must be a multiple of nine, and no larger than 54.");
         }
-        INV = Bukkit.createInventory(null, size, name);
+        INV = Bukkit.createInventory(null, size, Component.text(name));
         actions = new HashMap<>();
         invByUUId.put(getInvUUId(), this);
+        pages.put(0, this);
     }
 
     @Override
@@ -91,16 +91,25 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
         invByUUId.remove(getInvUUId());
     }
 
+    // Maybe just use pages.size() ?
     public void addPage(AbstractGUI page) {
-        pages += 1;
+        pages.put(pages.size() + 1, page);
     }
 
     public void deletePage(AbstractGUI page) {
-        if (pages == 0) {
+        if (pages.isEmpty()) {
             return;
         }
 
-        pages -= 1;
+        AtomicInteger key = new AtomicInteger(0);
+        pages.forEach((key1, value) -> {
+            if (page.equals(value)) {
+                key.set(key1);
+            }
+        });
+        if (key.get() != 0) {
+            pages.remove(key, page);
+        }
     }
 
     public static Map<UUID, IGUI> getInvByUUId() {
@@ -117,21 +126,21 @@ public abstract class AbstractGUI implements InventoryHolder, IGUI {
     }
 
     @Override
-    public ItemStack newItem(@NotNull Material material, @NotNull String name, String... lore) {
+    public ItemStack newItem(@NotNull Material material, @NotNull String name, Component... lore) {
         ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {
             return item;
         }
-        meta.setDisplayName(name);
-        ArrayList<String> metaLore = new ArrayList<>(Arrays.asList(lore));
-        meta.setLore(metaLore);
+        meta.displayName(Component.text(name));
+        ArrayList<Component> metaLore = new ArrayList<>(Arrays.asList(lore));
+        meta.lore(metaLore);
         item.setItemMeta(meta);
         return item;
     }
 
     @Override
     public ItemStack newItem(@NotNull Material material, @NotNull String name) {
-        return newItem(material, name, "");
+        return newItem(material, name, Component.text(""));
     }
 }

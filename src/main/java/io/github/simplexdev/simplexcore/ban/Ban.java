@@ -9,6 +9,7 @@ import io.github.simplexdev.simplexcore.listener.SimplexListener;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
 import io.github.simplexdev.simplexcore.utils.Utilities;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public abstract class Ban implements IBan {
     private final SimplexModule<?> plugin;
 
     private final String banId;
-    private final String banReason;
+    private final Component banReason;
 
     /**
      * Creates a new Ban Entry.
@@ -79,7 +80,7 @@ public abstract class Ban implements IBan {
      * @param banDate The date when the ban was created.
      * @param banDuration How long the ban should last.
      */
-    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, String banId, String banReason, Date banDate, long banDuration) {
+    public Ban(SimplexModule<?> plugin, Player player, CommandSender sender, BanType type, String banId, Component banReason, Date banDate, long banDuration) {
         this.plugin = plugin;
         this.player = player;
         this.sender = sender;
@@ -92,18 +93,20 @@ public abstract class Ban implements IBan {
 
     /**
      * Writes the Ban to a file.
-     * @param separateFiles Whether or not to create individual files for players or store them all in one bans.yml file.
+     * @param separateFiles Whether to create individual files for players or store
+     *                     them all in one bans.yml file.
      */
     public void writeToFile(boolean separateFiles) {
         File fileLocation = new File(plugin.getParentFolder(), "bans");
 
+        Yaml yaml;
         if (separateFiles) {
-            Yaml yaml = new YamlFactory(plugin).from(null, fileLocation, player.getName() + ".yml");
+            yaml = new YamlFactory(plugin).from(null, fileLocation, player.getName() + ".yml");
             ConfigurationSection section = yaml.getConfig().createSection(getOffender().toString());
             section.set("name", player.getName());
             section.set("ban_id", banId);
             section.set("sender", sender.getName());
-            section.set("reason", banReason);
+            section.set("reason", banReason.toString());
             section.set("duration", banDuration);
             section.set("date", banDate.getTime());
             section.set("type", type.toString());
@@ -112,14 +115,13 @@ public abstract class Ban implements IBan {
             } catch (IOException e) {
                 plugin.getLogger().severe(e.getMessage());
             }
-            yaml.reload();
         } else {
-            Yaml yaml = new YamlFactory(plugin).from(null, fileLocation, "bans.yml");
+            yaml = new YamlFactory(plugin).from(null, fileLocation, "bans.yml");
             ConfigurationSection section = yaml.getConfig().createSection(getOffender().toString());
             section.set("name", player.getName());
             section.set("ban_id", banId);
             section.set("sender", sender.getName());
-            section.set("reason", banReason);
+            section.set("reason", banReason.toString());
             section.set("duration", banDuration);
             section.set("date", banDate.getTime());
             section.set("type", type.toString());
@@ -128,7 +130,7 @@ public abstract class Ban implements IBan {
             } catch (IOException ex) {
                 plugin.getLogger().severe(ex.getMessage());
             }
-            yaml.reload();
         }
+        yaml.reload();
     }
 }

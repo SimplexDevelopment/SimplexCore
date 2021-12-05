@@ -36,7 +36,7 @@ public final class PotionEffectFactory {
      * @param effects The {@link PotionEffectType}(s) you want to be included.
      * @return A new compound effect.
      */
-    public static ICompoundEffect compoundEffect(SimplexModule<?> plugin, String name, int duration, int amplifier, PotionEffectType... effects) {
+    public static @NotNull ICompoundEffect compoundEffect(SimplexModule<?> plugin, String name, int duration, int amplifier, PotionEffectType... effects) {
         List<PotionEffect> list = new ArrayList<>();
 
         Utilities.forEach(effects, effect -> {
@@ -83,7 +83,7 @@ public final class PotionEffectFactory {
      * @param amplifier How strong the potion is.
      * @return A new {@link PotionEffect}.
      */
-    public static PotionEffect potionEffect(PotionEffectType type, int duration, int amplifier) {
+    public static @NotNull PotionEffect potionEffect(@NotNull PotionEffectType type, int duration, int amplifier) {
         return type.createEffect(duration, amplifier);
     }
 
@@ -91,7 +91,7 @@ public final class PotionEffectFactory {
      * Applies the compound effect to the defined player.
      * @param effect The {@link ICompoundEffect} to apply.
      */
-    public void applyCompoundEffect(ICompoundEffect effect) {
+    public void applyCompoundEffect(@NotNull ICompoundEffect effect) {
         effect.getEffects().forEach(player::addPotionEffect);
         map.put(player, effect);
     }
@@ -99,7 +99,7 @@ public final class PotionEffectFactory {
     /**
      * Checks if a player currently has a compound effect.
      * @param effect The {@link ICompoundEffect} to look for
-     * @return Whether or not the player has the compound effect.
+     * @return Whether the player has the compound effect.
      */
     public boolean hasPotionEffect(ICompoundEffect effect) {
         return (map.containsKey(player) && map.get(player).equals(effect));

@@ -7,18 +7,10 @@ public class CoreState {
     public CoreState(SimplexCorePlugin plugin) {
         this.plugin = plugin;
         switch (getState()) {
-            case ON:
-                message = "The Core is currently ON";
-                break;
-            case SUSPENDED:
-                message = "The Core is currently SUSPENDED. Please report this to the developer.";
-                break;
-            case DEBUG:
-                message = "The Core is currently in DEBUG mode. Do not use this if you don't know what you're doing.";
-                break;
-            case VOLATILE:
-                message = "The Core state is currently unknown! Please report this to the developer!";
-                break;
+            case ON -> message = "The Core is currently ON";
+            case SUSPENDED -> message = "The Core is currently SUSPENDED. Please report this to the developer.";
+            case DEBUG -> message = "The Core is currently in DEBUG mode. Do not use this if you don't know what you're doing.";
+            case VOLATILE -> message = "The Core state is currently unknown! Please report this to the developer!";
         }
     }
 

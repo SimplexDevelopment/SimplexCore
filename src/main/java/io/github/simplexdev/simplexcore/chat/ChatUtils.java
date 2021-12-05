@@ -1,17 +1,20 @@
 package io.github.simplexdev.simplexcore.chat;
 
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public final class ChatUtils {
-    protected final CommandSender target;
-    protected final TextComponentFactory factory = new TextComponentFactory();
+    private final CommandSender target;
+    private final TextComponentFactory factory = new TextComponentFactory();
 
     private <T extends CommandSender> ChatUtils(T target) {
         this.target = target;
     }
 
-    public static <T extends CommandSender> ChatUtils target(T target) {
+    @Contract("_ -> new")
+    public static <T extends CommandSender> @NotNull ChatUtils msgTarget(T target) {
         return new ChatUtils(target);
     }
 
@@ -19,21 +22,11 @@ public final class ChatUtils {
         target.sendMessage(message);
     }
 
-    public void msg(TextComponent component) {
-        target.spigot().sendMessage(component);
+    public void msg(Component component) {
+        target.sendMessage(component);
     }
 
-    public void err(Messages message) {
+    public void err(@NotNull Messages message) {
         target.sendMessage(message.getMessage());
     }
-
-    public void color(String message) {
-        target.sendMessage(factory.colorize(message));
-    }
-
-    public void color(TextComponent component) {
-        target.sendMessage(factory.colorize(component.getText()));
-    }
-
-
 }

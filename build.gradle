@@ -4,7 +4,7 @@ plugins {
 }
 
 version project.properties["pluginVersion"]
-targetCompatibility = sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -13,10 +13,7 @@ repositories {
     [
             "https://jitpack.io",
             "https://papermc.io/repo/repository/maven-public/",
-            "https://oss.sonatype.org/content/groups/public/",
-            "https://repo.extendedclip.com/content/repositories/placeholderapi/",
-            "http://repo.comphenix.net/content/repositories/releases/",
-            "http://repo.comphenix.net/content/repositories/snapshots/"
+            "https://os1.oss.sonatype.org/content/groups/public/"
     ].each { s ->
         maven {
             url s
@@ -27,24 +24,15 @@ repositories {
 dependencies {
     //provided
     [
-            "com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT",
-            "net.md-5:bungeecord-api:1.16-R0.4-SNAPSHOT",
-            "io.github.waterfallmc:waterfall-api:1.16-R0.4-SNAPSHOT",
-            "me.clip:placeholderapi:2.10.9",
-            files("libs/spigot-1.16.5.jar"),
-            files("libs/spigot-1.16.4.jar")
+            "io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT",
     ].each {s ->
         compileOnly s
     }
 
-    compileOnly ("com.github.dmulloy2:ProtocolLib:4.5.1") {
-        exclude group: "com.comphenix.executors"
-    }
-
     //compile
     [
-            "org.jetbrains:annotations:20.1.0",
-            "org.reflections:reflections:0.9.12"
+            "org.jetbrains:annotations:23.0.0",
+            "org.reflections:reflections:0.10.2"
     ].each {s ->
         implementation s
     }
@@ -62,6 +50,17 @@ shadowJar {
         relocate s, "${project.properties["pluginMainPackage"]}.shaded.$s"
     }
 }
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+signing {
+    sign configurations.archives
+}
+
+group = "io.github.simplexdevelopment"
+archivesBaseName = "simplex-core"
+version = "1.0.0"
 
 processResources {
     //update resources when building
