@@ -49,8 +49,7 @@ public abstract class SimplexModule<T extends SimplexModule<T>> extends JavaPlug
     /**
      * Plugin initialization logic.
      */
-    public void init() {
-    }
+    public void init() {}
 
     public PluginManager getManager() {
         return this.getServer().getPluginManager();
@@ -69,6 +68,6 @@ public abstract class SimplexModule<T extends SimplexModule<T>> extends JavaPlug
     }
 
     public CommandLoader getCommandLoader() {
-        return CommandLoader.getInstance();
+        return new CommandLoader();
     }
 }

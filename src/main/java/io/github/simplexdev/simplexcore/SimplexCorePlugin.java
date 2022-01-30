@@ -11,9 +11,10 @@ import io.github.simplexdev.simplexcore.module.SimplexModule;
 public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
     private static boolean debug = false;
     private static boolean suspended = false;
-    private static SimplexCorePlugin instance;
     private Yaml config;
     private Yaml internals;
+
+    private static SimplexCorePlugin instance;
 
     public static SimplexCorePlugin getInstance() {
         return instance;
@@ -26,16 +27,16 @@ public final class SimplexCorePlugin extends SimplexModule<SimplexCorePlugin> {
 
     @Override
     public void init() {
-        SimplexCorePlugin.instance = this;
-        this.config = new YamlFactory(this).setDefaultPathways();
-        this.internals = new YamlFactory(this).from("internals.yml", getParentFolder(), "internals.yml");
+        instance = getPlugin();
+        config = new YamlFactory(this).setDefaultPathways();
+        internals = new YamlFactory(this).from("internals.yml", getParentFolder(), "internals.yml");
     }
 
     @Override
     public void start() {
         try {
             getRegistry().register(this);
-            getCommandLoader().classpath(this, Command_info.class).load();
+            getCommandLoader().load(this, Command_info.class);
             getYamlConfig().reload();
             getInternals().reload();
         } catch (Exception ex) {

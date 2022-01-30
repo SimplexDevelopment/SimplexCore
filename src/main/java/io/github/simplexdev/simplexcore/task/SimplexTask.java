@@ -4,6 +4,7 @@ import io.github.simplexdev.api.func.VoidSupplier;
 import io.github.simplexdev.simplexcore.SimplexCorePlugin;
 import io.github.simplexdev.simplexcore.module.SimplexModule;
 import io.github.simplexdev.simplexcore.utils.TickedTime;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Date;
@@ -60,19 +61,20 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * {@link org.bukkit.scheduler.BukkitScheduler}.
      *
      * @param task      The instance of a subclass of this class.
-     * @param repeating Whether or not the task should repeat.
-     * @param delayed   Whether or not to delay the first time the task runs.
+     * @param repeating Whether the task should repeat.
+     * @param delayed   Whether to delay the first time the task runs.
      * @param <T>       A subclass of SimplexTask.
      */
     public <T extends SimplexTask> void register(T task, boolean repeating, boolean delayed) {
         if (delayed && repeating) {
-            SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, DELAY, INTERVAL);
+            setTaskId(SimplexCorePlugin.getInstance().getScheduler().scheduleSyncRepeatingTask(plugin, (Runnable)task, DELAY, INTERVAL));
         } else if (delayed) {
-            SimplexCorePlugin.getInstance().getScheduler().runTaskLater(plugin, task, DELAY);
+            setTaskId(SimplexCorePlugin.getInstance().getScheduler().scheduleSyncDelayedTask(plugin, (Runnable)task, DELAY));
         } else if (repeating) {
-            SimplexCorePlugin.getInstance().getScheduler().runTaskTimer(plugin, task, 0L, INTERVAL);
+            setTaskId(SimplexCorePlugin.getInstance().getScheduler().scheduleSyncRepeatingTask(plugin, (Runnable)task, 0L, INTERVAL));
         } else {
             SimplexCorePlugin.getInstance().getScheduler().runTask(plugin, task);
+            setTaskId(-1);
         }
     }
 
@@ -83,11 +85,10 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * This version of this method will not create a repeating task..
      *
      * @param task    The instance of a subclass of this class.
-     * @param plugin  Your plugin instance.
-     * @param delayed Whether or not to delay the start of the task.
+     * @param delayed Whether to delay the start of the task.
      * @param <T>     A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin, boolean delayed) {
+    public <T extends SimplexTask> void register(T task, boolean delayed) {
         register(task, false, delayed);
     }
 
@@ -97,10 +98,9 @@ public abstract class SimplexTask implements Consumer<BukkitTask> {
      * This version of this method will not create a delayed or repeating task.
      *
      * @param task   The instance of a subclass of this class.
-     * @param plugin Your plugin instance.
      * @param <T>    A subclass of SimplexTask.
      */
-    public <T extends SimplexTask> void register(T task, SimplexModule<?> plugin) {
+    public <T extends SimplexTask> void register(T task) {
         register(task, false, false);
     }
 

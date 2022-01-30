@@ -1,6 +1,13 @@
 plugins {
     id "java"
-    id "com.github.johnrengelman.shadow" version "6.1.0"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'maven-publish'
+    id 'signing'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 version project.properties["pluginVersion"]
@@ -28,7 +35,6 @@ dependencies {
     ].each {s ->
         compileOnly s
     }
-
     //compile
     [
             "org.jetbrains:annotations:23.0.0",
@@ -76,4 +82,59 @@ processResources {
             "pluginName": project.properties["pluginName"],
             "pluginMain": "${project.properties["pluginMainPackage"]}.${project.properties["pluginMain"]}"
     )
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'simplexcore'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'SimplexCore'
+                description = 'An API and Library designed for development of Paper plugins.'
+                url = 'https://simplexdev.app'
+                licenses {
+                    license {
+                        name = 'GNU General Public License v2.0'
+                        url = 'https://opensource.org/licenses/gpl-2.0.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'simplexdevelopment'
+                        name = 'Simplex Development Group'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/simplexdevelopment/simplexcore.git'
+                    developerConnection = 'scm:git:ssh://github.com/simplexdevelopment/simplexcore.git'
+                    url = 'https://github.com/SimplexDevelopment/SimplexCore'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            def releasesRepoUrl = layout.buildDirectory.dir('https://s01.oss.sonatype.org/content/repository/releases')
+            def snapshotsRepoUrl = layout.buildDirectory.dir('https://s01.oss.sonatype.org/content/repository/snapshots')
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+signing {
+    sign publishing.publications.mavenJava
+}
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }

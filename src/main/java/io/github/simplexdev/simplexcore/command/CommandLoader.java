@@ -22,17 +22,8 @@ import java.util.MissingResourceException;
 
 public final class CommandLoader {
     private Reflections reflections;
-    private ClassLoader classLoader;
     private SimplexModule<?> plugin;
-    private static final CommandLoader instance = new CommandLoader();
     private final Registry registry = new Registry();
-
-    /**
-     * @return A Singleton Pattern instance of this class.
-     */
-    public static CommandLoader getInstance() {
-        return instance;
-    }
 
     /**
      * Prepares the CommandLoader to load your plugin's commands from its own package location.
@@ -46,9 +37,8 @@ public final class CommandLoader {
      * </p>
      *
      * @param clazz The command class to load from
-     * @return An instance of this where the classpath has been prepared for loading the commands.
      */
-    public <T extends SimplexCommand> CommandLoader classpath(SimplexModule<?> plugin, Class<T> clazz) {
+    public <T extends SimplexCommand> void load(SimplexModule<?> plugin, Class<T> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("The class provided cannot be found!");
         }
@@ -63,18 +53,9 @@ public final class CommandLoader {
 
         this.reflections = ReflectionTools.reflect(clazz);
         this.plugin = plugin;
-        this.classLoader = plugin.getClass().getClassLoader();
+        ClassLoader classLoader = plugin.getClass().getClassLoader();
 
-        return this;
-    }
-
-    /**
-     * Loads all the commands from the specified classpath.
-     * This should be used immediately after {@link CommandLoader#classpath(SimplexModule, Class)} has been called.
-     * If used before, an exception will be thrown, and your commands will not be loaded.
-     */
-    public void load() {
-        if (reflections == null || plugin == null || classLoader == null) {
+        if (reflections == null || classLoader == null) {
             throw new CommandLoaderException("Please run CommandLoader#classpath(SimplexModule, Class) first!");
         }
 
@@ -86,18 +67,18 @@ public final class CommandLoader {
             if (info == null) {
                 SimplexCorePlugin.getInstance()
                         .getLogger().warning(annotated.getSimpleName()
-                        + " is missing a required annotation: "
-                        + CommandInfo.class.getSimpleName()
-                        + ". Ignoring.");
+                                + " is missing a required annotation: "
+                                + CommandInfo.class.getSimpleName()
+                                + ". Ignoring.");
                 return;
             }
 
             if (!SimplexCommand.class.isAssignableFrom(annotated)) {
                 SimplexCorePlugin.getInstance()
                         .getLogger().warning(annotated.getSimpleName()
-                        + " does not extend "
-                        + SimplexCommand.class.getSimpleName()
-                        + ". Ignoring.");
+                                + " does not extend "
+                                + SimplexCommand.class.getSimpleName()
+                                + ". Ignoring.");
                 return;
             }
 

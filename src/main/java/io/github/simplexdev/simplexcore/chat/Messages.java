@@ -8,7 +8,8 @@ public enum Messages {
     BAN(Component.text("You have been banned from this server.")),
     KICK(Component.text("You have been kicked by a moderator.")),
     AFK_KICK(Component.text("You were kicked to ensure space for active players.")),
-    PERMBAN(Component.text("You are permanently banned from this server."));
+    PERMBAN(Component.text("You are permanently banned from this server.")),
+    NOT_FROM_CONSOLE(Component.text("This command may only be used in game."));
 
 
     final Component message;
