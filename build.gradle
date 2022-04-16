@@ -13,35 +13,21 @@ java {
 version project.properties["pluginVersion"]
 targetCompatibility = sourceCompatibility = JavaVersion.VERSION_17
 
+
 repositories {
     mavenCentral()
 
-    //maven artifact repo urls
-    [
-            "https://jitpack.io",
-            "https://papermc.io/repo/repository/maven-public/",
-            "https://os1.oss.sonatype.org/content/groups/public/"
-    ].each { s ->
-        maven {
-            url s
-        }
-    }
+    maven { url "https://jitpack.io" }
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
+    maven { url "https://os1.oss.sonatype.org/content/groups/public/" }
 }
-
 dependencies {
     //provided
-    [
-            "io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT",
-    ].each {s ->
-        compileOnly s
-    }
+    compileOnly "io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT"
+
     //compile
-    [
-            "org.jetbrains:annotations:23.0.0",
-            "org.reflections:reflections:0.10.2"
-    ].each {s ->
-        implementation s
-    }
+    implementation "org.jetbrains:annotations:23.0.0"
+    implementation "org.reflections:reflections:0.10.2"
 }
 
 shadowJar {
@@ -49,12 +35,8 @@ shadowJar {
     baseName project.properties["pluginName"].toString()
 
     //shading and relocation
-    [
-            "org.reflections",
-            "javassist"
-    ].each {s ->
-        relocate s, "${project.properties["pluginMainPackage"]}.shaded.$s"
-    }
+    relocate "org.reflections", "${project.properties["pluginMainPackage"]}.shaded.reflections"
+    relocate "javassist", "${project.properties["pluginMainPackage"]}.shaded.jassist"
 }
 
 apply plugin: 'maven-publish'

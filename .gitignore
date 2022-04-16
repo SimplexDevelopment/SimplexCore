@@ -25,11 +25,8 @@ hs_err_pid*
 *.xml
 *.txt
 *.lst
-*.lst
 
-/target/
-/out/
-/build/
-/.idea/
-# Ignore Gradle project-specific cache directory
-/.gradle/
+build/
+.idea/
+.gradle/
+simplexcore.asc
